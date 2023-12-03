@@ -55,9 +55,6 @@
         </div>
         <div>
           <Slider />
-          <!-- <q-avatar class="tw-w-full tw-h-full tw-top-5 tw-rounded-md">
-            <q-img src="~assets/bg.jpg" />
-          </q-avatar> -->
         </div>
       </div>
     </div>
@@ -81,11 +78,23 @@
                   </p>
                   <p class="tw-text-xs tw-text-left">
                     Solusi Pengiriman Instan Untuk Bisnis Anda
-                  </p></q-card-section
-                >
+                  </p>
+                </q-card-section>
 
                 <q-img class="col-5" src="~assets/heavy.svg" />
               </q-card-section>
+              <q-card-actions align="left">
+                <q-btn
+                  flat
+                  class="tw-text-xs"
+                  color="primary"
+                  label="Cari Tahu"
+                  icon-right="arrow_forward"
+                  no-caps
+                  dense
+                  :to="{ name: 'form' }"
+                />
+              </q-card-actions>
             </q-card>
           </div>
           <q-card class="tw-rounded-3xl tw-shadow-lg">

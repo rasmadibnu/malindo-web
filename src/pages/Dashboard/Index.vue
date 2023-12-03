@@ -1,330 +1,320 @@
 <script lang="ts" setup>
+import { onMounted, ref } from 'vue';
 import BaseTable from 'components/ui/BaseTable.vue';
 import InputTextField from 'src/components/form/InputTextField.vue';
+import InputSelect from 'src/components/form/InputSelect.vue';
+import Btn from 'src/components/ui/Button.vue';
 import { QTableColumn } from 'quasar';
+import { required } from 'src/utils/validators';
+import moment from 'moment';
+
 const columns: QTableColumn = [
   {
-    name: 'created_at',
-    label: 'Tgl Input Data',
+    name: 'code',
     align: 'left',
-    field: 'created_at',
-    sortable: true,
+    label: 'Code',
+    field: 'code',
+    sortable: false,
   },
   {
-    name: 'no_transaction',
-    align: 'center',
-    label: 'No Transaksi',
-    field: 'no_transaction',
-    sortable: true,
+    name: 'name',
+    align: 'left',
+    label: 'Name',
+    field: 'no',
+    sortable: false,
+    slot: true,
   },
-  { name: 'produk', label: 'Produk', field: 'produk', sortable: true },
-  { name: 'layanan', label: 'Layanan', field: 'layanan' },
-  { name: 'jenis', label: 'Jenis Layanan', field: 'jenis' },
-  { name: 'oldpol', label: 'No Polisi Lama', field: 'oldpol' },
-  { name: 'newpol', label: 'No Polisi Baru', field: 'newpol' },
-  { name: 'stnkname', label: 'Nama STNK', field: 'stnkname' },
-  { name: 'bpkbname', label: 'Nama BPKB', field: 'bpkbname' },
-  { name: 'status', label: 'Status', field: 'status' },
-  { name: 'ket', label: 'Keterangan', field: 'ket' },
+
   {
-    name: 'calcium',
-    label: 'Calcium (%)',
-    field: 'calcium',
-    sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
+    name: 'id_number',
+    align: 'left',
+    label: 'ID Number',
+    field: 'id_number',
+    sortable: false,
   },
   {
-    name: 'iron',
-    label: 'Iron (%)',
-    field: 'iron',
-    sortable: true,
-    sort: (a, b) => parseInt(a, 10) - parseInt(b, 10),
+    name: 'license_type',
+    align: 'left',
+    label: 'License Type',
+    field: 'license_type',
+    sortable: false,
+  },
+  {
+    name: 'license_no',
+    align: 'left',
+    label: 'License No',
+    field: 'license_no',
+    sortable: false,
+  },
+  {
+    name: 'created_at',
+    label: 'Created At',
+    align: 'left',
+    field: (row) => moment(row.created_at).format('DD-MM-YYYY HH:mm:ss'),
+    sortable: false,
   },
 ];
 
-const rows = [
-  {
-    created_at: 'adwadwww',
-    no_transaction: 'Frozen Yogurt',
-    produk: 'R2',
-    layanan: 'PAJAK & STNK',
-    jenis: 'Perpanjangan',
-  },
-  {
-    created_at: 'adwadwww',
-    no_transaction: 'Ice cream sandwich',
-    produk: 'R4',
-    layanan: 'Faktur',
-    jenis: 'Cek faktu',
-  },
-  {
-    created_at: 'adwadwww',
-    no_transaction: 'Eclair',
-    produk: 'R2',
-    layanan: 'PAJAK & STNK',
-    jenis: 'Bayar Pajak',
-  },
-  {
-    created_at: 'adwadwww',
-    no_transaction: 'Cupcake',
-    produk: 'R2',
-    layanan: 'BPKB',
-    jenis: 'Blokir',
-  },
-  {
-    created_at: 'adwadwww',
-    no_transaction: 'Gingerbread',
-    produk: 'R2',
-    layanan: 'PAJAK & STNK',
-    jenis: 'Bayar Pajak',
-  },
-  {
-    created_at: 'adwadwww',
-    no_transaction: 'Jelly bean',
-    produk: 'R2',
-    layanan: 'BPKB',
-    jenis: 'Blokir BPKB',
-  },
-  {
-    ncreated_at: 'adwadwww',
-    no_transaction: 'Lollipop',
-    produk: 'R2',
-    layanan: 'PAJAK & STNK',
-    jenis: 'Perpanjangan',
-  },
-  {
-    created_at: 'adwadwww',
-    no_transaction: 'Honeycomb',
-    produk: 'R2',
-    layanan: 'PAJAK & STNK',
-    jenis: 'Perpanjangan',
-  },
-  {
-    created_at: 'adwadwww',
-    no_transaction: 'Donut',
-    produk: 'R4',
-    layanan: 'BPKB',
-    jenis: 'Blokir',
-  },
-  {
-    created_at: 'adwadwww',
-    no_transaction: 'KitKat',
-    produk: 'R4',
-    layanan: 'BPKB',
-    jenis: 'Blokir',
-  },
-];
+const params = ref({
+  sort: '-created_at',
+});
 </script>
 <template>
-  <div class="tw-grid tw-grid-cols-2 tw-gap-4">
-    <q-card class="tw-shadow-md">
-      <q-card-section class="tw-grid tw-grid-cols-11">
-        <div class="tw-col-span-5 tw-space-y-1">
-          <div class="tw-flex tw-items-center tw-gap-1">
-            <div class="tw-text-2xl">350 data</div>
-            <q-icon name="star" size="sm" color="primary" />
-          </div>
-          <div class="tw-font-semibold">Total 187 users</div>
-          <div>Top Layanan</div>
-        </div>
-        <div class="tw-col-span-1 tw-flex tw-justify-center">
-          <q-separator vertical inset />
-        </div>
+  <BaseTable
+    ref="my_table"
+    :columns="columns"
+    colKey="id"
+    colInfo="no"
+    title="Data Keabsahan"
+    apiUrl="/drivers"
+    :params="params"
+  >
+    <template #form="{ payload }">
+      <div class="tw-grid tw-grid-cols-2 tw-gap-x-4 tw-gap-y-1.5">
+        <InputSelect
+          :rules="[required]"
+          :options="['A', 'B1', 'B2', 'C', 'D', 'Internat']"
+          toplabel="License Type"
+        />
+        <InputSelect
+          :rules="[required]"
+          toplabel="Product"
+          :options="['R2', 'R4']"
+          v-model="payload.product"
+        />
+        <InputTextField
+          :rules="[required]"
+          toplabel="No BPKB"
+          v-model="payload.bpkb_no"
+        />
+        <InputTextField
+          :rules="[required]"
+          toplabel="A/N BPKB"
+          v-model="payload.bpkb_name"
+        />
+        <InputTextField
+          :rules="[required]"
+          toplabel="Unit"
+          parentClass="tw-col-span-2"
+          v-model="payload.unit"
+        />
+        <InputTextField
+          :rules="[required]"
+          mask="####"
+          toplabel="Tahun Kendaraan"
+          v-model="payload.asset_year"
+        />
+        <InputTextField
+          :rules="[required]"
+          toplabel="No Mesin"
+          v-model="payload.machine_no"
+        />
+        <InputTextField
+          :rules="[required]"
+          toplabel="No Rangka"
+          v-model="payload.chassis_no"
+        />
+        <InputTextField
+          :rules="[required]"
+          toplabel="No Plat"
+          v-model="payload.police_no_old"
+        />
+        <InputTextField
+          parentClass="tw-col-span-2"
+          type="textarea"
+          toplabel="Keterangan"
+          v-model="payload.description"
+        />
+      </div>
+    </template>
+  </BaseTable>
+  <q-dialog
+    v-model="dialog_status"
+    @hide="
+      () => {
+        data = {};
+        status_change = {};
+        note = '';
+      }
+    "
+  >
+    <q-card class="tw-p-6" style="width: 700px; max-width: 80vw">
+      <q-card-section>
+        <div class="text-center text-h6">Update Status</div>
+      </q-card-section>
 
-        <div class="tw-col-span-5">
-          <div class="tw-grid tw-grid-cols-4">
-            <div class="tw-col-span-1">Pajak & STNK</div>
-            <div class="tw-col-span-2 tw-flex tw-items-center">
-              <q-linear-progress
-                class="tw-shadow-md"
-                rounded
-                size="md"
-                :value="0.7"
-                color="primary"
-              />
-            </div>
-            <div class="tw-col-span-1 tw-text-right">124</div>
+      <q-form @submit.prevent="updateStatus">
+        <q-card-section class="q-pb-none">
+          <InputTextField autofocus toplabel="Note" v-model="note" />
+        </q-card-section>
+        <q-card-actions align="between" class="tw-gap-4">
+          <div>
+            <q-badge
+              :label="data.status.name"
+              :color="data.status.color"
+              :style="{ backgroundColor: data.status.color }"
+            />
+            <q-avatar>
+              <q-icon name="arrow_right_alt" />
+            </q-avatar>
+            <q-badge
+              :label="status_change.name"
+              :color="status_change.color"
+              :style="{ backgroundColor: status_change.color }"
+            />
           </div>
-          <div class="tw-grid tw-grid-cols-4">
-            <div class="tw-col-span-1">BPKB</div>
-            <div class="tw-col-span-2 tw-flex tw-items-center">
-              <q-linear-progress
-                class="tw-shadow-md"
-                rounded
-                size="md"
-                :value="0.4"
-                color="primary"
-              />
-            </div>
-            <div class="tw-col-span-1 tw-text-right">40</div>
-          </div>
-          <div class="tw-grid tw-grid-cols-4">
-            <div class="tw-col-span-1">Faktur</div>
-            <div class="tw-col-span-2 tw-flex tw-items-center">
-              <q-linear-progress
-                class="tw-shadow-md"
-                rounded
-                size="md"
-                :value="0.3"
-                color="primary"
-              />
-            </div>
-            <div class="tw-col-span-1 tw-text-right">12</div>
-          </div>
-          <div class="tw-grid tw-grid-cols-4">
-            <div class="tw-col-span-1">Absah</div>
-            <div class="tw-col-span-2 tw-flex tw-items-center">
-              <q-linear-progress
-                class="tw-shadow-md"
-                rounded
-                size="md"
-                :value="0.2"
-                color="primary"
-              />
-            </div>
-            <div class="tw-col-span-1 tw-text-right">7</div>
-          </div>
-        </div>
-      </q-card-section>
+          <Btn label="Update" type="submit" :loading="loading" />
+        </q-card-actions>
+      </q-form>
     </q-card>
-    <q-card class="tw-shadow-md">
-      <q-card-section class="tw-grid tw-grid-cols-11">
-        <div class="tw-col-span-5 tw-space-y-1">
-          <div class="tw-flex tw-items-center tw-gap-1">
-            <div class="tw-text-2xl">350 data</div>
-            <q-icon name="star" size="sm" color="primary" />
-          </div>
-          <div class="tw-font-semibold">Total 187 users</div>
-          <div>Top Layanan</div>
-        </div>
-        <div class="tw-col-span-1 tw-flex tw-justify-center">
-          <q-separator vertical inset />
-        </div>
+  </q-dialog>
+  <q-dialog
+    v-model="dialog_detail"
+    @hide="
+      () => {
+        data = {};
+        logs = [];
+      }
+    "
+  >
+    <q-card class="tw-p-6" style="width: 700px; max-width: 80vw">
+      <q-card-section>
+        <div class="text-center text-h6">Detail Data</div>
+      </q-card-section>
+      <q-card-section>
+        <q-tabs
+          v-model="tab"
+          dense
+          class="text-grey"
+          active-color="primary"
+          indicator-color="primary"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab name="data" label="Data" />
+          <q-tab name="history" label="History" />
+        </q-tabs>
 
-        <div class="tw-col-span-5">
-          <div class="tw-grid tw-grid-cols-4">
-            <div class="tw-col-span-1">Pajak & STNK</div>
-            <div class="tw-col-span-2 tw-flex tw-items-center">
-              <q-linear-progress
-                class="tw-shadow-md"
-                rounded
-                size="md"
-                :value="0.7"
-                color="primary"
-              />
+        <q-separator />
+
+        <q-tab-panels v-model="tab" animated>
+          <q-tab-panel
+            name="data"
+            class="tw-grid md:tw-grid-cols-2 md:tw-space-x-8 tw-space-x-4 tw-gap-4 md:tw-gap-0 q-px-none"
+          >
+            <div>
+              <q-list
+                dense
+                class="tw-grid tw-grid-cols-2 tw-gap-4 tw-items-start"
+              >
+                <q-item>
+                  <q-item-section>
+                    <q-item-label class="tw-font-bold"
+                      >Tgl Input Data</q-item-label
+                    >
+                    <q-item-label caption>{{
+                      moment(data?.created_at).format('YYYY-MM-DD hh:mm:ss')
+                    }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section>
+                    <q-item-label class="tw-font-bold"
+                      >No Transaksi</q-item-label
+                    >
+                    <q-item-label caption>{{ data?.no }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section>
+                    <q-item-label class="tw-font-bold"
+                      >Jenis Layanan</q-item-label
+                    >
+                    <q-item-label caption>{{
+                      data?.service_type?.name
+                    }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section>
+                    <q-item-label class="tw-font-bold">Produk</q-item-label>
+                    <q-item-label caption>{{ data?.product }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section>
+                    <q-item-label class="tw-font-bold">Unit</q-item-label>
+                    <q-item-label caption>{{ data?.unit }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section>
+                    <q-item-label class="tw-font-bold">A/N BPKB</q-item-label>
+                    <q-item-label caption>{{ data?.bpkb_name }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section>
+                    <q-item-label class="tw-font-bold">No BPKB</q-item-label>
+                    <q-item-label caption>{{ data?.bpkb_no }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section>
+                    <q-item-label class="tw-font-bold">No Mesin</q-item-label>
+                    <q-item-label caption>{{ data?.machine_no }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section>
+                    <q-item-label class="tw-font-bold">No Rangka</q-item-label>
+                    <q-item-label caption>{{ data?.chassis_no }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section>
+                    <q-item-label class="tw-font-bold">No Polisi</q-item-label>
+                    <q-item-label caption>{{
+                      data?.police_no_old
+                    }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
             </div>
-            <div class="tw-col-span-1 tw-text-right">124</div>
-          </div>
-          <div class="tw-grid tw-grid-cols-4">
-            <div class="tw-col-span-1">BPKB</div>
-            <div class="tw-col-span-2 tw-flex tw-items-center">
-              <q-linear-progress
-                class="tw-shadow-md"
-                rounded
-                size="md"
-                :value="0.4"
-                color="primary"
-              />
+            <div>
+              <div class="tw-font-bold">Keterangan</div>
+              <div>{{ data?.description }}</div>
             </div>
-            <div class="tw-col-span-1 tw-text-right">40</div>
-          </div>
-          <div class="tw-grid tw-grid-cols-4">
-            <div class="tw-col-span-1">Faktur</div>
-            <div class="tw-col-span-2 tw-flex tw-items-center">
-              <q-linear-progress
-                class="tw-shadow-md"
-                rounded
-                size="md"
-                :value="0.3"
-                color="primary"
-              />
-            </div>
-            <div class="tw-col-span-1 tw-text-right">12</div>
-          </div>
-          <div class="tw-grid tw-grid-cols-4">
-            <div class="tw-col-span-1">Absah</div>
-            <div class="tw-col-span-2 tw-flex tw-items-center">
-              <q-linear-progress
-                class="tw-shadow-md"
-                rounded
-                size="md"
-                :value="0.2"
-                color="primary"
-              />
-            </div>
-            <div class="tw-col-span-1 tw-text-right">7</div>
-          </div>
-        </div>
+          </q-tab-panel>
+
+          <q-tab-panel name="history">
+            <q-timeline color="secondary" layout="loose">
+              <q-timeline-entry
+                v-for="log in logs"
+                v-bind:key="log.id"
+                :color="log.status.color"
+              >
+                <template v-slot:subtitle>
+                  {{ moment(log.created_at).format('MM-DD-YYYY hh:mm:ss') }}
+                  <br />
+                  <span class="tw-capitalize">
+                    {{ log.created_by.name }}
+                  </span>
+                </template>
+                <template v-slot:title>
+                  <q-badge
+                    rounded
+                    :label="log.status.name"
+                    :color="log.status.color"
+                    :style="{ backgroundColor: log.status.color }"
+                  />
+                </template>
+                {{ log.note }}
+              </q-timeline-entry>
+            </q-timeline>
+          </q-tab-panel>
+        </q-tab-panels>
       </q-card-section>
     </q-card>
-    <q-card class="tw-col-span-2 tw-shadow-md">
-      <q-card-section
-        class="tw-grid md:tw-grid-cols-4 md:tw-divide-x-[1px] tw-gap-4"
-      >
-        <div class="tw-flex tw-justify-between">
-          <div>
-            <div class="tw-text-lg">34</div>
-            <div class="tw-text-xs">New</div>
-          </div>
-          <div>
-            <q-avatar class="tw-bg-blue-300" size="md" rounded>
-              <q-icon name="o_shopping_cart" color="white" />
-            </q-avatar>
-          </div>
-        </div>
-        <div class="tw-flex tw-justify-between md:tw-pl-3">
-          <div>
-            <div class="tw-text-lg">10</div>
-            <div class="tw-text-xs">In Progress</div>
-          </div>
-          <div>
-            <q-avatar class="tw-bg-green-300" size="md" rounded>
-              <q-icon name="cached" color="white" />
-            </q-avatar>
-          </div>
-        </div>
-        <div class="tw-flex tw-justify-between md:tw-pl-3">
-          <div>
-            <div class="tw-text-lg">2</div>
-            <div class="tw-text-xs">Return</div>
-          </div>
-          <div>
-            <q-avatar class="tw-bg-red-300" size="md" rounded>
-              <q-icon name="undo" color="white" />
-            </q-avatar>
-          </div>
-        </div>
-        <div class="tw-flex tw-justify-between md:tw-pl-3">
-          <div>
-            <div class="tw-text-lg">106</div>
-            <div class="tw-text-xs">Succes</div>
-          </div>
-          <div>
-            <q-avatar class="tw-bg-yellow-300" size="md" rounded>
-              <q-icon name="verified" color="white" />
-            </q-avatar>
-          </div>
-        </div>
-      </q-card-section>
-    </q-card>
-    <BaseTable :columns="columns" :rows="rows">
-      <template #form>
-        <div class="tw-grid tw-grid-cols-2 tw-gap-4 tw">
-          <InputTextField toplabel="Produk" />
-          <InputTextField toplabel="Layanan" />
-          <InputTextField toplabel="No Polisi Baru" />
-          <InputTextField toplabel="No Polisi Lama" />
-          <InputTextField toplabel="Nama STNK" />
-          <InputTextField toplabel="Nama BPKB" />
-          <InputTextField toplabel="Unit" parentClass="tw-col-span-2" />
-        </div>
-      </template>
-    </BaseTable>
-  </div>
+  </q-dialog>
 </template>
-<style scoped>
-:deep(.input-box .q-field__control),
-:deep(.input-box .q-field__marginal) {
-  height: 36px;
-}
-</style>

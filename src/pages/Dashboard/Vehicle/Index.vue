@@ -4,154 +4,108 @@ import BaseTable from 'components/ui/BaseTable.vue';
 import InputTextField from 'src/components/form/InputTextField.vue';
 import InputSelect from 'src/components/form/InputSelect.vue';
 import Btn from 'src/components/ui/Button.vue';
-import { Notify, QTableColumn } from 'quasar';
+import { QTableColumn } from 'quasar';
 import { required } from 'src/utils/validators';
 import moment from 'moment';
-import { api } from 'src/boot/axios';
-import { useAuthStore } from 'src/stores/auth';
 
-const auth = useAuthStore();
 const columns: QTableColumn = [
-  // {
-  //   name: 'status.name',
-  //   align: 'center',
-  //   label: 'Status',
-  //   slot: true,
-  // },
-  // {
-  //   name: 'no',
-  //   align: 'left',
-  //   label: 'No Transaksi',
-  //   field: 'no',
-  //   sortable: false,
-  //   slot: true,
-  // },
-  // {
-  //   name: 'created_at',
-  //   label: 'Tgl Input Data',
-  //   align: 'left',
-  //   field: (row) => moment(row.created_at).format('DD-MM-YYYY HH:mm:ss'),
-  //   sortable: false,
-  // },
-  // {
-  //   name: 'service_type.name',
-  //   label: 'Jenis Layanan',
-  //   align: 'left',
-  //   field: (row) => row.service_type.name,
-  // },
-  // {
-  //   name: 'product',
-  //   label: 'Produk',
-  //   field: 'product',
-  //   sortable: false,
-  //   align: 'left',
-  // },
-  // { name: 'unit', label: 'Unit', field: 'unit', align: 'left' },
-  // { name: 'bpkb_name', label: 'A/N BPKB', field: 'bpkb_name', align: 'left' },
-  // { name: 'bpkb_no', label: 'No BPKB', field: 'bpkb_no', align: 'left' },
-  // { name: 'machine_no', label: 'No Mesin', field: 'machine_no', align: 'left' },
-  // {
-  //   name: 'chassis_no',
-  //   label: 'No Rangka',
-  //   field: 'chassis_no',
-  //   align: 'left',
-  // },
-  // {
-  //   name: 'police_no_old',
-  //   label: 'No Polisi',
-  //   field: 'police_no_old',
-  //   align: 'left',
-  // },
+  {
+    name: 'no_polisi',
+    align: 'left',
+    label: 'Nomor Polisi',
+    field: 'no_polisi',
+    sortable: false,
+  },
+  {
+    name: 'merek',
+    align: 'left',
+    label: 'Merek',
+    field: 'merek',
+    sortable: false,
+    slot: true,
+  },
+
+  {
+    name: 'type_kendaraan',
+    align: 'left',
+    label: 'Type Kendaraan',
+    field: 'type_kendaraan',
+    sortable: false,
+  },
+  {
+    name: 'daya_angkut',
+    align: 'left',
+    label: 'Daya Angkut',
+    field: 'daya_angkut',
+    sortable: false,
+  },
+  {
+    name: 'tahun_kendaraan',
+    align: 'left',
+    label: 'Tahun Kendaraan',
+    field: 'tahun_kendaraan',
+    sortable: false,
+  },
+  {
+    name: 'nama_bpkb',
+    align: 'left',
+    label: 'A/N BPKB',
+    field: 'nama_bpkb',
+    sortable: false,
+  },
+  {
+    name: 'tgl_pajak',
+    align: 'left',
+    label: 'Tgl Pajak',
+    field: 'tgl_pajak',
+    sortable: false,
+  },
+  {
+    name: 'tgl_stnk',
+    align: 'left',
+    label: 'Tgl STNK',
+    field: 'tgl_stnk',
+    sortable: false,
+  },
+  {
+    name: 'odo_meter',
+    align: 'left',
+    label: 'ODO Meter',
+    field: 'odo_meter',
+    sortable: false,
+  },
+  {
+    name: 'jenis_kepemilikan',
+    align: 'left',
+    label: 'Jenis Kepemilikan',
+    field: 'jenis_kepemilikan',
+    sortable: false,
+  },
+  {
+    name: 'skema_keuntungan',
+    align: 'left',
+    label: 'Skema Keuntungan',
+    field: 'skema_keuntungan',
+    sortable: false,
+  },
+  {
+    name: 'ket',
+    align: 'left',
+    label: 'Keterangan',
+    field: 'ket',
+    sortable: false,
+  },
+  {
+    name: 'created_at',
+    label: 'Created At',
+    align: 'left',
+    field: (row) => moment(row.created_at).format('DD-MM-YYYY HH:mm:ss'),
+    sortable: false,
+  },
 ];
 
-const my_table = ref(null);
 const params = ref({
   sort: '-created_at',
-  filters: '["service.code", "faktur"]',
-});
-const typeUrl = '/service-types?filters=["service.code", "faktur"]';
-
-const data = ref({});
-const dialog_detail = ref<boolean>(false);
-
-const dialog_status = ref(false);
-const note = ref('');
-const status_change = ref({});
-
-const extended_payload = ref();
-
-const logs = ref([]);
-const loading = ref<boolean>(false);
-const tab = ref('data');
-const statuses = ref([]);
-
-const getStatus = () => {
-  statuses.value = [];
-  api.get('/transactions/status?service=faktur').then((res) => {
-    statuses.value = res.data.data;
-  });
-};
-
-const addExtendPayload = (is_edit: boolean) => {
-  extended_payload.value = [];
-  if (!is_edit) {
-    extended_payload.value = {
-      status_id: 1,
-      logs: [
-        {
-          status_id: 1,
-          note: '',
-          create_user_id: auth?.user?.id,
-        },
-      ],
-    };
-  }
-};
-
-const updateStatus = () => {
-  loading.value = true;
-  api
-    .put('/transactions/' + data.value.id, {
-      status_id: status_change.value.status_id,
-      logs: [
-        {
-          transaction_id: data.value.id as number,
-          status_id: status_change.value.status_id,
-          note: note.value,
-          create_user_id: auth?.user?.id,
-        },
-      ],
-    })
-    .then((res) => {
-      dialog_status.value = false;
-      Notify.create({
-        message: 'Status berhasil diupdate',
-        color: 'positive',
-      });
-      my_table.value.refresh();
-      getStatus();
-      loading.value = false;
-    })
-    .catch((err) => {
-      loading.value = false;
-
-      console.log(err);
-    });
-};
-
-const findLogs = (id) => {
-  api
-    .get('/logs/' + id)
-    .then((res) => {
-      logs.value = res.data.data;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-onMounted(() => {
-  getStatus();
 });
 </script>
 <template>
@@ -160,138 +114,130 @@ onMounted(() => {
     :columns="columns"
     colKey="id"
     colInfo="no"
-    title="Data Cek Faktur"
-    apiUrl="/transactions"
+    title="Vehicle"
+    apiUrl="/drivers"
     :params="params"
-    :search="search"
-    @beforeSubmit="addExtendPayload"
-    @afterSubmit="getStatus"
-    :extPayload="extended_payload"
   >
-    <template #top>
-      <div class="tw-grid md:tw-grid-cols-4 tw-gap-6">
-        <q-card
-          class="tw-shadow-md tw-cursor-pointer"
-          v-for="status in statuses.sort((a, b) => a.id - b.id)"
-          v-bind:key="status.id"
-          @click="my_table.updateSearch(status.name)"
-        >
-          <q-card-section v-if="statuses.length > 0">
-            <div class="tw-flex tw-justify-between">
-              <div>
-                <div class="tw-text-lg">
-                  {{ status.count }}
-                </div>
-                <div class="tw-text-xs">
-                  {{ status.name }}
-                </div>
-              </div>
-              <div>
-                <q-avatar :color="status.color" rounded>
-                  <q-icon :name="status.icon" color="white" size="md" />
-                </q-avatar>
-              </div>
-            </div>
-          </q-card-section>
-          <q-card-section v-else>
-            <div class="tw-flex tw-justify-between">
-              <div>
-                <q-skeleton type="text" style="width: 20px" />
-                <q-skeleton type="text" style="width: 60px" />
-              </div>
-              <div>
-                <q-skeleton size="50px" />
-              </div>
-            </div>
-          </q-card-section>
-        </q-card>
-      </div>
-    </template>
-    <template v-slot:[`body-cell-status.name`]="{ props }">
-      <q-td :props="props">
-        <q-btn
-          size="sm"
-          unelevated
-          :label="props.row.status.name"
-          no-caps
-          :color="props.row.status.color"
-        >
-          <q-menu>
-            <q-list style="min-width: 100px">
-              <q-item
-                v-for="status in statuses"
-                v-bind:key="status.id"
-                clickable
-                v-close-popup
-                dense
-                @click="
-                  () => {
-                    data = props.row;
-                    status_change = status;
-                    dialog_status = true;
-                  }
-                "
-              >
-                <q-item-section>
-                  <q-badge
-                    :label="status.name"
-                    :color="status.color"
-                    :style="{ backgroundColor: status.color }"
-                  />
-                </q-item-section>
-              </q-item>
-              <q-separator />
-            </q-list>
-          </q-menu>
-        </q-btn>
-      </q-td>
-    </template>
-    <template #body-cell-no="{ props }">
-      <q-td :props="props">
-        <q-btn
-          flat
-          dense
-          class="tw-underline"
-          :label="props.row.no"
-          no-caps
-          @click="
-            () => {
-              data = props.row;
-              findLogs(props.row.id);
-              dialog_detail = true;
-            }
-          "
-        />
-      </q-td>
-    </template>
     <template #form="{ payload }">
       <div class="tw-grid tw-grid-cols-2 tw-gap-x-4 tw-gap-y-1.5">
         <InputSelect
           :rules="[required]"
-          map-options
-          emit-value
-          optLabel="name"
-          optValue="id"
-          toplabel="Jenis Layanan"
-          :apiUrl="typeUrl"
-          searchKey="name"
-          v-model="payload.type_service_id"
+          toplabel="Nomor Polisi"
+          :options="[
+            'B9010GDA',
+            'B9137MZ',
+            'B9345TEH',
+            'B9347TEH',
+            'B9404UYU',
+            'B9455JA',
+            'B9927NDB',
+            'DC8079AR',
+            'DC8352AU',
+            'DC8996AS',
+            'DC8997AS',
+            'DD8030XX',
+            'DD8031XX',
+            'DD8036XX',
+            'DD8128RT',
+            'DD8183UD',
+            'DD8184UD',
+            'DD8220YD',
+            'DD8303RA',
+            'DD8332RT',
+            'DD8373RT',
+            'DD8422ME',
+            'DD8446KN',
+            'DD8475SW',
+            'DD8503EH',
+            'DD8574HD',
+            'DD8605CB',
+            'DD8649EH',
+            'DD8711MQ',
+            'DD8738KY',
+            'DD8741DG',
+            'DD8853UC',
+            'DD8886MN',
+            'DD8902KE',
+            'DD8931UC',
+            'DD8943KW',
+            'DD9573XV',
+            'DD9825BU',
+            'DM8111D',
+            'DN8480YU',
+            'DN8666AP',
+            'DP8911DG',
+            'DW8049CE',
+            'L9165UX',
+            'L9743CD',
+          ]"
+          v-model="payload.no_polisi"
+        />
+
+        <InputSelect
+          :rules="[required]"
+          :options="[
+            'FAW',
+            'FAW CA1310',
+            'FUSO',
+            'HINO',
+            'HINO DUTRO EURO 4',
+            'HINO FG235JK',
+            'HINO FM8JNID  EGJ',
+            'IZUSU NKR 71',
+            'MITSUBISHI CANTER',
+            'MITSUBISHI FUSO',
+            'MITSUBISHI FUSO FM 517 HS',
+            'MITSUBISHI FUSO FN 527 ML (6X4) M/T',
+            'MITSUBISHI FUSO FN 527 MS (6X4) M/T',
+            'MITSUBISHI FUSO FV 517',
+            'NISSAN',
+            'NISSAN CKA 12',
+            'NISSAN CWA 260',
+            'NISSAN CWA 260 MX TRONTON',
+            'NISSAN CWM 432',
+            'NISSAN PKD 211',
+            'QUESTER',
+            'UD TRUCKS NISSAN CWA 260',
+          ]"
+          toplabel="Merek"
         />
         <InputSelect
           :rules="[required]"
-          toplabel="Product"
-          :options="['R2', 'R4']"
-          v-model="payload.product"
+          toplabel="Type Kendaraan"
+          :options="['CDD', '6 Roda', '10 Roda', '12 Roda']"
+          v-model="payload.type_kendaraan"
         />
-        <InputTextField
+        <InputSelect
           :rules="[required]"
-          toplabel="No BPKB"
-          v-model="payload.bpkb_no"
+          toplabel="Daya Angkut"
+          :options="[8, 15, 30, 45]"
+          v-model="payload.daya_angkut"
+        />
+        <InputSelect
+          :rules="[required]"
+          toplabel="Tahun Kendaraan"
+          :options="[8, 15, 30, 45]"
+          v-model="payload.daya_angkut"
         />
         <InputTextField
           :rules="[required]"
           toplabel="A/N BPKB"
-          v-model="payload.bpkb_name"
+          v-model="payload.nama_bpkb"
+        />
+        <InputTextField
+          :rules="[required]"
+          toplabel="Tgl Pajak"
+          v-model="payload.tgl_pajak"
+        />
+        <InputTextField
+          :rules="[required]"
+          toplabel="Tgl STNK"
+          v-model="payload.tgl_stnk"
+        />
+        <InputTextField
+          :rules="[required]"
+          toplabel="Tgl STNK"
+          v-model="payload.tgl_stnk"
         />
         <InputTextField
           :rules="[required]"

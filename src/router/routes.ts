@@ -28,7 +28,18 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('layouts/Template.vue'),
-    children: [{ path: '', component: () => import('pages/IndexPage.vue') }],
+    children: [
+      {
+        path: '',
+        component: () => import('pages/IndexPage.vue'),
+        name: 'home',
+      },
+      {
+        path: 'form',
+        component: () => import('pages/Form.vue'),
+        name: 'form',
+      },
+    ],
   },
 
   {
@@ -58,9 +69,9 @@ const routes: RouteRecordRaw[] = [
         name: 'bpkb-index',
       },
       {
-        path: 'faktur',
-        component: () => import('pages/Dashboard/Faktur/Index.vue'),
-        name: 'faktur-index',
+        path: 'vehicle',
+        component: () => import('pages/Dashboard/Vehicle/Index.vue'),
+        name: 'vehicle-index',
       },
       {
         path: 'kalkulator',
@@ -68,11 +79,6 @@ const routes: RouteRecordRaw[] = [
         name: 'kalkulator-index',
       },
 
-      {
-        path: 'cek-pajak',
-        component: () => import('pages/Dashboard/Cek-Pajak/Index.vue'),
-        name: 'cek-pajak',
-      },
       {
         path: 'managements',
         children: [
