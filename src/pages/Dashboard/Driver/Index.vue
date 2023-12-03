@@ -12,38 +12,72 @@ const columns: QTableColumn = [
   {
     name: 'code',
     align: 'left',
-    label: 'Code',
-    field: 'code',
+    label: 'Kode',
+    field: 'no',
     sortable: false,
   },
   {
     name: 'name',
     align: 'left',
-    label: 'Name',
-    field: 'no',
+    label: 'Nama',
+    field: 'name',
     sortable: false,
-    slot: true,
   },
 
   {
     name: 'id_number',
     align: 'left',
-    label: 'ID Number',
+    label: 'No KTP',
     field: 'id_number',
     sortable: false,
   },
   {
     name: 'license_type',
     align: 'left',
-    label: 'License Type',
-    field: 'license_type',
+    label: 'Kategori SIM',
+    field: 'license_category',
     sortable: false,
   },
   {
-    name: 'license_no',
+    name: 'license_number',
     align: 'left',
-    label: 'License No',
-    field: 'license_no',
+    label: 'No SIM',
+    field: 'license_number',
+    sortable: false,
+  },
+  {
+    name: 'position',
+    align: 'left',
+    label: 'Posisi',
+    field: 'position',
+    sortable: false,
+  },
+  {
+    name: 'city',
+    align: 'left',
+    label: 'Kota',
+    field: 'city',
+    sortable: false,
+  },
+  {
+    name: 'regency',
+    align: 'left',
+    label: 'Kecamatan',
+    field: 'regency',
+    sortable: false,
+  },
+  {
+    name: 'district',
+    align: 'left',
+    label: 'Kelurahan',
+    field: 'district',
+    sortable: false,
+  },
+  {
+    name: 'post_code',
+    align: 'left',
+    label: 'Kode Pos',
+    field: 'post_code',
     sortable: false,
   },
   {
@@ -65,65 +99,75 @@ const params = ref({
     :columns="columns"
     colKey="id"
     colInfo="no"
-    title="Data Keabsahan"
+    title="Driver"
     apiUrl="/drivers"
     :params="params"
   >
     <template #form="{ payload }">
-      <div class="tw-grid tw-grid-cols-2 tw-gap-x-4 tw-gap-y-1.5">
+      <div class="tw-grid tw-grid-cols-6 tw-gap-x-4 tw-gap-y-1.5">
+        <InputTextField
+          :rules="[required]"
+          parentClass="tw-col-span-6"
+          toplabel="Nama"
+          v-model="payload.name"
+        />
         <InputSelect
           :rules="[required]"
-          :options="['A', 'B1', 'B2', 'C', 'D', 'Internat']"
-          toplabel="License Type"
+          toplabel="Jabatan"
+          parentClass="tw-col-span-3"
+          :options="['Tetap', 'Lepas']"
+          v-model="payload.position"
+        />
+        <InputTextField
+          :rules="[required]"
+          parentClass="tw-col-span-3"
+          toplabel="No KTP"
+          mask="#"
+          reverse-fill-mask
+          v-model="payload.id_number"
         />
         <InputSelect
           :rules="[required]"
-          toplabel="Product"
-          :options="['R2', 'R4']"
-          v-model="payload.product"
+          parentClass="tw-col-span-3"
+          :options="['A', 'B1', 'B2', 'C', 'D', 'Internasional']"
+          toplabel="Kategori SIM"
+          v-model="payload.license_category"
         />
         <InputTextField
           :rules="[required]"
-          toplabel="No BPKB"
-          v-model="payload.bpkb_no"
+          parentClass="tw-col-span-3"
+          toplabel="No SIM"
+          mask="#"
+          reverse-fill-mask
+          v-model="payload.license_number"
         />
         <InputTextField
-          :rules="[required]"
-          toplabel="A/N BPKB"
-          v-model="payload.bpkb_name"
+          parentClass="tw-col-span-6"
+          toplabel="Alamat"
+          v-model="payload.address"
         />
         <InputTextField
-          :rules="[required]"
-          toplabel="Unit"
-          parentClass="tw-col-span-2"
-          v-model="payload.unit"
+          parentClass="tw-col-span-3"
+          toplabel="Kota"
+          v-model="payload.city"
         />
         <InputTextField
-          :rules="[required]"
-          mask="####"
-          toplabel="Tahun Kendaraan"
-          v-model="payload.asset_year"
+          toplabel="Kecamatan"
+          parentClass="tw-col-span-3"
+          v-model="payload.regency"
         />
         <InputTextField
-          :rules="[required]"
-          toplabel="No Mesin"
-          v-model="payload.machine_no"
+          toplabel="Kelurahan"
+          parentClass="tw-col-span-3"
+          v-model="payload.district"
         />
+
         <InputTextField
-          :rules="[required]"
-          toplabel="No Rangka"
-          v-model="payload.chassis_no"
-        />
-        <InputTextField
-          :rules="[required]"
-          toplabel="No Plat"
-          v-model="payload.police_no_old"
-        />
-        <InputTextField
-          parentClass="tw-col-span-2"
-          type="textarea"
-          toplabel="Keterangan"
-          v-model="payload.description"
+          parentClass="tw-col-span-3"
+          toplabel="Kode Pos"
+          mask="#"
+          reverse-fill-mask
+          v-model="payload.post_code"
         />
       </div>
     </template>
