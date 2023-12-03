@@ -30,7 +30,14 @@
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
         <q-separator />
-        <q-btn label="Login" no-caps flat :to="'/login'" />
+        <q-btn
+          label="Login"
+          no-caps
+          flat
+          :to="'/login'"
+          v-if="auth.token == null"
+        />
+        <q-btn label="Dashboard" no-caps flat :to="'/dashboard'" v-else />
         <!-- <div
           class="tw-flex tw-items-center tw-space-x-2"
           @mouseenter="closeMenu"
@@ -283,7 +290,7 @@ html {
 </style>
 <script>
 import { defineComponent, ref } from 'vue';
-
+import { useAuthStore } from 'src/stores/auth';
 const menus = [
   {
     id: '1',
@@ -458,7 +465,9 @@ export default defineComponent({
   setup() {
     const leftDrawerOpen = ref(false);
 
+    const auth = useAuthStore();
     return {
+      auth,
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;

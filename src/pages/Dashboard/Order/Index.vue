@@ -299,54 +299,53 @@ onMounted(() => {
           emit-value
           optLabel="name"
           optValue="id"
-          toplabel="Jenis Layanan"
-          :apiUrl="typeUrl"
+          toplabel="Nama Pelanggan"
+          :apiUrl="'/users'"
           searchKey="name"
-          v-model="payload.type_service_id"
+          v-model="payload.user_id"
         />
         <InputSelect
           :rules="[required]"
-          toplabel="Product"
-          :options="['R2', 'R4']"
-          v-model="payload.product"
+          toplabel="Skema Pembayaran"
+          :options="['Cash', 'Tempo']"
+          v-model="payload.skema"
+        />
+
+        <InputTextField
+          :rules="[required]"
+          toplabel="Asal"
+          v-model="payload.asal"
         />
         <InputTextField
           :rules="[required]"
-          toplabel="No BPKB"
-          v-model="payload.bpkb_no"
+          toplabel="Tujuan"
+          v-model="payload.tujuan"
+        />
+        <InputSelect
+          :rules="[required]"
+          toplabel="Jenis Transaksi"
+          :options="['Volume', 'Carter']"
+          v-model="payload.type"
         />
         <InputTextField
           :rules="[required]"
-          toplabel="A/N BPKB"
-          v-model="payload.bpkb_name"
+          toplabel="Berat"
+          v-if="payload.type == 'Volume'"
+          v-model="payload.weight"
         />
         <InputTextField
           :rules="[required]"
-          toplabel="Unit"
-          parentClass="tw-col-span-2"
-          v-model="payload.unit"
+          toplabel="Harga / Volume"
+          v-if="payload.type == 'Volume'"
+          v-model="payload.price_volume"
         />
         <InputTextField
           :rules="[required]"
-          mask="####"
-          toplabel="Tahun Kendaraan"
-          v-model="payload.asset_year"
+          v-if="payload.type == 'Carter'"
+          toplabel="Harga Carter"
+          v-model="payload.price_carter"
         />
-        <InputTextField
-          :rules="[required]"
-          toplabel="No Mesin"
-          v-model="payload.machine_no"
-        />
-        <InputTextField
-          :rules="[required]"
-          toplabel="No Rangka"
-          v-model="payload.chassis_no"
-        />
-        <InputTextField
-          :rules="[required]"
-          toplabel="No Plat"
-          v-model="payload.police_no_old"
-        />
+
         <InputTextField
           parentClass="tw-col-span-2"
           type="textarea"
