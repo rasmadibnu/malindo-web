@@ -4,155 +4,59 @@ import BaseTable from 'components/ui/BaseTable.vue';
 import InputTextField from 'src/components/form/InputTextField.vue';
 import InputSelect from 'src/components/form/InputSelect.vue';
 import Btn from 'src/components/ui/Button.vue';
-import { Notify, QTableColumn } from 'quasar';
+import { QTableColumn } from 'quasar';
 import { required } from 'src/utils/validators';
 import moment from 'moment';
-import { api } from 'src/boot/axios';
-import { useAuthStore } from 'src/stores/auth';
 
-const auth = useAuthStore();
 const columns: QTableColumn = [
   {
-    name: 'status.name',
-    align: 'center',
-    label: 'Status',
-    slot: true,
+    name: 'code',
+    align: 'left',
+    label: 'Code',
+    field: 'code',
+    sortable: false,
   },
   {
-    name: 'no',
+    name: 'name',
     align: 'left',
-    label: 'No Transaksi',
+    label: 'Name',
     field: 'no',
     sortable: false,
     slot: true,
   },
+
+  {
+    name: 'id_number',
+    align: 'left',
+    label: 'ID Number',
+    field: 'id_number',
+    sortable: false,
+  },
+  {
+    name: 'license_type',
+    align: 'left',
+    label: 'License Type',
+    field: 'license_type',
+    sortable: false,
+  },
+  {
+    name: 'license_no',
+    align: 'left',
+    label: 'License No',
+    field: 'license_no',
+    sortable: false,
+  },
   {
     name: 'created_at',
-    label: 'Tgl Input Data',
+    label: 'Created At',
     align: 'left',
     field: (row) => moment(row.created_at).format('DD-MM-YYYY HH:mm:ss'),
     sortable: false,
   },
-
-  {
-    name: 'service_type.name',
-    label: 'Jenis Layanan',
-    align: 'left',
-    field: (row) => row.service_type.name,
-  },
-  {
-    name: 'product',
-    label: 'Produk',
-    field: 'product',
-    sortable: false,
-    align: 'left',
-  },
-  { name: 'unit', label: 'Unit', field: 'unit', align: 'left' },
-  { name: 'bpkb_name', label: 'A/N BPKB', field: 'bpkb_name', align: 'left' },
-  { name: 'bpkb_no', label: 'No BPKB', field: 'bpkb_no', align: 'left' },
-  { name: 'machine_no', label: 'No Mesin', field: 'machine_no', align: 'left' },
-  {
-    name: 'chassis_no',
-    label: 'No Rangka',
-    field: 'chassis_no',
-    align: 'left',
-  },
-  {
-    name: 'police_no_old',
-    label: 'No Polisi',
-    field: 'police_no_old',
-    align: 'left',
-  },
 ];
 
-const my_table = ref(null);
 const params = ref({
   sort: '-created_at',
-  filters: '["service.code", "cek-keabsahan"]',
-});
-const typeUrl = '/service-types?filters=["service.code", "cek-keabsahan"]';
-
-const data = ref({});
-const dialog_detail = ref<boolean>(false);
-
-const dialog_status = ref(false);
-const note = ref('');
-const status_change = ref({});
-
-const extended_payload = ref();
-
-const logs = ref([]);
-const loading = ref<boolean>(false);
-const tab = ref('data');
-const statuses = ref([]);
-
-const getStatus = () => {
-  statuses.value = [];
-  api.get('/transactions/status?service=cek-keabsahan').then((res) => {
-    statuses.value = res.data.data;
-  });
-};
-
-const addExtendPayload = (is_edit: boolean) => {
-  extended_payload.value = [];
-  if (!is_edit) {
-    extended_payload.value = {
-      status_id: 1,
-      logs: [
-        {
-          status_id: 1,
-          note: '',
-          create_user_id: auth?.user?.id,
-        },
-      ],
-    };
-  }
-};
-
-const updateStatus = () => {
-  loading.value = true;
-  api
-    .put('/transactions/' + data.value.id, {
-      status_id: status_change.value.status_id,
-      logs: [
-        {
-          transaction_id: data.value.id as number,
-          status_id: status_change.value.status_id,
-          note: note.value,
-          create_user_id: auth?.user?.id,
-        },
-      ],
-    })
-    .then((res) => {
-      dialog_status.value = false;
-      Notify.create({
-        message: 'Status berhasil diupdate',
-        color: 'positive',
-      });
-      my_table.value.refresh();
-      getStatus();
-      loading.value = false;
-    })
-    .catch((err) => {
-      loading.value = false;
-
-      console.log(err);
-    });
-};
-
-const findLogs = (id) => {
-  api
-    .get('/logs/' + id)
-    .then((res) => {
-      logs.value = res.data.data;
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-onMounted(() => {
-  getStatus();
 });
 </script>
 <template>
@@ -162,121 +66,15 @@ onMounted(() => {
     colKey="id"
     colInfo="no"
     title="Data Keabsahan"
-    apiUrl="/transactions"
+    apiUrl="/drivers"
     :params="params"
-    :search="search"
-    @beforeSubmit="addExtendPayload"
-    @afterSubmit="getStatus"
-    :extPayload="extended_payload"
   >
-    <template #top>
-      <div class="tw-grid md:tw-grid-cols-4 tw-gap-6">
-        <q-card
-          class="tw-shadow-md tw-cursor-pointer"
-          v-for="status in statuses.sort((a, b) => a.id - b.id)"
-          v-bind:key="status.id"
-          @click="my_table.updateSearch(status.name)"
-        >
-          <q-card-section v-if="statuses.length > 0">
-            <div class="tw-flex tw-justify-between">
-              <div>
-                <div class="tw-text-lg">
-                  {{ status.count }}
-                </div>
-                <div class="tw-text-xs">
-                  {{ status.name }}
-                </div>
-              </div>
-              <div>
-                <q-avatar :color="status.color" rounded>
-                  <q-icon :name="status.icon" color="white" size="md" />
-                </q-avatar>
-              </div>
-            </div>
-          </q-card-section>
-          <q-card-section v-else>
-            <div class="tw-flex tw-justify-between">
-              <div>
-                <q-skeleton type="text" style="width: 20px" />
-                <q-skeleton type="text" style="width: 60px" />
-              </div>
-              <div>
-                <q-skeleton size="50px" />
-              </div>
-            </div>
-          </q-card-section>
-        </q-card>
-      </div>
-    </template>
-    <template v-slot:[`body-cell-status.name`]="{ props }">
-      <q-td :props="props">
-        <q-btn
-          size="sm"
-          unelevated
-          :label="props.row.status.name"
-          no-caps
-          :color="props.row.status.color"
-        >
-          <q-menu>
-            <q-list style="min-width: 100px">
-              <q-item
-                v-for="status in statuses"
-                v-bind:key="status.id"
-                clickable
-                v-close-popup
-                dense
-                @click="
-                  () => {
-                    data = props.row;
-                    status_change = status;
-                    dialog_status = true;
-                  }
-                "
-              >
-                <q-item-section>
-                  <q-badge
-                    :label="status.name"
-                    :color="status.color"
-                    :style="{ backgroundColor: status.color }"
-                  />
-                </q-item-section>
-              </q-item>
-              <q-separator />
-            </q-list>
-          </q-menu>
-        </q-btn>
-      </q-td>
-    </template>
-    <template #body-cell-no="{ props }">
-      <q-td :props="props">
-        <q-btn
-          flat
-          dense
-          class="tw-underline"
-          :label="props.row.no"
-          no-caps
-          @click="
-            () => {
-              data = props.row;
-              findLogs(props.row.id);
-              dialog_detail = true;
-            }
-          "
-        />
-      </q-td>
-    </template>
     <template #form="{ payload }">
       <div class="tw-grid tw-grid-cols-2 tw-gap-x-4 tw-gap-y-1.5">
         <InputSelect
           :rules="[required]"
-          map-options
-          emit-value
-          optLabel="name"
-          optValue="id"
-          toplabel="Jenis Layanan"
-          :apiUrl="typeUrl"
-          searchKey="name"
-          v-model="payload.type_service_id"
+          :options="['A', 'B1', 'B2', 'C', 'D', 'Internat']"
+          toplabel="License Type"
         />
         <InputSelect
           :rules="[required]"
