@@ -28,49 +28,75 @@ const columns: QTableColumn = [
   },
   {
     name: 'created_at',
-    label: 'Tgl Input Data',
+    label: 'Tgl Input',
     align: 'left',
     field: (row) => moment(row.created_at).format('DD-MM-YYYY HH:mm:ss'),
     sortable: false,
   },
-
   {
-    name: 'service_type.name',
-    label: 'Jenis Layanan',
+    name: 'customer_name',
+    label: 'Nama Pelanggan',
     align: 'left',
-    field: (row) => row.service_type.name,
-  },
-  {
-    name: 'product',
-    label: 'Produk',
-    field: 'product',
+    field: 'customer_name',
     sortable: false,
-    align: 'left',
-  },
-  { name: 'unit', label: 'Unit', field: 'unit', align: 'left' },
-  { name: 'stnk_name', label: 'A/N STNK', field: 'stnk_name', align: 'left' },
-  { name: 'stnk_no', label: 'No STNK', field: 'stnk_no', align: 'left' },
-  { name: 'machine_no', label: 'No Mesin', field: 'machine_no', align: 'left' },
-  {
-    name: 'chassis_no',
-    label: 'No Rangka',
-    field: 'chassis_no',
-    align: 'left',
   },
   {
-    name: 'police_no_old',
-    label: 'No Polisi',
-    field: 'police_no_old',
+    name: 'type_bayar',
+    label: 'Skema Pembayaran',
     align: 'left',
+    field: 'type_bayar',
+    sortable: false,
+  },
+  {
+    name: 'type_trans',
+    label: 'Jenis Transaksi',
+    align: 'left',
+    field: 'type_trans',
+    sortable: false,
+  },
+  {
+    name: 'berat',
+    label: 'Berat (Kg)',
+    align: 'left',
+    field: 'berat',
+    sortable: false,
+  },
+  {
+    name: 'daerah_asal',
+    label: 'Daerah Asal',
+    align: 'left',
+    field: 'daerah_asal',
+    sortable: false,
+  },
+  {
+    name: 'daerah_tujuan',
+    label: 'Daerah Tujuan',
+    align: 'left',
+    field: 'daerah_tujuan',
+    sortable: false,
+  },
+  {
+    name: 'harga_kg',
+    label: 'Harga/Kg',
+    align: 'left',
+    field: 'harga_kg',
+    sortable: false,
+  },
+  {
+    name: 'harga_crt',
+    label: 'Harga Carter',
+    align: 'left',
+    field: 'harga_crt',
+    sortable: false,
   },
 ];
 
 const my_table = ref(null);
 const params = ref({
   sort: '-created_at',
-  filters: '["service.code", "pajak-stnk"]',
+  filters: '["service.code", "no"]',
 });
-const typeUrl = '/service-types?filters=["service.code", "pajak-stnk"]';
+const typeUrl = '/service-types?filters=["service.code", "no"]';
 
 const data = ref({});
 const dialog_detail = ref<boolean>(false);
@@ -88,7 +114,7 @@ const statuses = ref([]);
 
 const getStatus = () => {
   statuses.value = [];
-  api.get('/transactions/status?service=pajak-stnk').then((res) => {
+  api.get('/transactions/status?service=no').then((res) => {
     statuses.value = res.data.data;
   });
 };
@@ -161,7 +187,7 @@ onMounted(() => {
     :columns="columns"
     colKey="id"
     colInfo="no"
-    title="Pajak & STNK"
+    title="Order"
     apiUrl="/transactions"
     :params="params"
     :search="search"
@@ -286,13 +312,13 @@ onMounted(() => {
         />
         <InputTextField
           :rules="[required]"
-          toplabel="No STNK"
-          v-model="payload.stnk_no"
+          toplabel="No BPKB"
+          v-model="payload.bpkb_no"
         />
         <InputTextField
           :rules="[required]"
-          toplabel="A/N STNK"
-          v-model="payload.stnk_name"
+          toplabel="A/N BPKB"
+          v-model="payload.bpkb_name"
         />
         <InputTextField
           :rules="[required]"
@@ -452,13 +478,13 @@ onMounted(() => {
                 <q-item>
                   <q-item-section>
                     <q-item-label class="tw-font-bold">A/N BPKB</q-item-label>
-                    <q-item-label caption>{{ data?.stnk_name }}</q-item-label>
+                    <q-item-label caption>{{ data?.bpkb_name }}</q-item-label>
                   </q-item-section>
                 </q-item>
                 <q-item>
                   <q-item-section>
                     <q-item-label class="tw-font-bold">No BPKB</q-item-label>
-                    <q-item-label caption>{{ data?.stnk_no }}</q-item-label>
+                    <q-item-label caption>{{ data?.bpkb_no }}</q-item-label>
                   </q-item-section>
                 </q-item>
                 <q-item>

@@ -59,24 +59,15 @@ const routes: RouteRecordRaw[] = [
         name: 'driver-index',
       },
       {
-        path: 'pajak-stnk',
-        component: () => import('pages/Dashboard/Pajak-STNK/Index.vue'),
-        name: 'pajak-index',
+        path: 'order',
+        component: () => import('pages/Dashboard/Order/Index.vue'),
+        name: 'order-index',
       },
-      {
-        path: 'bpkb',
-        component: () => import('pages/Dashboard/BPKB/Index.vue'),
-        name: 'bpkb-index',
-      },
+
       {
         path: 'vehicle',
         component: () => import('pages/Dashboard/Vehicle/Index.vue'),
         name: 'vehicle-index',
-      },
-      {
-        path: 'kalkulator',
-        component: () => import('pages/Dashboard/Simulasi-Biaya/Index.vue'),
-        name: 'kalkulator-index',
       },
 
       {
