@@ -13,8 +13,8 @@
           <template v-for="menu in menus" :key="menu.id">
             <q-btn
               v-if="menu.is_header"
-              no-caps
               class="tw-mt-3"
+              no-caps
               flat
               @mouseover="expandMenu(menu.id)"
               @click="expandMenu(menu.id)"
@@ -29,6 +29,8 @@
           icon="menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
+        <q-separator />
+        <q-btn label="Login" no-caps flat :to="'/login'" />
         <!-- <div
           class="tw-flex tw-items-center tw-space-x-2"
           @mouseenter="closeMenu"
@@ -49,7 +51,6 @@
           </div>
         </div> -->
       </q-toolbar>
-      <div class="md:tw-h-4 lg:tw-h-1 tw-h-2"></div>
       <div>
         <template v-for="menu in menus" :key="menu.id">
           <q-menu
