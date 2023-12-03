@@ -100,7 +100,7 @@ onMounted(() => {
   if (props.modelValue) {
     fetchData();
   }
-  if (options.value.length && props.apiUrl) {
+  if (options.value?.length && props.apiUrl) {
     fetchData();
   }
 });

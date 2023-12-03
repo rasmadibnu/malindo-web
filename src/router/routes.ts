@@ -65,9 +65,9 @@ const routes: RouteRecordRaw[] = [
       },
 
       {
-        path: 'vehicle',
-        component: () => import('pages/Dashboard/Vehicle/Index.vue'),
-        name: 'vehicle-index',
+        path: 'armada',
+        component: () => import('pages/Dashboard/Armada/Index.vue'),
+        name: 'armada-index',
       },
 
       {

@@ -114,7 +114,7 @@ const statuses = ref([]);
 
 const getStatus = () => {
   statuses.value = [];
-  api.get('/transactions/status?service=no').then((res) => {
+  api.get('/transactions/status?scope=order').then((res) => {
     statuses.value = res.data.data;
   });
 };
