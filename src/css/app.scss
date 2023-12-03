@@ -1,0 +1,11 @@
+// app global css in SCSS form
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Public+Sans:wght@100;200;300;400;500;600;700&display=swap');
+* {
+  font-family: 'Public Sans';
+
+  //   @apply tw-scrollbar-thin tw-scrollbar-thumb-primary/50 tw-scrollbar-track-transparent tw-scrollbar-thumb-rounded-xl;
+}
