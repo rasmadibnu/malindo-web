@@ -104,7 +104,7 @@ const params = ref({
     :params="params"
   >
     <template #form="{ payload }">
-      <div class="tw-grid tw-grid-cols-6 tw-gap-x-4 tw-gap-y-1.5">
+      <div class="md:tw-grid md:tw-grid-cols-6 tw-space-y-1.5 tw-gap-x-4">
         <InputTextField
           :rules="[required]"
           parentClass="tw-col-span-6"

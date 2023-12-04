@@ -13,11 +13,13 @@ const props = withDefaults(defineProps<Props>(), {
   outlined: true,
 });
 
+const qDateProxy = ref(null);
 const date = ref();
 
 const emit = defineEmits(['update:modelValue']);
 
 watch(date, () => {
+  qDateProxy.value.hide();
   emit('update:modelValue', date.value);
 });
 
@@ -34,6 +36,7 @@ defineSlots<QInputSlots>();
               cover
               transition-show="scale"
               transition-hide="scale"
+              ref="qDateProxy"
             >
               <q-date v-model="date">
                 <div class="row items-center justify-end">
@@ -50,7 +53,12 @@ defineSlots<QInputSlots>();
     <q-input v-bind="props" outlined dense>
       <template v-slot:append>
         <q-icon name="event" class="cursor-pointer">
-          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+          <q-popup-proxy
+            ref="qDateProxy"
+            cover
+            transition-show="scale"
+            transition-hide="scale"
+          >
             <q-date v-model="date">
               <div class="row items-center justify-end">
                 <q-btn v-close-popup label="Close" color="primary" flat />

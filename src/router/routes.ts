@@ -65,6 +65,12 @@ const routes: RouteRecordRaw[] = [
       },
 
       {
+        path: 'partner',
+        component: () => import('pages/Dashboard/Partner/Index.vue'),
+        name: 'partner-index',
+      },
+
+      {
         path: 'armada',
         component: () => import('pages/Dashboard/Armada/Index.vue'),
         name: 'armada-index',
@@ -77,14 +83,6 @@ const routes: RouteRecordRaw[] = [
             path: 'settings',
             name: 'settings',
             children: [
-              {
-                path: 'partner',
-                component: () =>
-                  import(
-                    'pages/Dashboard/Managements/Settings/Partner/Index.vue'
-                  ),
-                name: 'partner-index',
-              },
               {
                 path: 'layanan',
                 component: () =>
