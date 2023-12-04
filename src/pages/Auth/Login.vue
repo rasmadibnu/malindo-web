@@ -49,7 +49,9 @@ const login = () => {
   <q-layout class="tw-bg-[#F8F7FA]">
     <q-page-container>
       <q-page class="tw-flex tw-items-center tw-justify-center tw-h-screen">
-        <div class="tw-flex-auto md:tw-block tw-hidden tw-w-96"></div>
+        <div class="tw-flex-auto md:tw-block tw-hidden tw-w-96 tw-px-20">
+          <q-img src="~assets/heavy-box.svg" />
+        </div>
 
         <div
           class="tw-flex-auto tw-flex tw-px-4 md:tw-px-0 tw-flex-col tw-w-16 tw-h-screen tw-items-center tw-bg-white"

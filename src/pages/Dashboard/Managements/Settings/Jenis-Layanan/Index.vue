@@ -35,7 +35,7 @@ const columns = ref([
     :columns="columns"
   >
     <template #form="{ payload }">
-      <div class="tw-grid tw-grid-cols-2 tw-gap-x-4 tw-gap-y-4">
+      <div class="md:tw-grid md:tw-grid-cols-2 tw-gap-x-4 tw-space-y-1.5">
         <InputSelect
           :rules="[required]"
           map-options

@@ -68,7 +68,7 @@
   </q-table>
 
   <q-dialog v-model="form_dialog">
-    <q-card style="min-width: 600px" class="tw-p-6">
+    <q-card class="tw-p-6">
       <q-card-section>
         <div class="text-h6 text-center">
           {{ is_edit ? 'Edit' : 'Add' }} Menu

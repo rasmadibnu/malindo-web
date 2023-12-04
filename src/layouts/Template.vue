@@ -1,89 +1,110 @@
 <template>
   <q-layout view="hHh LpR fff">
-    <q-header class="bg-white text-black" @reveal="closeMenu">
+    <q-header reveal class="bg-white text-black" @reveal="closeMenu">
       <div class="md:tw-h-4 lg:tw-h-1 tw-h-2" @mouseenter="closeMenu"></div>
       <q-toolbar
         class="tw-shadow-md tw-flex tw-justify-between xl:tw-px-0 tw-px-8"
       >
         <div class="lg:tw-block tw-hidden tw-max-w-6xl xl:tw-mx-auto tw-w-full">
-          <q-avatar square size="80px" class="tw-mr-6">
-            <img src="~assets/malindo.png" />
-          </q-avatar>
-
-          <template v-for="menu in menus" :key="menu.id">
-            <q-btn
-              v-if="menu.is_header"
-              class="tw-mt-3"
-              no-caps
-              flat
-              @mouseover="expandMenu(menu.id)"
-              @click="expandMenu(menu.id)"
-              :label="menu.label"
-              :to="{ name: menu.to ? menu.to : '#' }"
-            >
-              <q-menu
-                v-if="menu.is_header && menu.child.length > 0"
-                square
-                v-model="expanded_menu[menu.id]"
-                @mouseover="expanded_menu[menu.id] = true"
-                @mouseleave="expanded_menu[menu.id] = false"
-              >
-                <q-list>
-                  <q-item
-                    v-for="menu_child in menu.child"
-                    :key="menu_child.id"
-                    clickable
-                    v-ripple
-                    :to="{
-                      name: menu_child.to ? menu_child.to : '#',
-                    }"
+          <div class="tw-flex tw-my-2 tw-gap-4 tw-items-center">
+            <q-avatar square size="50px">
+              <img src="~assets/malindo.png" />
+            </q-avatar>
+            <div>
+              <template v-for="menu in menus" :key="menu.id">
+                <q-btn
+                  v-if="menu.is_header"
+                  no-caps
+                  flat
+                  @mouseover="expandMenu(menu.id)"
+                  @click="expandMenu(menu.id)"
+                  :label="menu.label"
+                  :to="{ name: menu.to ? menu.to : '#' }"
+                >
+                  <q-menu
+                    v-if="menu.is_header && menu.child.length > 0"
+                    square
+                    v-model="expanded_menu[menu.id]"
+                    @mouseover="expanded_menu[menu.id] = true"
+                    @mouseleave="expanded_menu[menu.id] = false"
                   >
-                    <q-item-section>
-                      <q-item-label>{{ menu_child.label }}</q-item-label>
-                      <q-item-label v-if="menu_child.description" caption>{{
-                        menu_child.description
-                      }}</q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-menu>
-            </q-btn>
-          </template>
-        </div>
-        <q-btn
-          class="lg:tw-hidden tw-block"
-          flat
-          icon="menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
-        />
-        <q-separator />
-        <q-btn
-          label="Login"
-          no-caps
-          flat
-          :to="'/login'"
-          v-if="auth.token == null"
-        />
-        <q-btn label="Dashboard" no-caps flat :to="'/dashboard'" v-else />
-        <!-- <div
-          class="tw-flex tw-items-center tw-space-x-2"
-          @mouseenter="closeMenu"
-        >
-          <div class="tw-rounded-full tw-bg-gray-100 md:tw-p-3 tw-space-x-2">
-            <q-btn-toggle
-              unelevated
-              v-model="mode"
-              no-caps
-              rounded
-              size="sm"
-              toggle-color="primary"
-              :options="[
-                { label: 'Personal', value: 'personal' },
-                { label: 'Bisnis', value: 'buisness' },
-              ]"
-            />
+                    <q-list>
+                      <q-item
+                        v-for="menu_child in menu.child"
+                        :key="menu_child.id"
+                        clickable
+                        v-ripple
+                        :to="{
+                          name: menu_child.to ? menu_child.to : '#',
+                        }"
+                      >
+                        <q-item-section>
+                          <q-item-label>{{ menu_child.label }}</q-item-label>
+                          <q-item-label v-if="menu_child.description" caption>{{
+                            menu_child.description
+                          }}</q-item-label>
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-menu>
+                </q-btn>
+              </template>
+            </div>
+            <q-space />
+            <div class="tw-flex tw-gap-2">
+              <q-btn
+                unelevated
+                color="primary"
+                label="Login"
+                no-caps
+                :to="'/login'"
+                v-if="auth.token == null"
+              />
+              <q-separator v-if="auth.token == null" vertical />
+              <q-btn
+                unelevated
+                color="primary"
+                outline
+                label="Register"
+                no-caps
+                :to="'/login'"
+                v-if="auth.token == null"
+              />
+              <q-btn
+                unelevated
+                color="primary"
+                label="Dashboard"
+                no-caps
+                :to="'/dashboard'"
+                v-else
+              />
+            </div>
           </div>
-        </div> -->
+        </div>
+        <div class="lg:tw-hidden tw-w-full tw-flex tw-items-center">
+          <q-btn flat icon="menu" @click="leftDrawerOpen = !leftDrawerOpen" />
+          <div>Malindo Sarana</div>
+          <q-space />
+          <q-btn
+            unelevated
+            color="primary"
+            flat
+            dense
+            label="Login"
+            no-caps
+            :to="'/login'"
+            v-if="auth.token == null"
+          />
+          <q-btn
+            unelevated
+            color="primary"
+            label="Dashboard"
+            no-caps
+            flat
+            :to="'/dashboard'"
+            v-else
+          />
+        </div>
       </q-toolbar>
     </q-header>
 
