@@ -13,6 +13,12 @@ const columns = ref([
     slot: true,
   },
   {
+    name: 'scope',
+    label: 'Scope',
+    align: 'left',
+    field: 'scope',
+  },
+  {
     name: 'code',
     label: 'Code',
     align: 'left',
@@ -59,9 +65,15 @@ const columns = ref([
     <template #form="{ payload }">
       <div class="tw-grid tw-grid-cols-2 tw-gap-x-4 tw-gap-y-1">
         <InputTextField
+          parentClass="tw-col-span-2"
           toplabel="Nama"
           :rules="[required]"
           v-model="payload.name"
+        />
+        <InputTextField
+          :rules="[required]"
+          toplabel="Scope"
+          v-model="payload.scope"
         />
         <InputTextField
           :rules="[required]"

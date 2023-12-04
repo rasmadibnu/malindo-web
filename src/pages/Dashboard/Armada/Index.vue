@@ -3,6 +3,7 @@ import { onMounted, ref } from 'vue';
 import BaseTable from 'components/ui/BaseTable.vue';
 import InputTextField from 'src/components/form/InputTextField.vue';
 import InputSelect from 'src/components/form/InputSelect.vue';
+import InputDate from 'src/components/form/InputDate.vue';
 import Btn from 'src/components/ui/Button.vue';
 import { QTableColumn } from 'quasar';
 import { required } from 'src/utils/validators';
@@ -10,91 +11,90 @@ import moment from 'moment';
 
 const columns: QTableColumn = [
   {
-    name: 'no_polisi',
+    name: 'police_no',
     align: 'left',
     label: 'Nomor Polisi',
-    field: 'no_polisi',
+    field: 'police_no',
     sortable: false,
   },
   {
-    name: 'merek',
+    name: 'brand',
     align: 'left',
     label: 'Merek',
-    field: 'merek',
+    field: 'brand',
     sortable: false,
-    slot: true,
   },
 
   {
-    name: 'type_kendaraan',
+    name: 'type',
     align: 'left',
-    label: 'Type Kendaraan',
-    field: 'type_kendaraan',
+    label: 'Type',
+    field: 'type',
     sortable: false,
   },
   {
-    name: 'daya_angkut',
+    name: 'carrying_capacity',
     align: 'left',
     label: 'Daya Angkut',
-    field: 'daya_angkut',
+    field: 'carrying_capacity',
     sortable: false,
   },
   {
-    name: 'tahun_kendaraan',
+    name: 'year',
     align: 'left',
     label: 'Tahun Kendaraan',
-    field: 'tahun_kendaraan',
+    field: 'year',
     sortable: false,
   },
   {
-    name: 'nama_bpkb',
+    name: 'bpkb_name',
     align: 'left',
     label: 'A/N BPKB',
-    field: 'nama_bpkb',
+    field: 'bpkb_name',
     sortable: false,
   },
   {
-    name: 'tgl_pajak',
+    name: 'tax_date',
     align: 'left',
-    label: 'Tgl Pajak',
-    field: 'tgl_pajak',
+    label: 'Tanggal Pajak',
+    field: 'tax_date',
     sortable: false,
   },
   {
-    name: 'tgl_stnk',
+    name: 'registration_date',
     align: 'left',
-    label: 'Tgl STNK',
-    field: 'tgl_stnk',
+    label: 'Tanggal STNK',
+    field: 'registration_date',
     sortable: false,
   },
   {
-    name: 'odo_meter',
+    name: 'odometer',
     align: 'left',
     label: 'ODO Meter',
-    field: 'odo_meter',
+    field: 'odometer',
     sortable: false,
   },
   {
-    name: 'jenis_kepemilikan',
+    name: 'ownership_type',
     align: 'left',
     label: 'Jenis Kepemilikan',
-    field: 'jenis_kepemilikan',
+    field: 'ownership_type',
     sortable: false,
   },
-  {
-    name: 'skema_keuntungan',
-    align: 'left',
-    label: 'Skema Keuntungan',
-    field: 'skema_keuntungan',
-    sortable: false,
-  },
-  {
-    name: 'ket',
-    align: 'left',
-    label: 'Keterangan',
-    field: 'ket',
-    sortable: false,
-  },
+  // {
+  //   name: 'skema_keuntungan',
+  //   align: 'left',
+  //   label: 'Skema Keuntungan',
+  //   field: 'skema_keuntungan',
+  //   sortable: false,
+  // },
+  // {
+  //   name: 'ket',
+  //   align: 'left',
+  //   label: 'Keterangan',
+  //   field: 'ket',
+  //   sortable: false,
+  // },
   {
     name: 'created_at',
     label: 'Created At',
@@ -113,164 +113,71 @@ const params = ref({
     ref="my_table"
     :columns="columns"
     colKey="id"
-    colInfo="no"
-    title="Vehicle"
-    apiUrl="/drivers"
+    colInfo="police_no"
+    title="Armada"
+    apiUrl="/vehicles"
     :params="params"
   >
     <template #form="{ payload }">
       <div class="tw-grid tw-grid-cols-2 tw-gap-x-4 tw-gap-y-1.5">
-        <InputSelect
+        <InputTextField
           :rules="[required]"
           toplabel="Nomor Polisi"
-          :options="[
-            'B9010GDA',
-            'B9137MZ',
-            'B9345TEH',
-            'B9347TEH',
-            'B9404UYU',
-            'B9455JA',
-            'B9927NDB',
-            'DC8079AR',
-            'DC8352AU',
-            'DC8996AS',
-            'DC8997AS',
-            'DD8030XX',
-            'DD8031XX',
-            'DD8036XX',
-            'DD8128RT',
-            'DD8183UD',
-            'DD8184UD',
-            'DD8220YD',
-            'DD8303RA',
-            'DD8332RT',
-            'DD8373RT',
-            'DD8422ME',
-            'DD8446KN',
-            'DD8475SW',
-            'DD8503EH',
-            'DD8574HD',
-            'DD8605CB',
-            'DD8649EH',
-            'DD8711MQ',
-            'DD8738KY',
-            'DD8741DG',
-            'DD8853UC',
-            'DD8886MN',
-            'DD8902KE',
-            'DD8931UC',
-            'DD8943KW',
-            'DD9573XV',
-            'DD9825BU',
-            'DM8111D',
-            'DN8480YU',
-            'DN8666AP',
-            'DP8911DG',
-            'DW8049CE',
-            'L9165UX',
-            'L9743CD',
-          ]"
-          v-model="payload.no_polisi"
+          v-model="payload.police_no"
         />
 
-        <InputSelect
+        <InputTextField
           :rules="[required]"
-          :options="[
-            'FAW',
-            'FAW CA1310',
-            'FUSO',
-            'HINO',
-            'HINO DUTRO EURO 4',
-            'HINO FG235JK',
-            'HINO FM8JNID  EGJ',
-            'IZUSU NKR 71',
-            'MITSUBISHI CANTER',
-            'MITSUBISHI FUSO',
-            'MITSUBISHI FUSO FM 517 HS',
-            'MITSUBISHI FUSO FN 527 ML (6X4) M/T',
-            'MITSUBISHI FUSO FN 527 MS (6X4) M/T',
-            'MITSUBISHI FUSO FV 517',
-            'NISSAN',
-            'NISSAN CKA 12',
-            'NISSAN CWA 260',
-            'NISSAN CWA 260 MX TRONTON',
-            'NISSAN CWM 432',
-            'NISSAN PKD 211',
-            'QUESTER',
-            'UD TRUCKS NISSAN CWA 260',
-          ]"
+          v-model="payload.brand"
           toplabel="Merek"
         />
         <InputSelect
           :rules="[required]"
           toplabel="Type Kendaraan"
           :options="['CDD', '6 Roda', '10 Roda', '12 Roda']"
-          v-model="payload.type_kendaraan"
+          v-model="payload.type"
         />
         <InputSelect
           :rules="[required]"
           toplabel="Daya Angkut"
-          :options="[8, 15, 30, 45]"
-          v-model="payload.daya_angkut"
-        />
-        <InputSelect
-          :rules="[required]"
-          toplabel="Tahun Kendaraan"
-          :options="[8, 15, 30, 45]"
-          v-model="payload.daya_angkut"
+          :options="['8', '15', '30', '45']"
+          v-model="payload.carrying_capacity"
         />
         <InputTextField
           :rules="[required]"
           toplabel="A/N BPKB"
-          v-model="payload.nama_bpkb"
+          v-model="payload.bpkb_name"
+        />
+        <InputDate
+          :rules="[required]"
+          toplabel="Tanggal Pajak"
+          v-model="payload.tax_date"
+        />
+        <InputDate
+          :rules="[required]"
+          toplabel="Tanggal STNK"
+          v-model="payload.registration_date"
         />
         <InputTextField
           :rules="[required]"
-          toplabel="Tgl Pajak"
-          v-model="payload.tgl_pajak"
-        />
-        <InputTextField
-          :rules="[required]"
-          toplabel="Tgl STNK"
-          v-model="payload.tgl_stnk"
-        />
-        <InputTextField
-          :rules="[required]"
-          toplabel="Tgl STNK"
-          v-model="payload.tgl_stnk"
-        />
-        <InputTextField
-          :rules="[required]"
-          toplabel="Unit"
-          parentClass="tw-col-span-2"
-          v-model="payload.unit"
-        />
-        <InputTextField
-          :rules="[required]"
-          mask="####"
           toplabel="Tahun Kendaraan"
-          v-model="payload.asset_year"
+          mask="#"
+          reverse-fill-mask
+          maxlength="4"
+          v-model="payload.year"
         />
         <InputTextField
           :rules="[required]"
-          toplabel="No Mesin"
-          v-model="payload.machine_no"
+          toplabel="Odometer"
+          mask="#"
+          reverse-fill-mask
+          v-model="payload.odometer"
         />
-        <InputTextField
+        <InputSelect
           :rules="[required]"
-          toplabel="No Rangka"
-          v-model="payload.chassis_no"
-        />
-        <InputTextField
-          :rules="[required]"
-          toplabel="No Plat"
-          v-model="payload.police_no_old"
-        />
-        <InputTextField
-          parentClass="tw-col-span-2"
-          type="textarea"
-          toplabel="Keterangan"
-          v-model="payload.description"
+          toplabel="Jenis Kepemilikan"
+          :options="['Milik Sendiri', 'Mitra', 'Titipan']"
+          v-model="payload.ownership_type"
         />
       </div>
     </template>

@@ -592,7 +592,7 @@
           />
         </div>
       </div>
-      <div
+      <!-- <div
         class="tw-absolute tw-top-[60rem] tw-left-[-10px] xl:tw-block tw-hidden"
       >
         <q-avatar size="55px" class="tw-h-full" square>
@@ -603,7 +603,7 @@
         <q-avatar size="65px" class="tw-h-full" square>
           <q-img src="~assets/kotak-secondary.svg" />
         </q-avatar>
-      </div>
+      </div> -->
     </div>
     <BeritaInfo :data="articles" />
     <CoverageComp />
