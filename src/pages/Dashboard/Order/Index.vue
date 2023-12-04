@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 import BaseTable from 'components/ui/BaseTable.vue';
 import InputTextField from 'src/components/form/InputTextField.vue';
+import InputNumberField from 'src/components/form/InputNumberField.vue';
 import InputSelect from 'src/components/form/InputSelect.vue';
 import Btn from 'src/components/ui/Button.vue';
 import { Notify, QTableColumn } from 'quasar';
@@ -28,65 +29,79 @@ const columns: QTableColumn = [
   },
   {
     name: 'created_at',
-    label: 'Tgl Input',
+    label: 'Tanggal Order',
     align: 'left',
     field: (row) => moment(row.created_at).format('DD-MM-YYYY HH:mm:ss'),
     sortable: false,
   },
   {
-    name: 'customer_name',
+    name: 'user.name',
     label: 'Nama Pelanggan',
     align: 'left',
-    field: 'customer_name',
+    field: (row) => row.user.name,
     sortable: false,
   },
   {
-    name: 'type_bayar',
+    name: 'payment_scheme',
     label: 'Skema Pembayaran',
     align: 'left',
-    field: 'type_bayar',
+    field: 'payment_scheme',
     sortable: false,
   },
   {
-    name: 'type_trans',
+    name: 'driver.name',
+    label: 'Driver',
+    align: 'left',
+    field: (row) => row.driver.name,
+    sortable: false,
+  },
+  {
+    name: 'vehicle.name',
+    label: 'Armada',
+    align: 'left',
+    field: (row) => row.vehicle.police_no,
+    sortable: false,
+  },
+  {
+    name: 'type_transaction',
     label: 'Jenis Transaksi',
     align: 'left',
-    field: 'type_trans',
+    field: 'type_transaction',
     sortable: false,
   },
   {
-    name: 'berat',
+    name: 'weight',
     label: 'Berat (Kg)',
     align: 'left',
-    field: 'berat',
+    field: 'weight',
     sortable: false,
   },
   {
-    name: 'daerah_asal',
+    name: 'form',
     label: 'Daerah Asal',
     align: 'left',
-    field: 'daerah_asal',
+    field: 'from',
     sortable: false,
   },
   {
-    name: 'daerah_tujuan',
+    name: 'to',
     label: 'Daerah Tujuan',
     align: 'left',
-    field: 'daerah_tujuan',
+    field: 'to',
     sortable: false,
   },
   {
-    name: 'harga_kg',
+    name: 'price_per_volume',
     label: 'Harga/Kg',
     align: 'left',
-    field: 'harga_kg',
+    field: 'price_per_volume',
     sortable: false,
   },
   {
-    name: 'harga_crt',
+    name: 'price_carter',
     label: 'Harga Carter',
     align: 'left',
-    field: 'harga_crt',
+    field: 'price_carter',
     sortable: false,
   },
 ];
@@ -94,7 +109,6 @@ const columns: QTableColumn = [
 const my_table = ref(null);
 const params = ref({
   sort: '-created_at',
-  filters: '["service.code", "no"]',
 });
 const typeUrl = '/service-types?filters=["service.code", "no"]';
 
@@ -114,7 +128,7 @@ const statuses = ref([]);
 
 const getStatus = () => {
   statuses.value = [];
-  api.get('/transactions/status?scope=order').then((res) => {
+  api.get('/orders/status').then((res) => {
     statuses.value = res.data.data;
   });
 };
@@ -188,7 +202,7 @@ onMounted(() => {
     colKey="id"
     colInfo="no"
     title="Order"
-    apiUrl="/transactions"
+    apiUrl="/orders"
     :params="params"
     :search="search"
     @beforeSubmit="addExtendPayload"
@@ -292,7 +306,7 @@ onMounted(() => {
       </q-td>
     </template>
     <template #form="{ payload }">
-      <div class="tw-grid tw-grid-cols-2 tw-gap-x-4 tw-gap-y-1.5">
+      <div class="md:tw-grid md:tw-grid-cols-2 tw-gap-x-4 tw-gap-y-1.5">
         <InputSelect
           :rules="[required]"
           map-options
@@ -308,41 +322,75 @@ onMounted(() => {
           :rules="[required]"
           toplabel="Skema Pembayaran"
           :options="['Cash', 'Tempo']"
-          v-model="payload.skema"
+          v-model="payload.payment_scheme"
+        />
+        <InputSelect
+          :rules="[required]"
+          map-options
+          emit-value
+          optLabel="name"
+          optValue="id"
+          toplabel="Driver"
+          :apiUrl="'/drivers'"
+          searchKey="name"
+          v-model="payload.driver_id"
+        />
+        <InputSelect
+          :rules="[required]"
+          map-options
+          emit-value
+          optLabel="police_no"
+          optValue="id"
+          toplabel="Armada"
+          :apiUrl="'/vehicles'"
+          searchKey="police_no"
+          v-model="payload.vehicle_id"
         />
 
         <InputTextField
           :rules="[required]"
           toplabel="Asal"
-          v-model="payload.asal"
+          v-model="payload.from"
         />
         <InputTextField
           :rules="[required]"
           toplabel="Tujuan"
-          v-model="payload.tujuan"
+          v-model="payload.to"
         />
         <InputSelect
           :rules="[required]"
           toplabel="Jenis Transaksi"
+          parentClass="tw-col-span-2"
           :options="['Volume', 'Carter']"
-          v-model="payload.type"
+          v-model="payload.type_transaction"
         />
-        <InputTextField
+        <InputNumberField
           :rules="[required]"
           toplabel="Berat"
-          v-if="payload.type == 'Volume'"
+          suffix="kg"
+          mask="#"
+          reverse-fill-mask
+          unmasked-value
+          v-if="payload.type_transaction == 'Volume'"
           v-model="payload.weight"
         />
-        <InputTextField
+        <InputNumberField
           :rules="[required]"
           toplabel="Harga / Volume"
-          v-if="payload.type == 'Volume'"
-          v-model="payload.price_volume"
+          prefix="Rp."
+          mask="#"
+          reverse-fill-mask
+          v-if="payload.type_transaction == 'Volume'"
+          v-model="payload.price_per_volume"
         />
-        <InputTextField
+        <InputNumberField
           :rules="[required]"
-          v-if="payload.type == 'Carter'"
+          v-if="payload.type_transaction == 'Carter'"
           toplabel="Harga Carter"
+          prefix="Rp."
+          mask="#"
+          reverse-fill-mask
+          parentClass="tw-col-span-2"
           v-model="payload.price_carter"
         />
 
@@ -427,7 +475,7 @@ onMounted(() => {
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel
             name="data"
-            class="tw-grid md:tw-grid-cols-2 md:tw-space-x-8 tw-space-x-4 tw-gap-4 md:tw-gap-0 q-px-none"
+            class="tw-grid md:tw-grid-cols-1 tw-space-x-4 tw-gap-4 q-px-none"
           >
             <div>
               <q-list
@@ -437,7 +485,7 @@ onMounted(() => {
                 <q-item>
                   <q-item-section>
                     <q-item-label class="tw-font-bold"
-                      >Tgl Input Data</q-item-label
+                      >Tanggal Order</q-item-label
                     >
                     <q-item-label caption>{{
                       moment(data?.created_at).format('YYYY-MM-DD hh:mm:ss')
@@ -455,54 +503,68 @@ onMounted(() => {
                 <q-item>
                   <q-item-section>
                     <q-item-label class="tw-font-bold"
-                      >Jenis Layanan</q-item-label
+                      >Nama Pelanggan</q-item-label
+                    >
+                    <q-item-label caption>{{ data?.user?.name }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section>
+                    <q-item-label class="tw-font-bold"
+                      >Skema Pembayaran</q-item-label
                     >
                     <q-item-label caption>{{
-                      data?.service_type?.name
+                      data?.payment_scheme
                     }}</q-item-label>
                   </q-item-section>
                 </q-item>
                 <q-item>
                   <q-item-section>
-                    <q-item-label class="tw-font-bold">Produk</q-item-label>
-                    <q-item-label caption>{{ data?.product }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold">Unit</q-item-label>
-                    <q-item-label caption>{{ data?.unit }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold">A/N BPKB</q-item-label>
-                    <q-item-label caption>{{ data?.bpkb_name }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold">No BPKB</q-item-label>
-                    <q-item-label caption>{{ data?.bpkb_no }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold">No Mesin</q-item-label>
-                    <q-item-label caption>{{ data?.machine_no }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold">No Rangka</q-item-label>
-                    <q-item-label caption>{{ data?.chassis_no }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold">No Polisi</q-item-label>
+                    <q-item-label class="tw-font-bold"
+                      >Jenis Transaksi</q-item-label
+                    >
                     <q-item-label caption>{{
-                      data?.police_no_old
+                      data?.type_transaction
+                    }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section>
+                    <q-item-label class="tw-font-bold">Berat</q-item-label>
+                    <q-item-label caption>{{ data?.weight }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section>
+                    <q-item-label class="tw-font-bold"
+                      >Daerah Asal</q-item-label
+                    >
+                    <q-item-label caption>{{ data?.from }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section>
+                    <q-item-label class="tw-font-bold"
+                      >Daerah Tujuan</q-item-label
+                    >
+                    <q-item-label caption>{{ data?.to }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section>
+                    <q-item-label class="tw-font-bold">Harga/Kg</q-item-label>
+                    <q-item-label caption>{{
+                      data?.price_per_volume
+                    }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+                <q-item>
+                  <q-item-section>
+                    <q-item-label class="tw-font-bold"
+                      >Harga Carter</q-item-label
+                    >
+                    <q-item-label caption>{{
+                      data?.price_carter
                     }}</q-item-label>
                   </q-item-section>
                 </q-item>

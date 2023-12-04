@@ -28,11 +28,15 @@ const logout = () => {
 };
 
 watch(isPinned, () => {
-  sessionStorage.setItem('isPinned', isPinned.value);
+  localStorage.setItem('isPinned', isPinned.value);
 });
 
 onBeforeMount(() => {
-  isPinned.value = sessionStorage.getItem('isPinned') == 'true' ? true : false;
+  if (localStorage.getItem('isPinned')) {
+    isPinned.value = localStorage.getItem('isPinned') == 'true' ? true : false;
+  } else {
+    isPinned.value = true;
+  }
   if (isPinned.value) {
     miniState.value = false;
   } else {
@@ -59,9 +63,9 @@ onBeforeMount(() => {
           <q-item-section
             avatar
             @click="router.push({ name: 'home' })"
-            class="tw-cursor-pointer tw-ml-3 q-pr-none"
+            class="tw-cursor-pointer tw-pl-3"
           >
-            <q-avatar :size="isPinned ? '30px' : '40px'">
+            <q-avatar :size="isPinned ? '30px' : '30px'">
               <q-img src="~assets/malindo.png" />
             </q-avatar>
           </q-item-section>

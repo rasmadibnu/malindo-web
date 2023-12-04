@@ -45,7 +45,7 @@ const columns = ref([
         <InputSelect
           :rules="[required]"
           toplabel="Privilege"
-          :options="['Public', 'Company']"
+          :options="['Retail', 'Company']"
           v-model="payload.privilege"
         />
         <InputTextField
