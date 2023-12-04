@@ -30,7 +30,7 @@ const columns = ref([
     :columns="columns"
   >
     <template #form="{ payload }">
-      <div class="tw-grid md:tw-grid-cols-2 tw-gap-x-4 tw-space-y-1.5"">
+      <div class="tw-grid md:tw-grid-cols-2 tw-gap-x-4 tw-space-y-1.5">
         <InputTextField
           toplabel="Nama"
           :rules="[required]"
