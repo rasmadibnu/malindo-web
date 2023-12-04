@@ -425,7 +425,7 @@
               </div>
             </div>
 
-            <q-img src="~assets/globe.svg" />
+            <q-img src="~assets/orange.jpg" />
           </div>
           <div
             class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-py-7 tw-px-8 tw-space-y-6"
