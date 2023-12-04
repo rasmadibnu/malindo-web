@@ -1,18 +1,20 @@
 <template>
   <q-page>
     <div class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8">
-      <div class="text-secondary tw-text-xs tw-flex tw-justify-end tw-gap-4">
+      <div
+        class="text-secondary tw-pt-4 tw-text-xs tw-flex tw-justify-end tw-gap-4"
+      >
         <div class="tw-flex tw-items-center tw-gap-1">
-          <q-avatar size="xs">
-            <q-img src="~assets/wa.svg" />
-          </q-avatar>
+          <q-icon name="call" />
           <div>0853-9990-0855</div>
         </div>
         <div class="tw-flex tw-items-center tw-gap-1">
-          <q-avatar size="xs">
-            <q-img src="~assets/gmail.svg" />
-          </q-avatar>
+          <q-icon name="mail" />
           <div>Malindosaranalogistic@gmail.com</div>
+        </div>
+        <div class="tw-flex tw-items-center tw-gap-1">
+          <q-icon name="public" />
+          <div>malindosarana.com</div>
         </div>
       </div>
       <div class="tw-grid md:tw-grid-cols-2 tw-items-center tw-gap-20">
@@ -22,30 +24,35 @@
             <div class="text-primary">TRANSPORT AGENCY</div>
           </div>
           <p>
-            Kami berkomitmen untuk selalu membantu masyarakat Indonesia dari
-            aspek pendanaan dan modal usaha.
+            Masalah transportasi anda adalah spesialisasi kami. <br />Kami
+            bekerja sama dengan anda untuk menemukan solusi.
           </p>
-          <q-btn color="secondary" label="Kirim Sekarang" @click="onClick" />
+          <q-btn
+            color="secondary"
+            label="Kirim Sekarang"
+            @click="onClick"
+            :to="{ name: 'form' }"
+          />
           <div class="tw-grid md:tw-grid-cols-4 tw-gap-4 text-primary tw-py-10">
-            <q-card class="tw-shadow-xl">
+            <q-card class="tw-shadow-md">
               <q-card-section class="tw-text-center tw-items-center">
-                <p class="tw-font-semibold tw-text-2xl">101</p>
-                <p class="tw-text-xs">Unit Ready</p>
+                <p class="tw-font-semibold tw-text-2xl">42</p>
+                <p class="tw-text-xs">Armada Siap Antar</p>
               </q-card-section>
             </q-card>
-            <q-card class="tw-shadow-xl">
+            <q-card class="tw-shadow-md">
               <q-card-section class="tw-text-center tw-items-center">
-                <p class="tw-font-semibold tw-text-2xl">40 rb</p>
-                <p class="tw-text-xs">Pelanggan</p>
+                <p class="tw-font-semibold tw-text-2xl">100%</p>
+                <p class="tw-text-xs">Melayani Pelanggan</p>
               </q-card-section>
             </q-card>
-            <q-card class="tw-shadow-xl">
+            <q-card class="tw-shadow-md">
               <q-card-section class="tw-text-center tw-items-center">
                 <p class="tw-font-semibold tw-text-2xl">30</p>
-                <p class="tw-text-xs">Pengiriman setiap hari</p>
+                <p class="tw-text-xs">Transaksi Per Hari</p>
               </q-card-section>
             </q-card>
-            <q-card class="tw-shadow-xl">
+            <q-card class="tw-shadow-md">
               <q-card-section class="tw-text-center tw-items-center">
                 <p class="tw-font-semibold tw-text-2xl">70</p>
                 <p class="tw-text-xs">Driver</p>
@@ -74,7 +81,7 @@
               <q-card-section horizontal>
                 <q-card-section>
                   <p class="tw-text-lg tw-text-left tw-font-bold text-primary">
-                    BISNIS
+                    CORPORATE
                   </p>
                   <p class="tw-text-xs tw-text-left">
                     Solusi Pengiriman Instan Untuk Bisnis Anda
@@ -101,14 +108,26 @@
             <q-card-section horizontal>
               <q-card-section>
                 <p class="tw-text-lg tw-text-left tw-font-bold text-primary">
-                  INDIVIDU
+                  RETAIL
                 </p>
                 <p class="tw-text-xs tw-text-left">
-                  Pengiriman barang cepat mudah untuk kebutuhan pribadi anda
+                  Pengiriman barang cepat mudah untuk kebutuhan anda
                 </p></q-card-section
               >
               <q-img class="col-5" src="~assets/pindah.svg" />
             </q-card-section>
+            <q-card-actions align="left">
+              <q-btn
+                flat
+                class="tw-text-xs"
+                color="primary"
+                label="Cari Tahu"
+                icon-right="arrow_forward"
+                no-caps
+                dense
+                :to="{ name: 'form' }"
+              />
+            </q-card-actions>
           </q-card>
         </div>
         <div class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8 tw-space-y-6">
@@ -116,33 +135,57 @@
             Berbagai Macam Armada
           </h1>
           <div class="tw-grid md:tw-grid-cols-3 tw-gap-4">
-            <router-link :to="{ query: { type: 'mobil' } }">
-              <q-card class="tw-shadow">
-                <q-img src="~assets/kuning.jpg" />
-                <q-card-section>
-                  <p class="tw-text-lg tw-font-medium">Truck</p>
-                  <p>Siap pengantaran sejumlah 20 ton</p>
-                </q-card-section>
-              </q-card>
-            </router-link>
-            <router-link :to="{ query: { type: 'motor' } }">
-              <q-card class="tw-shadow">
-                <q-img src="~assets/merah.jpg" />
-                <q-card-section>
-                  <p class="tw-text-lg tw-font-medium">Dump Truck</p>
-                  <p>Pengangkutan 200 ton</p>
-                </q-card-section>
-              </q-card>
-            </router-link>
-            <router-link :to="{ query: { type: 'syariah' } }">
-              <q-card class="tw-shadow">
-                <q-img src="~assets/merahh.jpg" />
-                <q-card-section>
-                  <p class="tw-text-lg tw-font-medium">DUMP</p>
-                  <p>Sampai Tujuan aman</p>
-                </q-card-section>
-              </q-card>
-            </router-link>
+            <q-card>
+              <q-carousel class="tw-h-fit" arrows animated v-model="slide">
+                <q-carousel-slide name="first" class="q-pa-none">
+                  <q-img src="~assets/cdd1.png">
+                    <div class="absolute-bottom tw-text-center">
+                      <div class="text-h6">CDD BOX</div>
+                      <div class="text-subtitle2">
+                        Berat Maksimal 5000 kg
+                        <br />Batas Ukuran (PxLxT): 450cm x 200cm x 200cm
+                      </div>
+                    </div>
+                  </q-img>
+                </q-carousel-slide>
+                <q-carousel-slide name="second" class="q-pa-none">
+                  <q-img src="~assets/cdd2.svg">
+                    <div class="absolute-bottom tw-text-center">
+                      <div class="text-h6">CDD BOX</div>
+                      <div class="text-subtitle2">
+                        Berat Maksimal 5000 kg <br />Batas Ukuran (PxLxT): 450cm
+                        x 200cm x 200cm
+                      </div>
+                    </div>
+                  </q-img>
+                </q-carousel-slide>
+              </q-carousel>
+            </q-card>
+            <q-card>
+              <q-img
+                src="~assets/fuso1.svg"
+                style="width: 373px; height: 225px"
+              >
+                <div class="absolute-bottom tw-text-center">
+                  <div class="text-h6">FUSO BOX</div>
+                  <div class="text-subtitle2">
+                    Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 570cm x
+                    250cm x 250cm
+                  </div>
+                </div>
+              </q-img>
+            </q-card>
+            <q-card>
+              <q-img src="~assets/10roda1.png">
+                <div class="absolute-bottom tw-text-center">
+                  <div class="text-h6">TRONTON BOX</div>
+                  <div class="text-subtitle2">
+                    Berat Maksimal 20.000 kg <br />Batas Ukuran (PxLxT): 940cm x
+                    240cm x 290cm
+                  </div>
+                </div>
+              </q-img>
+            </q-card>
           </div>
         </div>
         <div
@@ -160,84 +203,99 @@
                   <p class="tw-text-lg tw-font-medium">Pengangkutan Darat</p>
                   <p class="tw-text-xs">
                     Kami menawarkan layanan angkutan truk domestik dan lintas
-                    batas serta koresponden yang berbasis di lokasi strategis...
-                    <!-- sehingga anda dapat mengirimkan barang di sepanjang rute -->
+                    batas serta koresponden yang berbasis di lokasi strategis
+                    sehingga anda dapat mengirimkan barang di sepanjang rute
+                    bisnis anda.
+                    <q-slide-transition>
+                      <p v-show="expanded_darat">
+                        <q-separator class="tw-my-2" />
+                        Dedikasi untuk menyediakan layanan dari pintu ke pintu
+                        dan solusi yang disesuaikan dengan klien, Malindo sarana
+                        logistic selalu mematuhi standar kualitas tertinggi dan
+                        mematuhi peraturan <br />
+                        Tim kami akan menangani seluruh rantai pasokan permukaan
+                        , baik anda hanya memerlukan satu paket pengiriman atau
+                        rantai pasokan permukaan yang komprehensif.
+                      </p>
+                    </q-slide-transition>
                   </p>
-
-                  <!-- bisnis anda. Pengangkutan darat Dedikasi untuk menyediakan
-                    layanan dari pintu ke pintu dan solusi yang disesuaikan
-                    dengan klien, Malindo sarana logistic selalu mematuhi
-                    standar kualitas tertinggi dan mematuhi peraturan
-                    lingkungan. Tim kami akan menangani seluruh rantai pasokan
-                    permukaan , baik anda hanya memerlukan satu paket pengiriman
-                    atau rantai pasokan permukaan yang komprehensif. -->
                 </q-card-section>
                 <q-card-actions align="right">
                   <q-btn
                     flat
                     class="tw-text-xs"
                     color="primary"
-                    label="Cari Tahu "
-                    icon-right="arrow_forward"
+                    :label="!expanded_darat ? 'Selengkapnya ' : 'Kembali '"
+                    :icon-right="
+                      !expanded_darat ? 'arrow_forward' : 'arrow_back'
+                    "
                     no-caps
                     dense
+                    @click="expanded_darat = !expanded_darat"
                   />
                 </q-card-actions>
               </q-card>
               <q-card
-                class="tw-items-center tw-py-4 tw-text-center tw-rounded-3xl tw-shadow-lg"
+                class="tw-items-center tw-py-4 tw-text-left tw-rounded-3xl tw-shadow-lg"
               >
-                <q-card-section>
+                <q-card-section class="q-pb-none">
                   <q-avatar class="tw-mb-4" square size="180px">
                     <q-img src="~assets/plane.svg" />
                   </q-avatar>
-                  <p class="tw-text-lg tw-text-left tw-font-medium">
-                    Pengangkutan Udara
-                  </p>
-                  <p class="tw-text-xs tw-text-left">
+                  <p class="tw-text-lg tw-font-medium">Pengangkutan Udara</p>
+                  <p class="tw-text-xs">
                     Berbagai pilihan maskapai penerbangan kelas satu menyediakan
-                    koneksi transportasi yang sangat baik serta pelacakan...
-                    <!-- kiriman kami secara terus menerus. Anda dapat mengandalkan
-                    produk angkutan udara kami untuk tetap sesuai jadwal, dan
-                    menjaga anggaran anda
-                  </p> -->
-                  </p></q-card-section
-                >
-
+                    koneksi transportasi yang sangat baik serta pelacakan
+                    kiriman kami secara terus menerus.
+                    <q-slide-transition>
+                      <p v-show="expanded_udara">
+                        <q-separator class="tw-my-2" />
+                        Anda dapat mengandalkan produk angkutan udara kami untuk
+                        tetap sesuai jadwal, dan menjaga anggaran anda
+                      </p>
+                    </q-slide-transition>
+                  </p>
+                </q-card-section>
                 <q-card-actions align="right">
                   <q-btn
                     flat
                     class="tw-text-xs"
                     color="primary"
-                    label="Cari Tahu "
-                    icon-right="arrow_forward"
+                    :label="!expanded_udara ? 'Selengkapnya ' : 'Kembali '"
+                    :icon-right="
+                      !expanded_udara ? 'arrow_forward' : 'arrow_back'
+                    "
                     no-caps
                     dense
+                    @click="expanded_udara = !expanded_udara"
                   />
                 </q-card-actions>
               </q-card>
             </div>
             <div>
               <q-card
-                class="tw-items-center tw-py-4 tw-text-center tw-rounded-3xl tw-shadow-lg"
+                class="tw-items-center tw-py-4 tw-text-left tw-rounded-3xl tw-shadow-lg"
               >
-                <q-card-section>
+                <q-card-section class="q-pb-none">
                   <q-avatar class="tw-mb-4" square size="180px">
                     <q-img src="~assets/beach.svg" />
                   </q-avatar>
-                  <p class="tw-text-lg tw-text-left tw-font-medium">
-                    Pengangkutan Laut
-                  </p>
-                  <p class="tw-text-left tw-text-xs">
+                  <p class="tw-text-lg tw-font-medium">Pengangkutan Laut</p>
+                  <p class="tw-text-xs">
                     Melalui hubungan yang kuat dengan operator maritim besar,
                     tepercaya, dan efisien Malindo menyediakan layanan yang
-                    kompetitif dan fleksibel...,
-                    <!-- serta mengelola lalu lintas dalam
-                    jumlah besar bahkan selama musim puncak, menawarkan jaminan
-                    ruang kargo dengan harga terjangkau. Pengalaman dan
-                    kehadiran global kami memungkinkang kami menangani banyak
-                    rute utama di dunia serta pengetahuan mendalam tentang bea
-                    cukai dan peraturan lalu lintas internasional. -->
+                    kompetitif dan fleksibel,
+                    <q-slide-transition>
+                      <p v-show="expanded_laut">
+                        <q-separator class="tw-my-2" />
+                        serta mengelola lalu lintas dalam jumlah besar bahkan
+                        selama musim puncak, menawarkan jaminan ruang kargo
+                        dengan harga terjangkau. Pengalaman dan kehadiran global
+                        kami memungkinkang kami menangani banyak rute utama di
+                        dunia serta pengetahuan mendalam tentang bea cukai dan
+                        peraturan lalu lintas internasional.
+                      </p>
+                    </q-slide-transition>
                   </p>
                 </q-card-section>
                 <q-card-actions align="right">
@@ -245,10 +303,13 @@
                     flat
                     class="tw-text-xs"
                     color="primary"
-                    label="Cari Tahu "
-                    icon-right="arrow_forward"
+                    :label="!expanded_laut ? 'Selengkapnya ' : 'Kembali '"
+                    :icon-right="
+                      !expanded_laut ? 'arrow_forward' : 'arrow_back'
+                    "
                     no-caps
                     dense
+                    @click="expanded_laut = !expanded_laut"
                   />
                 </q-card-actions>
               </q-card>
@@ -263,7 +324,7 @@
                   Beragam Armada Pengiriman
                   <div class="tw-font-normal tw-text-xs">
                     Pilihan armada yang beragam tersedia untuk pengirimanmu,
-                    mulai dari 20 kg hingga 8 ton.
+                    mulai dari 20 kg hingga 20 ton.
                   </div>
                   Pengiriman yang Aman
                   <div class="tw-font-normal tw-text-xs">
@@ -339,52 +400,141 @@
           </div>
         </div>
         <div class="tw-max-w-6xl tw-mx-auto tw-my-20 xl:tw-px-0 tw-px-8">
-          <div class="tw-grid md:tw-grid-cols-2 tw-items-center tw-gap-20">
-            <div class="tw-space-y-4 tw-mt-10">
-              <div class="tw-text-4xl tw-font-semibold text-secondary">
-                VISI <br />
+          <div class="tw-grid md:tw-grid-cols-2 text-secondary tw-gap-20">
+            <div>
+              >
+              <div class="tw-space-y-4 tw-mt-10">
+                <div class="tw-text-4xl tw-font-semibold text-secondary">
+                  VISI <br />
+                </div>
+                <div>
+                  Menjadi perusahaan transportasi yang kompetitif dan transparan
+                  dengan memprioritaskan kepuasan dan kenyamanan pelanggan
+                </div>
+                <div class="tw-text-4xl tw-font-semibold tw-text-primary">
+                  MISI <br />
+                </div>
+                <div>
+                  Pengembangan dan implementasi strategi dan program yang akan
+                  memastikan <br />
+                  Professional dalam operasi<br />
+                  Pemanfaatan keunggulan <br />
+                  kompetitif secara maksimal<br />
+                  Kesejahteraan kepada karyawan
+                </div>
               </div>
-              <p>
-                Menjadi perusahaan transportasi yang kompetitif dan transparan
-                dengan memprioritaskan kepuasan dan kenyamanan pelanggan
-              </p>
             </div>
-            <div class="tw-space-y-4 tw-mt-10">
-              <div class="tw-text-4xl tw-font-semibold text-primary">
-                MISI <br />
+
+            <q-img src="~assets/globe.svg" />
+          </div>
+          <div
+            class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-py-7 tw-px-8 tw-space-y-6"
+          >
+            <p
+              class="tw-text-3xl tw-font-semibold tw-text-center text-secondary"
+            >
+              Our Values <br />
+              <br />
+            </p>
+            <div class="text-secondary">
+              <div class="text-bold">
+                <div class="tw-font-bold text-secondary">
+                  Keamanan dan prioritas<br />
+                </div>
+
+                <div class="tw-font-normal tw-text-xs">
+                  Keselamatan karyawan dan klien kami adalah prioritas nomor
+                  satu kami sebagai perusahaan yang bertanggung jawab dan
+                  akuntabel.
+                </div>
+                Intergritas
+                <div class="tw-font-normal tw-text-xs">
+                  Kepercayaan adalah dasar kami membangun reputasi. Dengan terus
+                  mengedepankan kejujuran, integritas, dan keandalan, kita
+                  mematuhi standar moral dan etika tertinggi.
+                </div>
+                Inovasi
+                <div class="tw-font-normal tw-text-xs">
+                  Perusahaan kami menantang cara - cara standar dalam melakukan
+                  sesuatu di industri logistik dan mengembangkan cara - cara
+                  baru dan inovatif untuk memenuhi kebutuhan klien kami.
+                </div>
               </div>
-              Pengembangan dan implementasi strategi dan program yang akan
-              memastikan:
-              <ul class="tw-list-disc">
-                <li>Professional dalam operasi</li>
-              </ul>
-              <ul class="tw-list-disc">
-                <li>Pemanfaatan keunggulan kompetitif secara maksimal</li>
-              </ul>
-              <ul class="tw-list-disc">
-                <li>Kesejahteraan kepada karyawan</li>
-              </ul>
             </div>
           </div>
-          <div class="text-secondary">
-            <div class="text-bold">
-              Keamanan dan prioritas
-              <div class="tw-font-normal tw-text-xs">
-                Keselamatan karyawan dan klien kami adalah prioritas nomor satu
-                kami sebagai perusahaan yang bertanggung jawab dan akuntabel.
-              </div>
-              Intergritas
-              <div class="tw-font-normal tw-text-xs">
-                Kepercayaan adalah dasar kami membangun reputasi. Dengan terus
-                mengedepankan kejujuran, integritas, dan keandalan, kita
-                mematuhi standar moral dan etika tertinggi.
-              </div>
-              Inovasi
-              <div class="tw-font-normal tw-text-xs">
-                Perusahaan kami menantang cara - cara standar dalam melakukan
-                sesuatu di industri logistik dan mengembangkan cara - cara baru
-                dan inovatif untuk memenuhi kebutuhan klien kami.
-              </div>
+        </div>
+        <div class="tw-max-w-6xl tw-mx-auto tw-my-20 xl:tw-px-0 tw-px-8">
+          <p class="tw-text-3xl tw-font-semibold tw-text-center text-secondary">
+            Company Client <br />
+            <br />
+          </p>
+
+          <div class="tw-grid md:tw-grid-cols-3 tw-items-center text-secondary">
+            <div class="tw-flex tw-justify-end">
+              <q-avatar size="150px" square>
+                <q-img src="~assets/artaboga.svg"
+              /></q-avatar>
+            </div>
+            <div class="tw-flex tw-justify-center">
+              <q-avatar size="150px" square>
+                <q-img src="~assets/mayora.svg"
+              /></q-avatar>
+            </div>
+            <div class="tw-flex tw-justify-start">
+              <q-avatar size="150px" square>
+                <q-img src="~assets/fajar.png"
+              /></q-avatar>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-py-7 tw-px-8 tw-space-y-6"
+        >
+          <p class="tw-text-3xl tw-font-semibold tw-text-center text-secondary">
+            Our Galery <br />
+            <br />
+          </p>
+          <div class="p-5 sm:p-8">
+            <div
+              class="tw-columns-1 tw-gap-4 sm:tw-columns-2 sm:tw-gap-4 md:tw-columns-3 lg:tw-columns-4"
+            >
+              <q-img
+                class="tw-mb-4 tw-rounded tw-shadow-xl"
+                src="~assets/img1.jpg"
+              />
+              <q-img
+                class="tw-mb-4 tw-rounded tw-shadow-xl"
+                src="~assets/img2.jpg"
+              />
+              <q-img
+                class="tw-mb-4 tw-rounded tw-shadow-xl"
+                src="~assets/img4.jpg"
+              />
+              <q-img
+                class="tw-mb-4 tw-rounded tw-shadow-xl"
+                src="~assets/img5.jpg"
+              />
+              <q-img
+                class="tw-mb-4 tw-rounded tw-shadow-xl"
+                src="~assets/img6.jpg"
+              />
+              <q-img
+                class="tw-mb-4 tw-rounded tw-shadow-xl"
+                src="~assets/img7.jpg"
+              />
+              <q-img
+                class="tw-mb-4 tw-rounded tw-shadow-xl"
+                src="~assets/img8.jpg"
+              />
+              <q-img
+                class="tw-mb-4 tw-rounded tw-shadow-xl"
+                src="~assets/img9.jpg"
+              />
+              <q-img
+                class="tw-mb-4 tw-rounded tw-shadow-xl"
+                src="~assets/img10.jpg"
+              />
             </div>
           </div>
         </div>
@@ -428,19 +578,18 @@
             </div>
           </div>
         </div>
-        <div class="tw-space-y-4 tw-pb-20 bg-secondary">
-          <div class="tw-flex tw-flex-col tw-items-center tw-gap-10 tw-mx-auto">
-            <p class="tw-text-3xl tw-font-semibold text-white">
-              Sudah Sampai Mana Pengirimanmu?
-            </p>
-            <q-input
-              style="width: 1000px"
-              filled
-              v-model="text"
-              label="Masukkan Kode Transaksi"
-              class="bg-white"
-            />
-          </div>
+
+        <div class="tw-flex tw-flex-col tw-items-center tw-gap-10 tw-mx-auto">
+          <p class="tw-text-3xl tw-font-semibold text-secondary">
+            Sudah Sampai Mana Pengirimanmu?
+          </p>
+          <q-input
+            style="width: 1000px"
+            filled
+            v-model="text"
+            label="Masukkan Kode Transaksi"
+            class="bg-white"
+          />
         </div>
       </div>
       <div
@@ -460,7 +609,13 @@
     <CoverageComp />
   </q-page>
 </template>
-
+<style lang="sass" scoped>
+.custom-caption
+  text-align: center
+  padding: 12px
+  color: white
+  background-color: rgba(0, 0, 0, .3)
+</style>
 <script>
 import { defineComponent, ref } from 'vue';
 // import BeritaInfo from 'src/components/BeritaInfo.vue';
@@ -473,10 +628,14 @@ export default defineComponent({
   setup() {
     return {
       articles: ref([]),
+      expanded_darat: ref(false),
+      expanded_udara: ref(false),
+      expanded_laut: ref(false),
+      slide: ref('first'),
     };
   },
   mounted() {
-    this.getArticle();
+    //this.getArticle();
   },
   methods: {
     getArticle() {
