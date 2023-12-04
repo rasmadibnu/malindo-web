@@ -20,7 +20,34 @@
               @click="expandMenu(menu.id)"
               :label="menu.label"
               :to="{ name: menu.to ? menu.to : '#' }"
-            />
+            >
+              <q-menu
+                v-if="menu.is_header && menu.child.length > 0"
+                square
+                v-model="expanded_menu[menu.id]"
+                @mouseover="expanded_menu[menu.id] = true"
+                @mouseleave="expanded_menu[menu.id] = false"
+              >
+                <q-list>
+                  <q-item
+                    v-for="menu_child in menu.child"
+                    :key="menu_child.id"
+                    clickable
+                    v-ripple
+                    :to="{
+                      name: menu_child.to ? menu_child.to : '#',
+                    }"
+                  >
+                    <q-item-section>
+                      <q-item-label>{{ menu_child.label }}</q-item-label>
+                      <q-item-label v-if="menu_child.description" caption>{{
+                        menu_child.description
+                      }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-menu>
+            </q-btn>
           </template>
         </div>
         <q-btn
@@ -58,39 +85,6 @@
           </div>
         </div> -->
       </q-toolbar>
-      <div>
-        <template v-for="menu in menus" :key="menu.id">
-          <q-menu
-            v-if="menu.is_header && menu.child.length > 0"
-            square
-            v-model="expanded_menu[menu.id]"
-            @mouseover="expanded_menu[menu.id] = true"
-            @mouseleave="expanded_menu[menu.id] = false"
-            class="tw-min-w-full tw-mx-auto tw-shadow-none"
-          >
-            <div class="tw-mx-20 tw-my-4">
-              <q-list>
-                <q-item
-                  v-for="menu_child in menu.child"
-                  :key="menu_child.id"
-                  clickable
-                  v-ripple
-                  :to="{
-                    name: menu_child.to ? menu_child.to : '#',
-                  }"
-                >
-                  <q-item-section>
-                    <q-item-label>{{ menu_child.label }}</q-item-label>
-                    <q-item-label v-if="menu_child.description" caption>{{
-                      menu_child.description
-                    }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </div>
-          </q-menu>
-        </template>
-      </div>
     </q-header>
 
     <q-drawer
@@ -430,7 +424,7 @@ const menus = [
       {
         id: '10',
         label: 'Company Profile',
-        description: 'Sejarah, Visi & Misi, Core Value',
+        description: 'Perusahaan, Visi & Misi, Our Value',
         child: [],
         is_header: false,
         to: 'companyprofile',
