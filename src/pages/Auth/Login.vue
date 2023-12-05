@@ -72,7 +72,9 @@ const login = () => {
           </q-avatar>
           <q-card class="md:tw-w-96 tw-w-full tw-p-4 tw-shadow-lg tw-my-auto">
             <q-card-section>
-              <p class="tw-font-bold tw-text-xl">Welcome To Malindo! 👋</p>
+              <p class="tw-font-bold tw-text-xl">
+                Welcome To Malindo Sarana! 👋
+              </p>
               <p>Please sign in to your account.</p>
             </q-card-section>
             <q-card-section>

@@ -42,6 +42,13 @@ const columns: QTableColumn = [
     sortable: false,
   },
   {
+    name: 'user.partner.name',
+    label: 'Partner',
+    align: 'left',
+    field: (row) => row.user.partner.name,
+    sortable: false,
+  },
+  {
     name: 'payment_scheme',
     label: 'Skema Pembayaran',
     align: 'left',
@@ -56,7 +63,7 @@ const columns: QTableColumn = [
     sortable: false,
   },
   {
-    name: 'vehicle.name',
+    name: 'vehicle.police_no',
     label: 'Armada',
     align: 'left',
     field: (row) => row.vehicle.police_no,
@@ -77,7 +84,7 @@ const columns: QTableColumn = [
     sortable: false,
   },
   {
-    name: 'form',
+    name: 'from',
     label: 'Daerah Asal',
     align: 'left',
     field: 'from',
@@ -109,8 +116,8 @@ const columns: QTableColumn = [
 const my_table = ref(null);
 const params = ref({
   sort: '-created_at',
+  filters: '["user.name", "Tere"]',
 });
-const typeUrl = '/service-types?filters=["service.code", "no"]';
 
 const data = ref({});
 const dialog_detail = ref<boolean>(false);
@@ -152,7 +159,7 @@ const addExtendPayload = (is_edit: boolean) => {
 const updateStatus = () => {
   loading.value = true;
   api
-    .put('/transactions/' + data.value.id, {
+    .put('/orders/' + data.value.id, {
       status_id: status_change.value.status_id,
       logs: [
         {
@@ -210,7 +217,14 @@ onMounted(() => {
     :extPayload="extended_payload"
   >
     <template #top>
-      <div class="tw-grid md:tw-grid-cols-4 tw-gap-6">
+      <div
+        class="tw-grid tw-gap-6"
+        :class="
+          statuses.length <= 4
+            ? 'md:tw-grid-cols-' + statuses.length
+            : 'md:tw-grid-cols-4'
+        "
+      >
         <q-card
           class="tw-shadow-md tw-cursor-pointer"
           v-for="status in statuses.sort((a, b) => a.id - b.id)"

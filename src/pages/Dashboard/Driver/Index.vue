@@ -7,10 +7,11 @@ import Btn from 'src/components/ui/Button.vue';
 import { QTableColumn } from 'quasar';
 import { required } from 'src/utils/validators';
 import moment from 'moment';
+import { api } from 'src/boot/axios';
 
 const columns: QTableColumn = [
   {
-    name: 'code',
+    name: 'no',
     align: 'left',
     label: 'Kode',
     field: 'no',
@@ -32,7 +33,7 @@ const columns: QTableColumn = [
     sortable: false,
   },
   {
-    name: 'license_type',
+    name: 'license_category',
     align: 'left',
     label: 'Kategori SIM',
     field: 'license_category',
@@ -92,6 +93,30 @@ const columns: QTableColumn = [
 const params = ref({
   sort: '-created_at',
 });
+
+const statuses = ref([]);
+
+const getStatus = () => {
+  statuses.value = [];
+  api.get('/drivers/status').then((res) => {
+    statuses.value = res.data.data;
+  });
+};
+
+const extended_payload = ref();
+
+const addExtendPayload = (is_edit: boolean) => {
+  extended_payload.value = [];
+  if (!is_edit) {
+    extended_payload.value = {
+      status_id: 8,
+    };
+  }
+};
+
+onMounted(() => {
+  getStatus();
+});
 </script>
 <template>
   <BaseTable
@@ -101,8 +126,55 @@ const params = ref({
     colInfo="no"
     title="Driver"
     apiUrl="/drivers"
+    @beforeSubmit="addExtendPayload"
     :params="params"
   >
+    <template #top>
+      <div
+        class="tw-grid tw-gap-6"
+        :class="
+          statuses.length <= 4
+            ? 'md:tw-grid-cols-' + statuses.length
+            : 'md:tw-grid-cols-4'
+        "
+      >
+        <q-card
+          class="tw-shadow-md tw-cursor-pointer"
+          v-for="status in statuses.sort((a, b) => a.id - b.id)"
+          v-bind:key="status.id"
+          @click="my_table.updateSearch(status.name)"
+        >
+          <q-card-section v-if="statuses.length > 0">
+            <div class="tw-flex tw-justify-between">
+              <div>
+                <div class="tw-text-lg">
+                  {{ status.count }}
+                </div>
+                <div class="tw-text-xs">
+                  {{ status.name }}
+                </div>
+              </div>
+              <div>
+                <q-avatar :color="status.color" rounded>
+                  <q-icon :name="status.icon" color="white" size="md" />
+                </q-avatar>
+              </div>
+            </div>
+          </q-card-section>
+          <q-card-section v-else>
+            <div class="tw-flex tw-justify-between">
+              <div>
+                <q-skeleton type="text" style="width: 20px" />
+                <q-skeleton type="text" style="width: 60px" />
+              </div>
+              <div>
+                <q-skeleton size="50px" />
+              </div>
+            </div>
+          </q-card-section>
+        </q-card>
+      </div>
+    </template>
     <template #form="{ payload }">
       <div class="md:tw-grid md:tw-grid-cols-6 tw-space-y-1.5 tw-gap-x-4">
         <InputTextField

@@ -152,7 +152,14 @@ onMounted(() => {
     :params="params"
   >
     <template #top>
-      <div class="tw-grid md:tw-grid-cols-3 tw-gap-6">
+      <div
+        class="tw-grid tw-gap-6"
+        :class="
+          statuses.length <= 4
+            ? 'md:tw-grid-cols-' + statuses.length
+            : 'md:tw-grid-cols-4'
+        "
+      >
         <q-card
           class="tw-shadow-md tw-cursor-pointer"
           v-for="status in statuses.sort((a, b) => a.id - b.id)"

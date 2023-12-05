@@ -83,6 +83,8 @@ function fetchData(requestProps: {
   loading.value = true;
   pagination.value = requestProps?.pagination;
 
+  console.log(props.params);
+
   const params = new URLSearchParams(props.params);
   const data = {
     params: params,
@@ -109,10 +111,12 @@ function fetchData(requestProps: {
 
   if (search.value && props.search_column) {
     params.delete('filters');
-    const dataForSearchs = [
-      props.params['filters'] && props.params['filters'],
-      ['["AND"]'],
-    ];
+    const dataForSearchs = [];
+
+    if (props.params['filters']) {
+      dataForSearchs.push(props.params['filters']);
+      dataForSearchs.push('["AND"]');
+    }
     if (!isEmptyArray(props.search_column)) {
       props.search_column.map((item, i) => {
         dataForSearchs.push(`["${item}", "like", "${search.value}"]`);
@@ -122,13 +126,23 @@ function fetchData(requestProps: {
       });
     } else {
       props.columns.forEach((col, i) => {
-        dataForSearchs.push(`["${col.name}", "like", "${search.value}"]`);
+        dataForSearchs.push(
+          (i == 0 ? '[' : '') +
+            `["${col.name}", "like", "${search.value}"]` +
+            (i == props.columns.length - 1 ? ']' : '')
+        );
         if (props.columns.length - 1 > i) {
           dataForSearchs.push('["OR"]');
         }
       });
     }
-    params.append('filters', `[${dataForSearchs}]`);
+
+    params.append(
+      'filters',
+      dataForSearchs.includes('["AND"]')
+        ? `[${dataForSearchs}]`
+        : dataForSearchs
+    );
   }
 
   api

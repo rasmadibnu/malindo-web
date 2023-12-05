@@ -160,6 +160,8 @@ onMounted(() => {
           :rules="[required]"
           optLabel="name"
           optValue="id"
+          map-options
+          emit-value
           apiUrl="/partners"
           toplabel="Partner"
           v-model="payload.partner_id"
