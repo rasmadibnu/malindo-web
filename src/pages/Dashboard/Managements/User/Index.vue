@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue';
 import { email, required, match } from 'src/utils/validators.ts';
 import BaseTable from 'components/ui/BaseTable.vue';
+import Btn from 'src/components/ui/Button.vue';
 import InputTextField from 'src/components/form/InputTextField.vue';
 import InputSelect from 'src/components/form/InputSelect.vue';
 import moment from 'moment';
@@ -110,6 +111,7 @@ onMounted(() => {
     colInfo="name"
     title="User"
     apiUrl="/users"
+    menuCode="usr"
     :columns="columns"
   >
     <template #prepend-action="{ row }">
@@ -127,7 +129,7 @@ onMounted(() => {
         "
       />
     </template>
-    <template #form="{ payload }">
+    <template #form="{ payload, is_edit }">
       <div class="tw-grid md:tw-grid-cols-2 tw-gap-x-4 tw-gap-y-1">
         <InputTextField
           toplabel="Nama"
@@ -140,13 +142,16 @@ onMounted(() => {
           v-model="payload.username"
         />
         <InputTextField
-          :rules="[required]"
+          :rules="[!is_edit && required]"
           type="password"
           toplabel="Password"
           v-model="payload.password"
         />
         <InputTextField
-          :rules="[required, (val) => match(val, payload.password)]"
+          :rules="[
+            !is_edit && required,
+            (val) => payload.password && match(val, payload.password),
+          ]"
           type="password"
           toplabel="Konfirmasi Password"
           v-model="payload.konfirmasi_password"
@@ -170,13 +175,9 @@ onMounted(() => {
     </template>
   </BaseTable>
   <q-dialog v-model="role_dialog">
-    <q-card style="width: 600px">
-      <q-card-section class="row items-center">
-        <div class="text-h6">Assign Role</div>
-        <q-space />
-        <q-btn flat round dense v-close-popup>
-          <vx-icon iconName="CloseCircle" :size="20" />
-        </q-btn>
+    <q-card style="width: 600px" class="tw-p-6">
+      <q-card-section>
+        <div class="text-h6 text-center">Assign Role</div>
       </q-card-section>
       <q-card-section class="q-py-none">
         <div class="tw-text-lg tw-mb-4">
@@ -193,10 +194,10 @@ onMounted(() => {
         >
         </q-table>
       </q-card-section>
-      <q-card-actions align="right">
-        <q-btn flat label="Batal" color="negative" no-caps v-close-popup />
-        <q-btn flat label="Tambah" no-caps @click="assignRole" />
-      </q-card-actions>
+      <q-card-section align="center" class="tw-space-x-2">
+        <Btn label="Cancel" color="grey-3" text-color="grey" v-close-popup />
+        <Btn @click="assignRole" :loading="loading" label="Submit" />
+      </q-card-section>
     </q-card>
   </q-dialog>
 </template>

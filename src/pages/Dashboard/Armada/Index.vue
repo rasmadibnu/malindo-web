@@ -147,6 +147,7 @@ onMounted(() => {
     colKey="id"
     colInfo="police_no"
     title="Armada"
+    menuCode="vcl"
     apiUrl="/vehicles"
     @beforeSubmit="addExtendPayload"
     :params="params"

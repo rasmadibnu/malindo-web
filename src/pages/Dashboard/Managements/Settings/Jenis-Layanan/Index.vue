@@ -32,6 +32,7 @@ const columns = ref([
     colInfo="name"
     title="Jenis Layanan"
     apiUrl="/service-types"
+    menuCode="jenis-layanan"
     :columns="columns"
   >
     <template #form="{ payload }">

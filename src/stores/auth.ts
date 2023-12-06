@@ -5,6 +5,9 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     token: localStorage.getItem('token'),
     user: null,
+    permissions: [],
+    permission: [],
+    raw_menus: [],
     menus: [],
   }),
   getters: {
@@ -43,17 +46,22 @@ export const useAuthStore = defineStore('auth', {
     setMenus() {
       this.menus = [];
       const raw_menus: unknown[] = [];
+      const menus: unknown[] = [];
 
       this.user.roles.forEach((role) => {
         role.menus.forEach((menu) => {
-          const findMenu = raw_menus.findIndex((e) => e.id === menu.id);
+          raw_menus.push(menu);
+          const findMenu = menus.findIndex((e) => e.id === menu.id);
           if (findMenu == -1) {
-            raw_menus.push(menu);
+            menus.push(menu);
           }
         });
+        this.permissions.push(...role.permissions);
       });
 
-      raw_menus.forEach((item) => {
+      this.raw_menus = raw_menus;
+
+      menus.forEach((item) => {
         if (item.parent_id === 0) {
           // If parent_id is 0, it is a top-level item
           this.menus.push(item);
@@ -74,6 +82,19 @@ export const useAuthStore = defineStore('auth', {
       });
 
       this.menus = this.menus.sort((a, b) => a.ord - b.ord);
+    },
+
+    checkPermissions(code: number) {
+      this.permission = [];
+      const menu = this.raw_menus.find((menu) => {
+        return menu.code === code;
+      });
+      if (menu)
+        this.permission = this.permissions
+          .filter((perm) => {
+            return perm.menu_id === menu.id;
+          })
+          .map((perm) => perm.name);
     },
   },
 });

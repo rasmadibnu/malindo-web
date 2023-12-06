@@ -45,6 +45,7 @@ const columns = ref([
     colInfo="name"
     title="Status"
     apiUrl="/statuses"
+    menuCode="status"
     :search_column="['name', 'color', 'icon']"
     :columns="columns"
   >

@@ -1,12 +1,14 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, onBeforeMount } from 'vue';
 import { QTableColumn, Notify } from 'quasar';
 import Btn from 'components/ui/Button.vue';
 import { useRoute } from 'vue-router';
 import { AxiosError, AxiosResponse } from 'axios';
 import { api } from 'boot/axios';
 import { isEmptyArray } from 'src/utils/validators';
+import { useAuthStore } from 'src/stores/auth';
 
+const auth = useAuthStore();
 interface Props {
   title: string;
   columns: QTableColumn[];
@@ -18,6 +20,7 @@ interface Props {
   search_column?: unknown;
   extPayload?: unknown;
   params?: object;
+  menuCode?: string;
 }
 
 const route = useRoute();
@@ -41,14 +44,6 @@ if (props.useIndex) {
     },
     ...props.columns
   );
-}
-
-if (props.useAction) {
-  cols.value.push({
-    name: 'actions',
-    label: 'Action',
-    align: 'center',
-  });
 }
 
 const total_pages = ref<number>(0);
@@ -82,8 +77,6 @@ function fetchData(requestProps: {
 }) {
   loading.value = true;
   pagination.value = requestProps?.pagination;
-
-  console.log(props.params);
 
   const params = new URLSearchParams(props.params);
   const data = {
@@ -247,8 +240,19 @@ defineExpose({
   refresh,
 });
 
+onBeforeMount(() => {
+  auth.checkPermissions(props.menuCode);
+});
+
 onMounted(() => {
   refresh();
+  if (props.useAction && auth.permission.includes('Action')) {
+    cols.value.push({
+      name: 'actions',
+      label: 'Action',
+      align: 'center',
+    });
+  }
 });
 </script>
 <template>
@@ -290,6 +294,10 @@ onMounted(() => {
     :pagination="pagination"
     card-class="tw-py-2"
     class="tw-col-span-2 tw-shadow-md"
+    :class="
+      cols.map((col) => col.name).includes('actions') &&
+      'my-sticky-column-table'
+    "
   >
     <template #top>
       <div class="tw-flex tw-w-full tw-items-center tw-justify-between">
@@ -309,6 +317,7 @@ onMounted(() => {
         </q-input>
         <div>
           <Btn
+            v-if="auth.permission.includes('Create')"
             icon="add"
             label="Add"
             @click="
@@ -387,7 +396,7 @@ onMounted(() => {
       </q-card-section>
       <q-form @submit.prevent="storeData">
         <q-card-section>
-          <slot name="form" :payload="payload" />
+          <slot name="form" :is_edit="is_edit" :payload="payload" />
         </q-card-section>
         <q-card-section align="center" class="tw-space-x-2">
           <Btn
@@ -431,25 +440,19 @@ onMounted(() => {
     </q-card>
   </q-dialog>
 </template>
-<style scoped>
+<style scoped lang="scss">
 :deep(.input-box .q-field__control),
 :deep(.input-box .q-field__marginal) {
   height: 36px;
 }
 
-.my-sticky-column-table {
-  max-width: 100%;
-}
-/* specifying max-width so the example can
-    highlight the sticky column on any browser window */
-
-:deep(.q-table th:last-child) {
+.my-sticky-column-table :deep(th:last-child) {
   position: sticky;
   right: 0;
   z-index: 1;
   background-color: #fff;
 }
-:deep(.q-table td:last-child) {
+.my-sticky-column-table td:last-child {
   position: sticky;
   right: 0;
   z-index: 1;

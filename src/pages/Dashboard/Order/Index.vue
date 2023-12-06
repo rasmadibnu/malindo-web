@@ -210,6 +210,7 @@ onMounted(() => {
     colInfo="no"
     title="Order"
     apiUrl="/orders"
+    menuCode="ord"
     :params="params"
     :search="search"
     @beforeSubmit="addExtendPayload"

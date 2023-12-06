@@ -26,6 +26,7 @@ const columns = ref([
     colInfo="name"
     title="Layanan"
     apiUrl="/services"
+    menuCode="layanan"
     :search_column="['name', 'code']"
     :columns="columns"
   >

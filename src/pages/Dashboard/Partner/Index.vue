@@ -32,6 +32,7 @@ const columns = ref([
     colInfo="name"
     title="Partner"
     apiUrl="/partners"
+    menuCode="partner"
     :search_column="['name', 'privilege', 'description']"
     :columns="columns"
   >

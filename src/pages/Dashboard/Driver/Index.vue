@@ -11,6 +11,12 @@ import { api } from 'src/boot/axios';
 
 const columns: QTableColumn = [
   {
+    name: 'status.name',
+    align: 'center',
+    label: 'Status',
+    slot: true,
+  },
+  {
     name: 'no',
     align: 'left',
     label: 'Kode',
@@ -94,6 +100,8 @@ const params = ref({
   sort: '-created_at',
 });
 
+const my_table = ref(null);
+
 const statuses = ref([]);
 
 const getStatus = () => {
@@ -126,6 +134,7 @@ onMounted(() => {
     colInfo="no"
     title="Driver"
     apiUrl="/drivers"
+    menuCode="drvr"
     @beforeSubmit="addExtendPayload"
     :params="params"
   >
@@ -174,6 +183,45 @@ onMounted(() => {
           </q-card-section>
         </q-card>
       </div>
+    </template>
+    <template v-slot:[`body-cell-status.name`]="{ props }">
+      <q-td :props="props">
+        <q-btn
+          size="sm"
+          unelevated
+          :label="props.row.status.name"
+          no-caps
+          :color="props.row.status.color"
+        >
+          <q-menu>
+            <q-list style="min-width: 100px">
+              <q-item
+                v-for="status in statuses"
+                v-bind:key="status.id"
+                clickable
+                v-close-popup
+                dense
+                @click="
+                  () => {
+                    // data = props.row;
+                    // status_change = status;
+                    // dialog_status = true;
+                  }
+                "
+              >
+                <q-item-section>
+                  <q-badge
+                    :label="status.name"
+                    :color="status.color"
+                    :style="{ backgroundColor: status.color }"
+                  />
+                </q-item-section>
+              </q-item>
+              <q-separator />
+            </q-list>
+          </q-menu>
+        </q-btn>
+      </q-td>
     </template>
     <template #form="{ payload }">
       <div class="md:tw-grid md:tw-grid-cols-6 tw-space-y-1.5 tw-gap-x-4">
