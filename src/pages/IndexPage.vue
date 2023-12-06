@@ -10,7 +10,7 @@
         </div>
         <div class="tw-flex tw-items-center tw-gap-1">
           <q-icon name="mail" />
-          <div>Malindosaranalogistic@gmail.com</div>
+          <div>malindosaranalogistic@gmail.com</div>
         </div>
         <div class="tw-flex tw-items-center tw-gap-1">
           <q-icon name="public" />
@@ -19,7 +19,7 @@
       </div>
       <div class="tw-grid md:tw-grid-cols-2 tw-items-center md:tw-gap-20">
         <div class="tw-space-y-4">
-          <div class="tw-text-4xl tw-font-semibold text-secondary">
+          <div class="tw-text-4xl tw-font-extrabold text-secondary">
             LOGISTIC & <br />
             <div class="text-primary">TRANSPORT AGENCY</div>
           </div>
@@ -29,9 +29,9 @@
           </p>
           <q-btn
             color="secondary"
+            no-caps
             label="Kirim Sekarang"
-            @click="onClick"
-            :to="{ name: 'form' }"
+            :to="{ name: 'type' }"
           />
           <div class="tw-grid md:tw-grid-cols-4 tw-gap-4 text-primary tw-py-10">
             <q-card class="tw-shadow-md">
