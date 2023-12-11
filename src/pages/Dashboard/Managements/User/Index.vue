@@ -111,7 +111,7 @@ onMounted(() => {
     colInfo="name"
     title="User"
     apiUrl="/users"
-    menuCode="usr"
+    menuCode="users"
     :columns="columns"
   >
     <template #prepend-action="{ row }">

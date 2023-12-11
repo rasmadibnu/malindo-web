@@ -153,6 +153,18 @@
 
     <q-page-container>
       <router-view />
+      <q-page-sticky position="bottom-right" :offset="[18, 18]">
+        <q-btn
+          fab
+          color="green-5"
+          href="https://wa.me/6285399900855"
+          target="_blank"
+        >
+          <q-avatar rounded size="md">
+            <q-img src="~assets/whatsapp-128.png" />
+          </q-avatar>
+        </q-btn>
+      </q-page-sticky>
     </q-page-container>
 
     <q-footer
@@ -277,7 +289,7 @@
         <a href="!#">Syarat dan Ketentuan</a>
       </div>
     </q-footer>
-    <transition
+    <!-- <transition
       appear
       enter-active-class="animated fadeInUp"
       leave-active-class="animated fadeOutDown"
@@ -295,7 +307,7 @@
           icon="keyboard_arrow_up"
         />
       </div>
-    </transition>
+    </transition> -->
   </q-layout>
 </template>
 <style>
@@ -441,16 +453,7 @@ const menus = [
     id: '17',
     label: 'About Us',
     description: '',
-    child: [
-      {
-        id: '10',
-        label: 'Company Profile',
-        description: 'Perusahaan, Visi & Misi, Our Value',
-        child: [],
-        is_header: false,
-        to: 'companyprofile',
-      },
-    ],
+    child: [],
     is_header: true,
     to: '',
   },
@@ -458,17 +461,7 @@ const menus = [
     id: '19',
     label: 'Contact Us',
     description: '',
-    child: [
-      {
-        id: '20',
-        label: 'Pengaduan',
-        description:
-          'Anda dapat memberikan pengaduan terkait proses yang berlangsung',
-        child: [],
-        is_header: false,
-        to: 'help',
-      },
-    ],
+    child: [],
     is_header: true,
     to: '',
   },

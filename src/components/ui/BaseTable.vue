@@ -5,7 +5,7 @@ import Btn from 'components/ui/Button.vue';
 import { useRoute } from 'vue-router';
 import { AxiosError, AxiosResponse } from 'axios';
 import { api } from 'boot/axios';
-import { isEmptyArray } from 'src/utils/validators';
+import { isEmptyArray, isEmpty } from 'src/utils/validators';
 import { useAuthStore } from 'src/stores/auth';
 
 const auth = useAuthStore();
@@ -106,7 +106,7 @@ function fetchData(requestProps: {
     params.delete('filters');
     const dataForSearchs = [];
 
-    if (props.params['filters']) {
+    if (props.params?.filters) {
       dataForSearchs.push(props.params['filters']);
       dataForSearchs.push('["AND"]');
     }
@@ -119,20 +119,18 @@ function fetchData(requestProps: {
       });
     } else {
       props.columns.forEach((col, i) => {
-        dataForSearchs.push(
-          (i == 0 ? '[' : '') +
-            `["${col.name}", "like", "${search.value}"]` +
-            (i == props.columns.length - 1 ? ']' : '')
-        );
+        dataForSearchs.push(`["${col.name}", "like", "${search.value}"]`);
         if (props.columns.length - 1 > i) {
           dataForSearchs.push('["OR"]');
         }
       });
     }
 
+    console.log(dataForSearchs);
+
     params.append(
       'filters',
-      dataForSearchs.includes('["AND"]')
+      dataForSearchs.includes('["OR"]') || dataForSearchs.includes('["AND"]')
         ? `[${dataForSearchs}]`
         : dataForSearchs
     );
@@ -143,7 +141,7 @@ function fetchData(requestProps: {
     .then((response: AxiosResponse) => {
       rows.value = response.data.data.items;
       pagination.value.rowsNumber = response.data.data.total;
-      total_pages.value = response.data.data.total_pages;
+      total_pages.value = response.data.data.total_pages as number;
 
       loading.value = false;
     })
@@ -159,7 +157,7 @@ const dialog_delete = ref(false);
 
 const payload = ref({});
 
-const emit = defineEmits(['beforeSubmit', 'afterSubmit']);
+const emit = defineEmits(['beforeSubmit', 'afterSubmit', 'afterDelete']);
 
 async function storeData() {
   loading.value = true;
@@ -223,6 +221,9 @@ function deleteData() {
     })
     .catch((err) => {
       console.log(err);
+    })
+    .finally(() => {
+      emit('afterDelete');
     });
 }
 
@@ -291,7 +292,7 @@ onMounted(() => {
     :rows="rows"
     :loading="loading"
     @request="fetchData"
-    :pagination="pagination"
+    v-model:pagination="pagination"
     card-class="tw-py-2"
     class="tw-col-span-2 tw-shadow-md"
     :class="
@@ -313,6 +314,24 @@ onMounted(() => {
         >
           <template #prepend>
             <q-icon name="search" />
+          </template>
+          <template #append>
+            <q-btn
+              v-if="search"
+              flat
+              size="sm"
+              dense
+              rounded
+              icon="close"
+              class="bg-red"
+              text-color="white"
+              @click="
+                () => {
+                  search = '';
+                  $refs.my_table.requestServerInteraction();
+                }
+              "
+            />
           </template>
         </q-input>
         <div>
@@ -359,7 +378,11 @@ onMounted(() => {
                 payload = props.row;
               }
             "
-          />
+          >
+            <q-tooltip anchor="bottom middle" self="top middle">
+              Edit
+            </q-tooltip>
+          </q-btn>
           <q-btn
             dense
             unelevated
@@ -372,7 +395,11 @@ onMounted(() => {
                 dialog_delete = true;
               }
             "
-          />
+          >
+            <q-tooltip anchor="bottom middle" self="top middle">
+              Hapus
+            </q-tooltip>
+          </q-btn>
           <slot name="append-action" :row="props.row"> </slot>
         </div>
       </q-td>

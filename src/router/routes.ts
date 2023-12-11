@@ -35,6 +35,11 @@ const routes: RouteRecordRaw[] = [
         name: 'home',
       },
       {
+        path: 'type',
+        component: () => import('pages/Type.vue'),
+        name: 'type',
+      },
+      {
         path: 'form',
         component: () => import('pages/Form.vue'),
         name: 'form',
@@ -154,7 +159,16 @@ const routes: RouteRecordRaw[] = [
     ],
   },
 
-  { path: '/login', component: () => import('pages/Auth/Login.vue') },
+  {
+    path: '/login',
+    component: () => import('pages/Auth/Login.vue'),
+    name: 'login',
+  },
+  {
+    path: '/register',
+    component: () => import('pages/Auth/Register.vue'),
+    name: 'register',
+  },
 
   // Always leave this as last one,
   // but you can also remove it

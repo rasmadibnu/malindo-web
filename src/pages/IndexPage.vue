@@ -65,73 +65,69 @@
         </div>
       </div>
     </div>
-    <q-card square>
-      <q-card-section
-        class="bg-secondary tw-text-right tw-text-lg tw-text-white"
-      >
-        Service
-      </q-card-section>
-    </q-card>
+    <div class="bg-secondary tw-py-8 tw-my-5 md:tw-my-8">
+      <div class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8">
+        <div class="tw-mb-4 tw-text-3xl tw-font-bold tw-text-white">
+          Pilih sesuai kebutuhan anda!
+        </div>
+        <div class="tw-grid md:tw-grid-cols-2 tw-gap-4 tw-mb-6">
+          <div>
+            <q-card class="tw-shadow-md">
+              <q-card-section horizontal>
+                <q-card-section class="tw-space-y-2">
+                  <p class="tw-text-xl tw-text-left tw-font-bold text-primary">
+                    CORPORATE
+                  </p>
+                  <p class="tw-text-xs tw-text-left">
+                    Daftar untuk fitur bisnis eksekutif atau kirimkan pertanyaan
+                    anda dan mari kita bicara!
+                  </p>
+                  <q-btn
+                    flat
+                    class="tw-text-xs"
+                    color="primary"
+                    label="Cari Tahu"
+                    icon-right="arrow_forward"
+                    no-caps
+                    dense
+                    :to="{ name: 'form' }"
+                  />
+                </q-card-section>
 
-    <div class="tw-max-w-6xl tw-mx-auto tw-my-5 md:tw-my-8 xl:tw-px-0 tw-px-8">
-      <div class="tw-grid md:tw-grid-cols-2 tw-gap-4 tw-mb-6">
-        <div>
+                <q-img class="col-5" src="~assets/heavy.svg" />
+              </q-card-section>
+            </q-card>
+          </div>
           <q-card class="tw-shadow-md">
             <q-card-section horizontal>
-              <q-card-section>
+              <q-card-section class="tw-space-y-2">
                 <p class="tw-text-xl tw-text-left tw-font-bold text-primary">
-                  CORPORATE
+                  RETAIL
                 </p>
                 <p class="tw-text-xs tw-text-left">
-                  Solusi Pengiriman Instan Untuk Bisnis Anda
+                  Pengiriman barang cepat mudah untuk usaha pribadi dan usaha
+                  kecil
                 </p>
+                <q-btn
+                  flat
+                  class="tw-text-xs"
+                  color="primary"
+                  label="Daftar Sekarang"
+                  icon-right="arrow_forward"
+                  no-caps
+                  dense
+                  :to="{ name: 'register' }"
+                />
               </q-card-section>
-
-              <q-img class="col-5" src="~assets/heavy.svg" />
+              <q-img class="col-5" src="~assets/pindah.svg" />
             </q-card-section>
-            <q-card-actions align="left">
-              <q-btn
-                flat
-                class="tw-text-xs"
-                color="primary"
-                label="Cari Tahu"
-                icon-right="arrow_forward"
-                no-caps
-                dense
-                :to="{ name: 'form' }"
-              />
-            </q-card-actions>
           </q-card>
         </div>
-        <q-card class="tw-shadow-md">
-          <q-card-section horizontal>
-            <q-card-section>
-              <p class="tw-text-xl tw-text-left tw-font-bold text-primary">
-                RETAIL
-              </p>
-              <p class="tw-text-xs tw-text-left">
-                Pengiriman barang cepat mudah untuk kebutuhan anda
-              </p></q-card-section
-            >
-            <q-img class="col-5" src="~assets/pindah.svg" />
-          </q-card-section>
-          <q-card-actions align="left">
-            <q-btn
-              flat
-              class="tw-text-xs"
-              color="primary"
-              label="Cari Tahu"
-              icon-right="arrow_forward"
-              no-caps
-              dense
-              :to="{ name: 'form' }"
-            />
-          </q-card-actions>
-        </q-card>
       </div>
     </div>
+
     <div class="tw-max-w-6xl tw-mx-auto tw-mt-8 xl:tw-px-0 tw-px-8">
-      <h1 class="text-primary tw-mb-4 tw-text-2xl tw-font-bold">
+      <h1 class="text-primary tw-mb-4 tw-text-3xl tw-font-bold">
         Berbagai Macam Armada
       </h1>
       <div class="tw-grid md:tw-grid-cols-3 tw-gap-4">
@@ -315,17 +311,19 @@
         </div>
         <div>
           <div class="tw-space-y-4">
-            <p class="tw-text-2xl tw-text-primary tw-font-bold">
-              CEPAT MUDAH TERJANGKAU
+            <p class="tw-text-3xl tw-text-primary tw-font-bold">
+              Cepat Mudah Terjangkau
             </p>
 
-            <div class="tw-grid md:tw-grid-cols-1 text-secondary">
+            <div class="tw-grid md:tw-grid-cols-1 tw-gap-2 text-secondary">
               <div class="text-bold">
                 Beragam Armada Pengiriman
                 <div class="tw-font-normal tw-text-xs">
                   Pilihan armada yang beragam tersedia untuk pengirimanmu, mulai
                   dari 20 kg hingga 20 ton.
                 </div>
+              </div>
+              <div class="text-bold">
                 Pengiriman yang Aman
                 <div class="tw-font-normal tw-text-xs">
                   Driver yang terlatih secara profesional akan memastikan barang
@@ -339,6 +337,8 @@
                   Nikmati tarif yang transparan. Lakukan pembayaran langsung
                   melalui aplikasi atau secara tunai kepada driver.
                 </div>
+              </div>
+              <div class="text-bold">
                 Tepat Waktu dan Efisien
                 <div class="tw-font-normal tw-text-xs">
                   Pengiriman akan dijemput dan diantar tepat waktu, menjamin
@@ -393,7 +393,9 @@
         </div>
       </div>
       <div class="tw-space-y-4">
-        <div class="tw-grid md:tw-grid-cols-2 text-secondary tw-gap-20">
+        <div
+          class="tw-grid md:tw-grid-cols-2 tw-mb-10 md:tw-mb-20 text-secondary tw-gap-20"
+        >
           <div>
             <div class="tw-space-y-4 tw-mt-10">
               <div class="tw-text-3xl tw-font-bold text-secondary">
@@ -443,7 +445,7 @@
           <q-img src="~assets/orange.jpg" />
         </div>
         <div
-          class="tw-grid md:tw-grid-cols-2 tw-my-5 md:tw-my-10 tw-mt-2 tw-gap-8"
+          class="tw-grid md:tw-grid-cols-2 tw-mb-10 md:tw-mb-20 tw-mt-2 tw-gap-8"
         >
           <div>
             <p class="tw-text-3xl tw-font-bold text-secondary">Our Values</p>
@@ -497,7 +499,9 @@
             </div>
           </div>
         </div>
-        <div class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-space-y-4">
+        <div
+          class="tw-max-w-6xl tw-mx-auto tw-my-5 md:tw-my-10 xl:tw-px-0 tw-space-y-4"
+        >
           <p class="tw-text-3xl tw-font-bold tw-text-center text-secondary">
             Our Galery <br />
             <br />
@@ -545,36 +549,7 @@
         </div>
       </div>
     </div>
-    <div class="tw-mt-20 bg-secondary tw-py-10 text-white">
-      <div class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8 tw-space-y-4">
-        <h1 class="tw-text-2xl tw-font-bold">
-          Hubungi tim sales kami, isi form di bawah ini
-        </h1>
-        <div class="tw-grid md:tw-grid-cols-1 tw-gap-6">
-          <q-form class="tw-space-y-6">
-            <q-input filled bg-color="white" label="Kebutuhan Bisnis Anda" />
-            <q-select filled bg-color="white" label="No Hp Anda" />
-            <q-select filled bg-color="white" label="Kota" />
-            <q-input
-              filled
-              bg-color="white"
-              label="Ceritakan kebutuhan anda"
-              type="textarea"
-            />
-            <div class="tw-flex tw-justify-center">
-              <q-btn
-                unelevated
-                no-caps
-                size="md"
-                icon-right="o_send"
-                class="bg-white text-secondary"
-                label="Kirim"
-              />
-            </div>
-          </q-form>
-        </div>
-      </div>
-    </div>
+    <ContactUs />
   </q-page>
 </template>
 <style lang="sass" scoped>
@@ -589,9 +564,10 @@ import { defineComponent, ref } from 'vue';
 // import BeritaInfo from 'src/components/BeritaInfo.vue';
 // import CoverageComp from '../components/CoverageComp.vue';
 import Slider from 'src/components/Slider.vue';
+import ContactUs from 'src/components/ContactUs.vue';
 
 export default defineComponent({
-  components: { Slider },
+  components: { Slider, ContactUs },
   name: 'IndexPage',
   setup() {
     return {
@@ -608,7 +584,7 @@ export default defineComponent({
   methods: {
     getArticle() {
       this.$api
-        .get('/articles?size=-1?&filters=["category_id", "3"]')
+        .get('/articles?size=-1&filters=["category_id", "3"]')
         .then((ress) => {
           let data = ress.data.data.items;
           this.articles = data;
