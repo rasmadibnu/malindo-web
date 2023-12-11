@@ -82,6 +82,13 @@ const login = () => {
           <q-card
             class="md:tw-w-96 tw-w-full tw-p-5 tw-shadow-xl tw-my-auto text-bold tw-text-sm text-dark tw-rounded-xl"
           >
+            <q-avatar
+              class="tw-absolute tw-right-0 tw-top-0"
+              square
+              size="100px"
+            >
+              <q-img src="~assets/head.png" />
+            </q-avatar>
             <q-card-section class="tw-text-sm tw-py-10">
               <q-img src="~assets/malindo.png" style="width: 50%" />
             </q-card-section>

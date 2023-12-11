@@ -6,10 +6,13 @@
         class="tw-shadow-md tw-flex tw-justify-between xl:tw-px-0 tw-px-8"
       >
         <div class="lg:tw-block tw-hidden tw-max-w-6xl xl:tw-mx-auto tw-w-full">
-          <div class="tw-flex tw-my-2 tw-gap-4 tw-items-center">
-            <q-avatar square size="150px">
-              <q-img src="~assets/malindo.png" style="width: 100%" />
-            </q-avatar>
+          <div class="tw-flex tw-gap-4 tw-py-2 tw-items-center">
+            <div>
+              <img
+                src="~assets/malindo.png"
+                style="width: 130px; height: 50px"
+              />
+            </div>
             <div>
               <template v-for="menu in menus" :key="menu.id">
                 <q-btn

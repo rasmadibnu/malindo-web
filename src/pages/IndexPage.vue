@@ -1,6 +1,7 @@
 <template>
   <q-page>
     <div class="tw-max-w-6xl tw-my-5 tw-mx-auto xl:tw-px-0 tw-px-8">
+      <!-- <q-img src="~assets/indo.svg" style="max-width: 100%;" class="tw-h-screen tw-absolute" /> -->
       <div
         class="text-secondary tw-hidden tw-pt-4 tw-text-xs md:tw-flex tw-justify-end tw-gap-4"
       >
@@ -182,7 +183,7 @@
         <q-card>
           <q-img src="~assets/fusoopen.png">
             <div class="absolute-bottom tw-text-center">
-              <div class="text-h6">FUSO BOX</div>
+              <div class="text-h6">TRUCK BAK BUKA</div>
               <div class="text-subtitle2">
                 Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 570cm x 250cm
                 x 250cm
@@ -193,10 +194,10 @@
         <q-card>
           <q-img src="~assets/kuningopen.svg">
             <div class="absolute-bottom tw-text-center">
-              <div class="text-h6">FUSO BOX</div>
+              <div class="text-h6">TRUCK BAK BUKA</div>
               <div class="text-subtitle2">
-                Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 570cm x 250cm
-                x 250cm
+                Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 591cm x 197cm
+                x 212cm
               </div>
             </div>
           </q-img>
@@ -204,10 +205,10 @@
         <q-card>
           <q-img src="~assets/trontonopen.svg">
             <div class="absolute-bottom tw-text-center">
-              <div class="text-h6">FUSO BOX</div>
+              <div class="text-h6">TRUCK TRONTON</div>
               <div class="text-subtitle2">
-                Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 570cm x 250cm
-                x 250cm
+                Berat Maksimal 20.000 kg <br />Batas Ukuran (PxLxT): 630cm x
+                250cm x 250cm
               </div>
             </div>
           </q-img>
@@ -586,59 +587,6 @@
       </div>
     </div>
     <ContactUs />
-    <div
-      class="tw-grid md:tw-grid-cols-2 tw-mb-10 md:tw-mb-20 tw-mt-2 tw-gap-8"
-    >
-      <div>
-        <p class="tw-text-3xl tw-font-bold text-secondary">Our Values</p>
-        <div class="text-secondary tw-mt-4 tw-space-y-2 tw-text-justify">
-          <div class="tw-font-bold text-secondary">
-            Keamanan dan prioritas<br />
-          </div>
-
-          <div>
-            Keselamatan karyawan dan klien kami adalah prioritas nomor satu kami
-            sebagai perusahaan yang bertanggung jawab dan akuntabel.
-          </div>
-          <div class="tw-font-bold text-secondary">Intergritas</div>
-          <div>
-            Kepercayaan adalah dasar kami membangun reputasi. Dengan terus
-            mengedepankan kejujuran, integritas, dan keandalan, kita mematuhi
-            standar moral dan etika tertinggi.
-          </div>
-          <div class="tw-font-bold text-secondary">Inovasi</div>
-          <div>
-            Perusahaan kami menantang cara - cara standar dalam melakukan
-            sesuatu di industri logistik dan mengembangkan cara - cara baru dan
-            inovatif untuk memenuhi kebutuhan klien kami.
-          </div>
-        </div>
-      </div>
-      <div>
-        <p class="tw-text-3xl tw-font-bold text-secondary">
-          Company Client <br />
-          <br />
-        </p>
-
-        <div class="tw-grid md:tw-grid-cols-3 tw-items-center text-secondary">
-          <div class="tw-flex tw-justify-center">
-            <q-avatar size="150px" square>
-              <q-img src="~assets/artaboga.svg"
-            /></q-avatar>
-          </div>
-          <div class="tw-flex tw-justify-center">
-            <q-avatar size="150px" square>
-              <q-img src="~assets/mayora.svg"
-            /></q-avatar>
-          </div>
-          <div class="tw-flex tw-justify-center">
-            <q-avatar size="150px" square>
-              <q-img src="~assets/fajar.png"
-            /></q-avatar>
-          </div>
-        </div>
-      </div>
-    </div>
   </q-page>
 </template>
 <style lang="sass" scoped>
