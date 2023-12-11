@@ -45,47 +45,59 @@ const login = () => {
 };
 </script>
 <template>
-  <q-layout class="tw-bg-[#F8F7FA]">
-    <q-page-container>
-      <q-page class="tw-flex tw-items-center tw-justify-center tw-h-screen">
-        <div class="tw-flex-auto md:tw-block tw-hidden tw-w-96 tw-px-20">
-          <q-img src="~assets/heavy-box.svg" />
-        </div>
+  <q-img src="~assets/bg.svg" class="tw-h-screen">
+    <div class="absolute-full text-subtitle2 flex-center">
+      <div class="tw-flex tw-items-center">
+        <q-btn
+          no-caps
+          dense
+          unelevated
+          :to="{ name: 'home' }"
+          rounded
+          color="primary"
+          padding="sm sm"
+          icon="arrow_back"
+        />
 
-        <div
-          class="tw-flex-auto tw-flex tw-px-4 md:tw-px-0 tw-flex-col tw-w-16 tw-h-screen tw-items-center tw-bg-white"
-        >
-          <q-avatar
-            size="200px"
-            square
-            class="tw-absolute tw-top-0 tw-right-64"
+        <div class="text-bold">Home</div>
+      </div>
+      <div
+        class="tw-flex tw-justify-between tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8"
+      >
+        <div class="tw-text-4xl tw-py-10 tw-font-extrabold">
+          Welcome to <br />
+          MALINDO
+        </div>
+        <div class="text-h6">
+          <q-btn
+            no-caps
+            align="left"
+            dense
+            :to="{ name: 'register' }"
+            flat
+            unelevated
+            class="tw-w-full tw-shadow-none"
+            label="Tidak memiliki akun?  Daftar Sekarang"
+          />
+          <q-card
+            class="md:tw-w-96 tw-w-full tw-p-5 tw-shadow-xl tw-my-auto text-bold tw-text-sm text-dark tw-rounded-xl"
           >
-            <q-img src="~assets/auth-v1-top-shape.svg" no-spinner />
-          </q-avatar>
-          <q-avatar
-            size="200px"
-            square
-            class="tw-absolute -tw-bottom-0 -tw-right-0"
-          >
-            <q-img src="~assets/auth-v1-bottom-shape.svg" no-spinner />
-          </q-avatar>
-          <q-card class="md:tw-w-96 tw-w-full tw-p-4 tw-shadow-lg tw-my-auto">
-            <q-card-section>
-              <p class="tw-font-bold tw-text-xl">
-                Welcome To Malindo Sarana! 👋
-              </p>
-              <p>Please sign in to your account.</p>
+            <q-card-section class="tw-text-sm tw-py-10">
+              <q-img src="~assets/malindo.png" style="width: 50%" />
             </q-card-section>
             <q-card-section>
+              Please sign in to your account.
               <q-form @submit.prevent="login" class="tw-space-y-2">
                 <InputTextField
-                  :autofocus="true"
                   toplabel="Username"
+                  filled
                   :rules="[required]"
                   v-model="payload.username"
                 />
+
                 <InputTextField
                   :rules="[required]"
+                  filled
                   :type="is_pwd ? 'text' : 'password'"
                   v-model="payload.password"
                   toplabel="Password"
@@ -101,8 +113,7 @@ const login = () => {
                 </InputTextField>
                 <Btn
                   type="submit"
-                  class="tw-w-full"
-                  color="primary"
+                  class="tw-bg-primary hover:!tw-bg-secondary tw-transition-all tw-w-full"
                   label="Log-in"
                 />
                 <div class="tw-flex tw-justify-between">
@@ -127,14 +138,14 @@ const login = () => {
                     unelevated
                     class="tw-w-full tw-shadow-none"
                     color="primary"
-                    label="Belum punya akun?"
+                    label="Lupa Password?"
                   />
                 </div>
               </q-form>
             </q-card-section>
           </q-card>
         </div>
-      </q-page>
-    </q-page-container>
-  </q-layout>
+      </div>
+    </div>
+  </q-img>
 </template>
