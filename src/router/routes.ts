@@ -175,6 +175,11 @@ const routes: RouteRecordRaw[] = [
     component: () => import('pages/Driver/Index.vue'),
     beforeEnter: requireAuth,
   },
+  {
+    path: '/client',
+    component: () => import('pages/Client/Index.vue'),
+    beforeEnter: requireAuth,
+  },
 
   {
     path: '/login',
