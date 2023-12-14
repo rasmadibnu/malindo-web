@@ -4,10 +4,14 @@ import BaseTable from 'components/ui/BaseTable.vue';
 import InputTextField from 'src/components/form/InputTextField.vue';
 import InputSelect from 'src/components/form/InputSelect.vue';
 import Btn from 'src/components/ui/Button.vue';
+import Uploader from 'src/components/form/Uploader.vue';
 import { QTableColumn } from 'quasar';
-import { required } from 'src/utils/validators';
+import { required, match, email } from 'src/utils/validators';
 import moment from 'moment';
 import { api } from 'src/boot/axios';
+import { useAuthStore } from 'src/stores/auth';
+
+const auth = useAuthStore();
 
 const columns: QTableColumn = [
   {
@@ -111,6 +115,8 @@ const getStatus = () => {
   });
 };
 
+const url = process.env.VITE_APP_URL + '/attachment/driver';
+
 const extended_payload = ref();
 
 const addExtendPayload = (is_edit: boolean) => {
@@ -135,6 +141,7 @@ onMounted(() => {
     title="Driver"
     apiUrl="/drivers"
     menuCode="drvr"
+    :extPayload="extended_payload"
     @beforeSubmit="addExtendPayload"
     :params="params"
   >
@@ -225,6 +232,20 @@ onMounted(() => {
     </template>
     <template #form="{ payload }">
       <div class="md:tw-grid md:tw-grid-cols-6 tw-space-y-1.5 tw-gap-x-4">
+        <Uploader
+          label="Foto Profile"
+          path="driver"
+          :url="url"
+          v-model="payload.photo"
+          field-name="files"
+          :headers="[
+            {
+              name: 'Authorization',
+              value: `Bearer ${auth.token}`,
+            },
+          ]"
+          class="tw-col-span-6 tw-w-full"
+        />
         <InputTextField
           :rules="[required]"
           parentClass="tw-col-span-6"
@@ -260,6 +281,37 @@ onMounted(() => {
           mask="#"
           reverse-fill-mask
           v-model="payload.license_number"
+        />
+        <InputTextField
+          :rules="[required, email]"
+          toplabel="E-Mail"
+          parentClass="tw-col-span-3"
+          v-model="payload.email"
+        />
+        <InputTextField
+          :rules="[required]"
+          toplabel="No. Telp"
+          mask="#"
+          parentClass="tw-col-span-3"
+          reverse-fill-mask
+          v-model="payload.phone_number"
+        />
+        <InputTextField
+          :rules="[!is_edit && required]"
+          type="password"
+          parentClass="tw-col-span-3"
+          toplabel="Password"
+          v-model="payload.password"
+        />
+        <InputTextField
+          :rules="[
+            !is_edit && required,
+            (val) => payload.password && match(val, payload.password),
+          ]"
+          type="password"
+          parentClass="tw-col-span-3"
+          toplabel="Konfirmasi Password"
+          v-model="payload.konfirmasi_password"
         />
         <InputTextField
           parentClass="tw-col-span-6"

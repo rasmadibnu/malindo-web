@@ -9,6 +9,7 @@ export const useAuthStore = defineStore('auth', {
     permission: [],
     raw_menus: [],
     menus: [],
+    driver: null,
   }),
   getters: {
     token_data() {
@@ -34,9 +35,23 @@ export const useAuthStore = defineStore('auth', {
         .get('users/' + this.token_data.id)
         .then((res) => {
           this.user = res.data.data;
+          if (this.user.roles.map((e) => e.name).includes('Driver')) {
+            this.findDriver();
+          }
         })
         .then((res) => {
           this.setMenus();
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+
+    async findDriver() {
+      return api
+        .get('drivers/' + this.user.username)
+        .then((res) => {
+          this.driver = res.data.data;
         })
         .catch((err) => {
           console.log(err);

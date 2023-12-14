@@ -365,41 +365,46 @@ onMounted(() => {
       <q-td :props="props">
         <div class="tw-space-x-2">
           <slot name="prepend-action" :row="props.row"> </slot>
-          <q-btn
-            dense
-            unelevated
-            size="sm"
-            flat
-            icon="eva-edit-2-outline"
-            @click="
-              () => {
-                is_edit = true;
-                dialog = true;
-                payload = props.row;
-              }
-            "
-          >
-            <q-tooltip anchor="bottom middle" self="top middle">
-              Edit
-            </q-tooltip>
-          </q-btn>
-          <q-btn
-            dense
-            unelevated
-            flat
-            size="sm"
-            icon="eva-trash-2-outline"
-            @click="
-              () => {
-                row = props.row;
-                dialog_delete = true;
-              }
-            "
-          >
-            <q-tooltip anchor="bottom middle" self="top middle">
-              Hapus
-            </q-tooltip>
-          </q-btn>
+          <template v-if="!$slots.action">
+            <q-btn
+              dense
+              unelevated
+              size="sm"
+              flat
+              icon="eva-edit-2-outline"
+              @click="
+                () => {
+                  is_edit = true;
+                  dialog = true;
+                  payload = props.row;
+                }
+              "
+            >
+              <q-tooltip anchor="bottom middle" self="top middle">
+                Edit
+              </q-tooltip>
+            </q-btn>
+            <q-btn
+              dense
+              unelevated
+              flat
+              size="sm"
+              icon="eva-trash-2-outline"
+              @click="
+                () => {
+                  row = props.row;
+                  dialog_delete = true;
+                }
+              "
+            >
+              <q-tooltip anchor="bottom middle" self="top middle">
+                Hapus
+              </q-tooltip>
+            </q-btn>
+          </template>
+          <template v-else>
+            <slot name="action" />
+          </template>
           <slot name="append-action" :row="props.row"> </slot>
         </div>
       </q-td>

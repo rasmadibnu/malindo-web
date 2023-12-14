@@ -70,28 +70,22 @@ const submit = () => {
 </script>
 <template>
   <Banner asset="smart-care.svg" />
-  <div
-    class="text-center tw-text-primary tw-font-bold tw-text-2xl tw-rounded-3xl tw-py-10"
-  >
-    Kami dengan senang hati membantu Anda
+  <div class="text-center tw-py-6">
+    <div class="tw-text-primary tw-font-bold tw-text-2xl">
+      Pengiriman Instan untuk Bisnis Anda
+    </div>
+    <p>
+      Nikmati layanan pengiriman instan ataupun terjadwal untuk kebutuhan bisnis
+      Anda bersama Lalamove
+    </p>
   </div>
   <div
     class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8 tw-mb-10 tw-rounded-t-3xl"
   >
     <template v-if="!is_success">
-      <h1 class="tw-text-2xl tw-text-primary tw-font-bold tw-mb-2">
-        Hubungi tim sales kami
-      </h1>
-      <p>
-        Kami akan dengan senang hati melayani anda, cukup kirimkan pesan kepada
-        kami melalui formulir di bawah atau hubungi kami.
-      </p>
       <div class="tw-mt-4 tw-gap-2">
-        <q-card>
+        <q-card class="tw-shadow-md">
           <q-card-section>
-            <h1 class="tw-text-primary tw-text-sm tw-font-bold tw-mb-4">
-              Ceritakan Kebutuhan Bisnis Anda
-            </h1>
             <q-form ref="myForm" @submit.prevent="submit">
               <div class="tw-grid md:tw-grid-cols-2 tw-gap-5">
                 <InputTextField

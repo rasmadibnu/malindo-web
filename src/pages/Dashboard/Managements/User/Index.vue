@@ -142,6 +142,18 @@ onMounted(() => {
           v-model="payload.username"
         />
         <InputTextField
+          :rules="[required, email]"
+          toplabel="E-Mail"
+          v-model="payload.email"
+        />
+        <InputTextField
+          :rules="[required]"
+          toplabel="No. Telp"
+          mask="#"
+          reverse-fill-mask
+          v-model="payload.phone_number"
+        />
+        <InputTextField
           :rules="[!is_edit && required]"
           type="password"
           toplabel="Password"
@@ -156,15 +168,12 @@ onMounted(() => {
           toplabel="Konfirmasi Password"
           v-model="payload.konfirmasi_password"
         />
-        <InputTextField
-          :rules="[required, email]"
-          toplabel="E-Mail"
-          v-model="payload.email"
-        />
+
         <InputSelect
           :rules="[required]"
           optLabel="name"
           optValue="id"
+          parentClass="tw-col-span-2"
           map-options
           emit-value
           apiUrl="/partners"

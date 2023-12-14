@@ -1,3 +1,4 @@
+inbox
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
 import BaseTable from 'components/ui/BaseTable.vue';
@@ -20,95 +21,38 @@ const columns: QTableColumn = [
     slot: true,
   },
   {
-    name: 'no',
+    name: 'name',
     align: 'left',
-    label: 'No Transaksi',
-    field: 'no',
-    sortable: false,
-    slot: true,
-  },
-  {
-    name: 'created_at',
-    label: 'Tanggal Order',
-    align: 'left',
-    field: (row) => moment(row.created_at).format('DD-MM-YYYY HH:mm:ss'),
+    label: 'Name',
+    field: 'name',
     sortable: false,
   },
   {
-    name: 'user.name',
-    label: 'Nama Pelanggan',
+    name: 'need',
     align: 'left',
-    field: (row) => row.user.name,
+    label: 'Kebutuhan',
+    field: 'need',
     sortable: false,
   },
   {
-    name: 'user.partner.name',
-    label: 'Partner',
+    name: 'phone_number',
     align: 'left',
-    field: (row) => row.user.partner.name,
+    label: 'No Handphone',
+    field: 'phone_number',
     sortable: false,
   },
   {
-    name: 'payment_scheme',
-    label: 'Skema Pembayaran',
+    name: 'city',
     align: 'left',
-    field: 'payment_scheme',
+    label: 'Kota',
+    field: 'city',
     sortable: false,
   },
   {
-    name: 'driver.name',
-    label: 'Driver',
+    name: 'updated_by.name',
+    label: 'Di-Edit Oleh',
     align: 'left',
-    field: (row) => row.driver.name,
-    sortable: false,
-  },
-  {
-    name: 'vehicle.police_no',
-    label: 'Armada',
-    align: 'left',
-    field: (row) => row.vehicle.police_no,
-    sortable: false,
-  },
-  {
-    name: 'type_transaction',
-    label: 'Jenis Transaksi',
-    align: 'left',
-    field: 'type_transaction',
-    sortable: false,
-  },
-  {
-    name: 'weight',
-    label: 'Berat (Kg)',
-    align: 'left',
-    field: 'weight',
-    sortable: false,
-  },
-  {
-    name: 'from',
-    label: 'Daerah Asal',
-    align: 'left',
-    field: 'from',
-    sortable: false,
-  },
-  {
-    name: 'to',
-    label: 'Daerah Tujuan',
-    align: 'left',
-    field: 'to',
-    sortable: false,
-  },
-  {
-    name: 'price_per_volume',
-    label: 'Harga/Kg',
-    align: 'left',
-    field: 'price_per_volume',
-    sortable: false,
-  },
-  {
-    name: 'price_carter',
-    label: 'Harga Carter',
-    align: 'left',
-    field: 'price_carter',
+    field: (row) => row.updated_by.name,
     sortable: false,
   },
 ];
@@ -116,7 +60,6 @@ const columns: QTableColumn = [
 const my_table = ref(null);
 const params = ref({
   sort: '-created_at',
-  filters: '["user.name", "Tere"]',
 });
 
 const data = ref({});
@@ -135,40 +78,17 @@ const statuses = ref([]);
 
 const getStatus = () => {
   statuses.value = [];
-  api.get('/orders/status').then((res) => {
+  api.get('/inbox/status').then((res) => {
     statuses.value = res.data.data;
   });
-};
-
-const addExtendPayload = (is_edit: boolean) => {
-  extended_payload.value = [];
-  if (!is_edit) {
-    extended_payload.value = {
-      status_id: 1,
-      logs: [
-        {
-          status_id: 1,
-          note: '',
-          create_user_id: auth?.user?.id,
-        },
-      ],
-    };
-  }
 };
 
 const updateStatus = () => {
   loading.value = true;
   api
-    .put('/orders/' + data.value.id, {
+    .put('/inbox/' + data.value.id, {
       status_id: status_change.value.status_id,
-      logs: [
-        {
-          transaction_id: data.value.id as number,
-          status_id: status_change.value.status_id,
-          note: note.value,
-          create_user_id: auth?.user?.id,
-        },
-      ],
+      note: note.value,
     })
     .then((res) => {
       dialog_status.value = false;
@@ -208,8 +128,8 @@ onMounted(() => {
     :columns="columns"
     colKey="id"
     colInfo="no"
-    title="Order"
-    apiUrl="/orders"
+    title="Inbox"
+    apiUrl="/inbox"
     menuCode="order"
     :params="params"
     :search="search"
@@ -320,103 +240,7 @@ onMounted(() => {
         />
       </q-td>
     </template>
-    <template #form="{ payload }">
-      <div class="md:tw-grid md:tw-grid-cols-2 tw-gap-x-4 tw-gap-y-1.5">
-        <InputSelect
-          :rules="[required]"
-          map-options
-          emit-value
-          optLabel="name"
-          optValue="id"
-          toplabel="Nama Pelanggan"
-          :apiUrl="'/users'"
-          searchKey="name"
-          v-model="payload.user_id"
-        />
-        <InputSelect
-          :rules="[required]"
-          toplabel="Skema Pembayaran"
-          :options="['Cash', 'Tempo']"
-          v-model="payload.payment_scheme"
-        />
-        <InputSelect
-          :rules="[required]"
-          map-options
-          emit-value
-          optLabel="name"
-          optValue="id"
-          toplabel="Driver"
-          :apiUrl="'/drivers'"
-          searchKey="name"
-          v-model="payload.driver_id"
-        />
-        <InputSelect
-          :rules="[required]"
-          map-options
-          emit-value
-          optLabel="police_no"
-          optValue="id"
-          toplabel="Armada"
-          :apiUrl="'/vehicles'"
-          searchKey="police_no"
-          v-model="payload.vehicle_id"
-        />
-
-        <InputTextField
-          :rules="[required]"
-          toplabel="Asal"
-          v-model="payload.from"
-        />
-        <InputTextField
-          :rules="[required]"
-          toplabel="Tujuan"
-          v-model="payload.to"
-        />
-        <InputSelect
-          :rules="[required]"
-          toplabel="Jenis Transaksi"
-          parentClass="tw-col-span-2"
-          :options="['Volume', 'Carter']"
-          v-model="payload.type_transaction"
-        />
-        <InputNumberField
-          :rules="[required]"
-          toplabel="Berat"
-          suffix="kg"
-          mask="#"
-          reverse-fill-mask
-          unmasked-value
-          v-if="payload.type_transaction == 'Volume'"
-          v-model="payload.weight"
-        />
-        <InputNumberField
-          :rules="[required]"
-          toplabel="Harga / Volume"
-          prefix="Rp."
-          mask="#"
-          reverse-fill-mask
-          v-if="payload.type_transaction == 'Volume'"
-          v-model="payload.price_per_volume"
-        />
-        <InputNumberField
-          :rules="[required]"
-          v-if="payload.type_transaction == 'Carter'"
-          toplabel="Harga Carter"
-          prefix="Rp."
-          mask="#"
-          reverse-fill-mask
-          parentClass="tw-col-span-2"
-          v-model="payload.price_carter"
-        />
-
-        <InputTextField
-          parentClass="tw-col-span-2"
-          type="textarea"
-          toplabel="Keterangan"
-          v-model="payload.description"
-        />
-      </div>
-    </template>
+    <template #action> </template>
   </BaseTable>
   <q-dialog
     v-model="dialog_status"

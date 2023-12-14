@@ -87,6 +87,12 @@ const routes: RouteRecordRaw[] = [
       },
 
       {
+        path: 'inbox',
+        component: () => import('pages/Dashboard/Inbox/Index.vue'),
+        name: 'inbox-index',
+      },
+
+      {
         path: 'managements',
         children: [
           {
@@ -162,6 +168,12 @@ const routes: RouteRecordRaw[] = [
         ],
       },
     ],
+  },
+
+  {
+    path: '/driver',
+    component: () => import('pages/Driver/Index.vue'),
+    beforeEnter: requireAuth,
   },
 
   {
