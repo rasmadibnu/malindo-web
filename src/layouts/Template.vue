@@ -1,6 +1,6 @@
 <template>
-  <q-layout view="hHh LpR fff" class="tw-bg-[#F8F7FA]">
-    <q-header reveal class="bg-white text-black" @reveal="closeMenu">
+  <q-layout view="hHh LpR fff">
+    <q-header reveal class="tw-bg-transparent text-white" @reveal="closeMenu">
       <div class="md:tw-h-4 lg:tw-h-1 tw-h-2" @mouseenter="closeMenu"></div>
       <q-toolbar
         class="tw-shadow-md tw-flex tw-justify-between xl:tw-px-0 tw-px-8"
@@ -9,8 +9,8 @@
           <div class="tw-flex tw-gap-4 tw-py-2 tw-items-center">
             <div>
               <img
-                src="~assets/malindo.png"
-                style="width: auto; height: 50px"
+                src="~assets/malindowhite.png"
+                style="width: auto; height: 30px"
               />
             </div>
             <div>
@@ -161,7 +161,7 @@
       </q-scroll-area>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container class="!tw-pt-0">
       <router-view />
       <q-page-sticky position="bottom-right" :offset="[18, 18]">
         <q-btn
