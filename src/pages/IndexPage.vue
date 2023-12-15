@@ -1,6 +1,6 @@
 <template>
   <q-page class="tw-overflow-hidden">
-    <q-parallax class="!tw-hidden md:!tw-block">
+    <q-parallax class="!tw-hidden -tw-top-10 md:!tw-block">
       <template v-slot:media>
         <img src="~assets/bigbg.png" />
       </template>
@@ -13,140 +13,25 @@
             right: 0,
           }"
         >
-          <div class="tw-max-w-6xl tw-my-5 tw-mx-auto xl:tw-px-0 tw-px-8">
-            <!-- <q-img src="~assets/indo.svg" style="max-width: 100%;" class="tw-h-screen tw-absolute" /> -->
-            <div
-              class="text-white tw-hidden tw-pt-10 tw-text-xs md:tw-flex tw-justify-end tw-gap-4"
-            >
-              <div class="tw-flex tw-items-center tw-gap-1">
-                <q-icon name="call" />
-                <div>0853-9990-0855</div>
-              </div>
-              <div class="tw-flex tw-items-center tw-gap-1">
-                <q-icon name="mail" />
-                <div>malindosaranalogistic@gmail.com</div>
-              </div>
-              <div class="tw-flex tw-items-center tw-gap-1">
-                <q-icon name="public" />
-                <div>malindosarana.com</div>
-              </div>
-            </div>
-            <br /><br />
-            <div class="tw-grid md:tw-grid-cols-2 tw-items-center md:tw-gap-20">
-              <div class="tw-space-y-4">
-                <div class="tw-text-4xl tw-pt-5 tw-font-extrabold text-white">
-                  LOGISTIC & <br />
-                  <div class="text-primary">TRANSPORT AGENCY</div>
-                </div>
-                <p class="text-white">
-                  Masalah transportasi anda adalah spesialisasi kami. <br />Kami
-                  bekerja sama dengan anda untuk menemukan solusi.
-                </p>
-                <q-btn
-                  color="primary"
-                  no-caps
-                  :to="{ name: 'type' }"
-                  outline
-                  label="Kirim Sekarang"
-                />
-                <div
-                  class="tw-grid md:tw-grid-cols-3 tw-gap-4 text-secondary   tw-z-50 tw-py-4"
-                >
-                  <q-card class="tw-shadow-md">
-                    <q-card-section class="tw-text-center text-font-bold tw-text-sm tw-items-center">
-                      
-                      <p class="tw-text-xs">Werehouse Solutions</p>
-                    </q-card-section>
-                  </q-card>
-                  <q-card class="tw-shadow-md">
-                    <q-card-section class="tw-text-center text-font-bold tw-text-sm tw-items-center">
-                      <!-- <p class="tw-font-semibold tw-text-2xl"></p> -->
-                      <p class="tw-text-xs">Transport & Distribution</p>
-                    </q-card-section>
-                  </q-card>
-                  <q-card class="tw-shadow-md">
-                    <q-card-section class="tw-text-center text-font-bold tw-text-sm tw-items-center">
-                     
-                      <p class="tw-text-xs">Contract Logistics</p>
-                    </q-card-section>
-                  </q-card>
-                  
-                </div>
-              </div>
-              <div>
-                <!-- <Slider /> -->
-              </div>
-            </div>
-          </div>
+          <ParallaxContent />
         </div>
       </template>
     </q-parallax>
 
-    <div class="bg-white tw-py-8 tw-my-5 md:tw-my-8">
-      <div class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8">
-        <div
-          class="tw-mb-4 tw-text-3xl tw-text-center tw-font-bold tw-secondary"
-        >
-          Pilih sesuai kebutuhan anda!
-        </div>
-        <div class="tw-grid md:tw-grid-cols-2 tw-gap-10 tw-mb-6">
-          <div class="tw-flex tw-justify-end">
-            <q-card class="bg-secondary tw-shadow-md tw-w-6/12">
-              <q-card-section horizontal>
-                <q-card-section class="tw-space-y-2">
-                  <p class="tw-text-xl tw-text-left tw-font-bold text-white">
-                    CORPORATE
-                  </p>
-                  <p class="tw-text-xs text-white tw-text-left">
-                    Daftar untuk fitur bisnis eksekutif atau kirimkan pertanyaan
-                    anda dan mari kita bicara!
-                  </p>
-                  <q-btn
-                    flat
-                    class="tw-text-xs"
-                    color="primary"
-                    label="Cari Tahu"
-                    icon-right="arrow_forward"
-                    no-caps
-                    dense
-                    :to="{ name: 'form' }"
-                  />
-                </q-card-section>
-
-                <!-- <q-img class="col-5" src="~assets/heavy.svg" /> -->
-              </q-card-section>
-            </q-card>
-          </div>
-          <div class="tw-flex tw-justify-start">
-          <q-card class="bg-secondary tw-shadow-md tw-w-6/12">
-            <q-card-section horizontal>
-              <q-card-section class="tw-space-y-2">
-                <p class="tw-text-xl tw-text-left tw-font-bold text-white">
-                  RETAIL
-                </p>
-                <p class="tw-text-xs text-white tw-text-left">
-                  Pengiriman barang cepat mudah untuk usaha pribadi dan usaha
-                  kecil
-                </p>
-                <q-btn
-                  flat
-                  class="tw-text-xs"
-                  color="primary"
-                  label="Daftar Sekarang"
-                  icon-right="arrow_forward"
-                  no-caps
-                  dense
-                  :to="{ name: 'register' }"
-                />
-              </q-card-section>
-              <!-- <q-img class="col-5" src="~assets/pindah.svg" /> -->
-            </q-card-section>
-          </q-card>
-          </div>
-        </div>
-      </div>
+    <div
+      class="md:tw-hidden tw-block"
+      style="
+        overflow-y: hidden !important;
+        overflow-x: hidden !important;
+        background-image: url('bigbg.png');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        box-shadow: rgba(36, 55, 99, 0.5) 0 0 0 1000000px inset;
+      "
+    >
+      <ParallaxContent />
     </div>
-
     <div class="tw-max-w-6xl tw-mx-auto tw-mt-8 xl:tw-px-0 tw-px-8 tw-mb-24">
       <h1 class="text-primary tw-mb-4 tw-text-3xl tw-font-bold">
         Berbagai Macam Armada
@@ -235,10 +120,72 @@
         </q-card>
       </div>
     </div>
+
+    <div class="tw-py-8 tw-my-5 md:tw-my-8">
+      <div class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8">
+        <div class="tw-mb-4 tw-text-3xl tw-font-bold tw-text-primary">
+          Pilih sesuai kebutuhan anda!
+        </div>
+        <div class="tw-grid md:tw-grid-cols-2 tw-gap-4 tw-mb-6">
+          <div>
+            <q-card class="tw-shadow-md">
+              <q-card-section horizontal>
+                <q-card-section class="tw-space-y-2">
+                  <p class="tw-text-xl tw-text-left tw-font-bold text-primary">
+                    CORPORATE
+                  </p>
+                  <p class="tw-text-xs tw-text-left">
+                    Daftar untuk fitur bisnis eksekutif atau kirimkan pertanyaan
+                    anda dan mari kita bicara!
+                  </p>
+                  <q-btn
+                    flat
+                    class="tw-text-xs"
+                    color="primary"
+                    label="Cari Tahu"
+                    icon-right="arrow_forward"
+                    no-caps
+                    dense
+                    :to="{ name: 'form' }"
+                  />
+                </q-card-section>
+
+                <q-img class="col-5" src="~assets/heavy.svg" />
+              </q-card-section>
+            </q-card>
+          </div>
+          <q-card class="tw-shadow-md">
+            <q-card-section horizontal>
+              <q-card-section class="tw-space-y-2">
+                <p class="tw-text-xl tw-text-left tw-font-bold text-primary">
+                  RETAIL
+                </p>
+                <p class="tw-text-xs tw-text-left">
+                  Pengiriman barang cepat mudah untuk usaha pribadi dan usaha
+                  kecil
+                </p>
+                <q-btn
+                  flat
+                  class="tw-text-xs"
+                  color="primary"
+                  label="Daftar Sekarang"
+                  icon-right="arrow_forward"
+                  no-caps
+                  dense
+                  :to="{ name: 'register' }"
+                />
+              </q-card-section>
+              <q-img class="col-5" src="~assets/pindah.svg" />
+            </q-card-section>
+          </q-card>
+        </div>
+      </div>
+    </div>
+
     <div>
       <q-parallax class="!tw-hidden md:!tw-block">
         <template v-slot:media>
-          <img src="~assets/bigbg2.png"/>
+          <img src="~assets/bigbg2.png" />
         </template>
 
         <template v-slot:content="scope">
@@ -249,39 +196,25 @@
               right: 0,
             }"
           >
-            <div class="tw-items-center md:tw-gap-20">
-              <div class="tw-space-y-4">
-                <div class="tw-text-4xl tw-pt-5 tw-font-extrabold text-white">
-                  Mari Menjadi Bagian dari Malindo Sarana Logistics <br />
-                </div>
-                <p class="text-white">
-                  Saatnya bergabung dengan kami untuk cara kerja dan hasil
-                  logistik yang lebih baik.
-                </p>
-                <div class="tw-space-x-6 tw-pt-5">
-                  <q-btn
-                    color="primary"
-                    no-caps
-                    :to="{ name: 'type' }"
-                    outline
-                    label="Ship With Us"
-                  />
-                  <q-btn
-                    color="white"
-                    no-caps
-                    :to="{ name: 'type' }"
-                    outline
-                    label="Drive With Us"
-                  />
-                </div>
-              </div>
-              <div>
-                <!-- <Slider /> -->
-              </div>
-            </div>
+            <ParallaxContent2 />
           </div>
         </template>
       </q-parallax>
+
+      <div
+        class="md:tw-hidden tw-block"
+        style="
+          overflow-y: hidden !important;
+          overflow-x: hidden !important;
+          background-image: url('bigbg2.png');
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: center center;
+          box-shadow: rgba(36, 55, 99, 0.5) 0 0 0 1000000px inset;
+        "
+      >
+        <ParallaxContent2 />
+      </div>
     </div>
 
     <div class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8">
@@ -461,8 +394,8 @@
           </div>
         </div>
       </div>
-      </div>
-      <div>
+    </div>
+    <div>
       <q-parallax class="!tw-hidden md:!tw-block">
         <template v-slot:media>
           <img src="~assets/bigbg3.png" />
@@ -476,55 +409,27 @@
               right: 0,
             }"
           >
-            <div class="tw-grid md:tw-grid-cols-2 tw-my-5 md:tw-my-8 tw-items-center tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8">
-        <div class="tw-space-y-4 ">
-          <div>
-              <img
-                src="~assets/malindo.png"
-                style="width: auto; height: 80px"
-              />
-            </div>
-          <div class=" tw-font-bold text-secondary">
-            
-            <div class="tw-text-secondary tw-text-sm">
-              <br /><b></b>SUKSES SEMUANYA TENTANG WAKTU DAN KOMITMEN.
-            </div>
-          </div>
-        </div>
-        <div>
-          <q-card class="tw-bg-secondary/90">
-            <q-card-section>
-
-              <div class="tw-space-y-4 text-bold tw-text-white tw-m-5 tw-text-justify">
-                <p>
-                  Masalah transportasi anda adalah spesialisasi kami. Kami bekerja
-                  sama dengan anda untuk menemukan solusi.
-                </p>
-                <p>
-                  Kami lebih dari sekedar perusahaan transportasi. Selain menambah
-                  nilai, kami mengurangi biaya dengan memahami bisnis pelanggan kami
-                  dengan lebih baik dan memenuhi persyaratan rantai pasokan mereka.
-                  Berkat pengalaman kami selama bertahun-tahun di bidang logistik,
-                  kami dapat meningkatkan kebutuhan logistik Anda
-                </p>
-    
-                <p>
-                  Kualitas dan fleksibilitas layanan pengiriman kami selalu dijamin
-                  dengan harga yang bersaing, menggaris bawahi komitmen kami
-                  terhadap kualitas dan fleksibilitas. Dengan memiliki jaringan
-                  nasional, kami dapat memenuhi permintaan lokal, dan memahami
-                  berbagai peraturan adat dan administratif disetiap provinsi
-                </p>
-              </div>
-            </q-card-section>
-        </q-card>
-        </div>
-      </div>
+            <ParallaxContent1 />
           </div>
         </template>
       </q-parallax>
+
+      <div
+        class="md:tw-hidden tw-block"
+        style="
+          overflow-y: hidden !important;
+          overflow-x: hidden !important;
+          background-image: url('bigbg3.png');
+          background-size: cover;
+          background-repeat: no-repeat;
+          background-position: center center;
+          box-shadow: rgba(36, 55, 99, 0.5) 0 0 0 1000000px inset;
+        "
+      >
+        <ParallaxContent1 />
       </div>
-<div class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8">
+    </div>
+    <div class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8">
       <div class="tw-space-y-4">
         <div
           class="tw-grid md:tw-grid-cols-2 tw-mb-10 md:tw-mb-20 text-secondary tw-gap-20"
@@ -577,9 +482,7 @@
 
           <q-img src="~assets/orange.jpg" />
         </div>
-        <div
-          class=" tw-mb-10 md:tw-mb-20 tw-mt-2 tw-gap-8"
-        >
+        <div class="tw-mb-10 md:tw-mb-20 tw-mt-2 tw-gap-8">
           <div>
             <p class="tw-text-3xl tw-font-bold text-secondary">Our Values</p>
             <div class="text-secondary tw-mt-4 tw-space-y-2 tw-text-justify">
@@ -605,7 +508,6 @@
               </div>
             </div>
           </div>
-          
         </div>
         <q-separator />
         <div
@@ -661,7 +563,7 @@
               "
             />
             <q-img
-              class="tw-mb-4  tw-h-[250px] tw-rounded tw-shadow-xl"
+              class="tw-mb-4 tw-h-[250px] tw-rounded tw-shadow-xl"
               src="~assets/j.png
               "
             />
@@ -680,33 +582,31 @@
       </div>
     </div>
     <div
-          id="client"
-          class="tw-max-w-6xl tw-my-10 tw-space-y-6 tw-mx-auto xl:tw-px-0 tw-px-8"
-        >
-          <div class="tw-text-center tw-text-3xl tw-font-bold">
-            Dipercaya oleh Berbagai Perusahaan Skala Nasional 
-          </div>
-          <div class="tw-grid md:tw-grid-cols-3 tw-items-center">
-            <div class="tw-flex tw-justify-center">
-              <q-avatar square size="200px">
-                <q-img src="~assets/artaboga.svg" />
-              </q-avatar>
-            </div>
-            <div class="tw-flex tw-justify-center">
-              <q-avatar square size="200px">
-                <q-img src="~assets/mayora.svg" />
-              </q-avatar>
-            </div>
-            <div class="tw-flex tw-justify-center">
-              <q-avatar square size="200px">
-                <q-img src="~assets/fajar.png" />
-              </q-avatar>
-            </div>
-          </div>
-          
-          
+      id="client"
+      class="tw-max-w-6xl tw-my-10 tw-space-y-6 tw-mx-auto xl:tw-px-0 tw-px-8"
+    >
+      <div class="tw-text-center tw-text-3xl tw-font-bold">
+        Dipercaya oleh Berbagai Perusahaan Skala Nasional
+      </div>
+      <div class="tw-grid md:tw-grid-cols-3 tw-items-center">
+        <div class="tw-flex tw-justify-center">
+          <q-avatar square size="200px">
+            <q-img src="~assets/artaboga.svg" />
+          </q-avatar>
         </div>
-    
+        <div class="tw-flex tw-justify-center">
+          <q-avatar square size="200px">
+            <q-img src="~assets/mayora.svg" />
+          </q-avatar>
+        </div>
+        <div class="tw-flex tw-justify-center">
+          <q-avatar square size="200px">
+            <q-img src="~assets/fajar.png" />
+          </q-avatar>
+        </div>
+      </div>
+    </div>
+    <ContactUs />
   </q-page>
 </template>
 <style lang="sass" scoped>
@@ -720,11 +620,19 @@
 import { defineComponent, ref } from 'vue';
 // import BeritaInfo from 'src/components/BeritaInfo.vue';
 // import CoverageComp from '../components/CoverageComp.vue';
-import Slider from 'src/components/Slider.vue';
+// import Slider from 'src/components/Slider.vue';
 import ContactUs from 'src/components/ContactUs.vue';
+import ParallaxContent from 'src/components/ParallaxContent.vue';
+import ParallaxContent1 from 'src/components/ParallaxContent1.vue';
+import ParallaxContent2 from 'src/components/ParallaxContent2.vue';
 
 export default defineComponent({
-  components: { },
+  components: {
+    ParallaxContent,
+    ParallaxContent1,
+    ParallaxContent2,
+    ContactUs,
+  },
   name: 'IndexPage',
   setup() {
     return {

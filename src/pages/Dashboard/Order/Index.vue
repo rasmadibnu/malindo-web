@@ -10,6 +10,7 @@ import { required } from 'src/utils/validators';
 import moment from 'moment';
 import { api } from 'src/boot/axios';
 import { useAuthStore } from 'src/stores/auth';
+import { formatRupiah } from 'src/utils/format';
 
 const auth = useAuthStore();
 const columns: QTableColumn = [
@@ -101,14 +102,21 @@ const columns: QTableColumn = [
     name: 'price_per_volume',
     label: 'Harga/Kg',
     align: 'left',
-    field: 'price_per_volume',
+    field: (row) => formatRupiah(row.price_per_volume),
     sortable: false,
   },
   {
     name: 'price_carter',
     label: 'Harga Carter',
     align: 'left',
-    field: 'price_carter',
+    field: (row) => formatRupiah(row.price_carter),
+    sortable: false,
+  },
+  {
+    name: 'price',
+    label: 'Harga (yang harus dibayar)',
+    align: 'left',
+    field: (row) => formatRupiah(row.price),
     sortable: false,
   },
 ];
@@ -116,7 +124,6 @@ const columns: QTableColumn = [
 const my_table = ref(null);
 const params = ref({
   sort: '-created_at',
-  filters: '["user.name", "Tere"]',
 });
 const usersUrl = '/users?filters=["partner_id","!=","0"]';
 const driverUrl = '/drivers?filters=["status.code","=","driver-ready"]';

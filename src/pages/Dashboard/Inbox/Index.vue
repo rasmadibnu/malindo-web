@@ -3,11 +3,8 @@ inbox
 import { onMounted, ref } from 'vue';
 import BaseTable from 'components/ui/BaseTable.vue';
 import InputTextField from 'src/components/form/InputTextField.vue';
-import InputNumberField from 'src/components/form/InputNumberField.vue';
-import InputSelect from 'src/components/form/InputSelect.vue';
 import Btn from 'src/components/ui/Button.vue';
 import { Notify, QTableColumn } from 'quasar';
-import { required } from 'src/utils/validators';
 import moment from 'moment';
 import { api } from 'src/boot/axios';
 import { useAuthStore } from 'src/stores/auth';
@@ -23,7 +20,7 @@ const columns: QTableColumn = [
   {
     name: 'name',
     align: 'left',
-    label: 'Name',
+    label: 'Nama',
     field: 'name',
     sortable: false,
   },
@@ -50,7 +47,7 @@ const columns: QTableColumn = [
   },
   {
     name: 'updated_by.name',
-    label: 'Di-Edit Oleh',
+    label: 'Di-Update Oleh',
     align: 'left',
     field: (row) => row.updated_by.name,
     sortable: false,
@@ -71,9 +68,7 @@ const status_change = ref({});
 
 const extended_payload = ref();
 
-const logs = ref([]);
 const loading = ref<boolean>(false);
-const tab = ref('data');
 const statuses = ref([]);
 
 const getStatus = () => {
@@ -240,7 +235,23 @@ onMounted(() => {
         />
       </q-td>
     </template>
-    <template #action> </template>
+    <template #action="{ row }">
+      <q-btn
+        dense
+        unelevated
+        size="sm"
+        flat
+        icon="eva-more-horizontal-outline"
+        @click="
+          () => {
+            data = row;
+            dialog_detail = true;
+          }
+        "
+      >
+        <q-tooltip anchor="bottom middle" self="top middle"> Detail </q-tooltip>
+      </q-btn>
+    </template>
   </BaseTable>
   <q-dialog
     v-model="dialog_status"
@@ -296,152 +307,70 @@ onMounted(() => {
         <div class="text-center text-h6">Detail Data</div>
       </q-card-section>
       <q-card-section>
-        <q-tabs
-          v-model="tab"
-          dense
-          class="text-grey"
-          active-color="primary"
-          indicator-color="primary"
-          align="justify"
-          narrow-indicator
+        <div
+          name="data"
+          class="tw-grid md:tw-grid-cols-1 tw-space-x-4 tw-gap-4 q-px-none"
         >
-          <q-tab name="data" label="Data" />
-          <q-tab name="history" label="History" />
-        </q-tabs>
-
-        <q-separator />
-
-        <q-tab-panels v-model="tab" animated>
-          <q-tab-panel
-            name="data"
-            class="tw-grid md:tw-grid-cols-1 tw-space-x-4 tw-gap-4 q-px-none"
-          >
-            <div>
-              <q-list
-                dense
-                class="tw-grid tw-grid-cols-2 tw-gap-4 tw-items-start"
-              >
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold"
-                      >Tanggal Order</q-item-label
-                    >
-                    <q-item-label caption>{{
-                      moment(data?.created_at).format('YYYY-MM-DD hh:mm:ss')
-                    }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold"
-                      >No Transaksi</q-item-label
-                    >
-                    <q-item-label caption>{{ data?.no }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold"
-                      >Nama Pelanggan</q-item-label
-                    >
-                    <q-item-label caption>{{ data?.user?.name }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold"
-                      >Skema Pembayaran</q-item-label
-                    >
-                    <q-item-label caption>{{
-                      data?.payment_scheme
-                    }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold"
-                      >Jenis Transaksi</q-item-label
-                    >
-                    <q-item-label caption>{{
-                      data?.type_transaction
-                    }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold">Berat</q-item-label>
-                    <q-item-label caption>{{ data?.weight }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold"
-                      >Daerah Asal</q-item-label
-                    >
-                    <q-item-label caption>{{ data?.from }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold"
-                      >Daerah Tujuan</q-item-label
-                    >
-                    <q-item-label caption>{{ data?.to }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold">Harga/Kg</q-item-label>
-                    <q-item-label caption>{{
-                      data?.price_per_volume
-                    }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold"
-                      >Harga Carter</q-item-label
-                    >
-                    <q-item-label caption>{{
-                      data?.price_carter
-                    }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </div>
+          <div>
+            <q-list
+              dense
+              class="tw-grid tw-grid-cols-2 tw-gap-4 tw-items-start"
+            >
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="tw-font-bold"
+                    >Tanggal Order</q-item-label
+                  >
+                  <q-item-label caption>{{
+                    moment(data?.created_at).format('YYYY-MM-DD hh:mm:ss')
+                  }}</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="tw-font-bold">Nama</q-item-label>
+                  <q-item-label caption>{{ data?.name }}</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="tw-font-bold">No Telp</q-item-label>
+                  <q-item-label caption>{{ data?.phone_number }}</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item>
+                <q-item-section>
+                  <q-item-label class="tw-font-bold">Kota</q-item-label>
+                  <q-item-label caption>{{ data?.city }}</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item class="tw-col-span-2">
+                <q-item-section>
+                  <q-item-label class="tw-font-bold">Kebutuhan</q-item-label>
+                  <q-item-label caption>{{ data?.need }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </div>
+          <div class="tw-space-y-4">
             <div>
               <div class="tw-font-bold">Keterangan</div>
               <div>{{ data?.description }}</div>
             </div>
-          </q-tab-panel>
-
-          <q-tab-panel name="history">
-            <q-timeline color="secondary" layout="loose">
-              <q-timeline-entry
-                v-for="log in logs"
-                v-bind:key="log.id"
-                :color="log.status.color"
-              >
-                <template v-slot:subtitle>
-                  {{ moment(log.created_at).format('MM-DD-YYYY hh:mm:ss') }}
-                  <br />
-                  <span class="tw-capitalize">
-                    {{ log.created_by.name }}
-                  </span>
-                </template>
-                <template v-slot:title>
-                  <q-badge
-                    rounded
-                    :label="log.status.name"
-                    :color="log.status.color"
-                    :style="{ backgroundColor: log.status.color }"
-                  />
-                </template>
-                {{ log.note }}
-              </q-timeline-entry>
-            </q-timeline>
-          </q-tab-panel>
-        </q-tab-panels>
+            <div>
+              <div class="tw-font-bold">Note</div>
+              <div>
+                {{
+                  data?.note
+                    ? data?.updated_by
+                      ? data?.note + ' By: ' + data?.updated_by?.name
+                      : ''
+                    : ''
+                }}
+              </div>
+            </div>
+          </div>
+        </div>
       </q-card-section>
     </q-card>
   </q-dialog>

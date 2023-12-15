@@ -403,7 +403,7 @@ onMounted(() => {
             </q-btn>
           </template>
           <template v-else>
-            <slot name="action" />
+            <slot name="action" :row="props.row" />
           </template>
           <slot name="append-action" :row="props.row"> </slot>
         </div>

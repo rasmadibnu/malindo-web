@@ -1,6 +1,11 @@
 <template>
   <q-layout view="hHh LpR fff">
-    <q-header reveal class="tw-bg-transparent text-white" @reveal="closeMenu">
+    <q-header
+      reveal
+      :class="$route.path == '/' && scroll < 100 ? '!tw-bg-transparent' : ''"
+      class="text-white tw-transform tw-transition-all"
+      @reveal="closeMenu"
+    >
       <div class="md:tw-h-4 lg:tw-h-1 tw-h-2" @mouseenter="closeMenu"></div>
       <q-toolbar
         class="tw-shadow-md tw-flex tw-justify-between xl:tw-px-0 tw-px-8"
@@ -61,7 +66,7 @@
               </template>
             </div>
             <q-space />
-            <div class="tw-flex tw-gap-2">
+            <div class="tw-flex tw-gap-3">
               <q-btn
                 unelevated
                 color="primary"
@@ -70,14 +75,12 @@
                 :to="'/login'"
                 v-if="auth.token == null"
               />
-              <q-separator v-if="auth.token == null" vertical />
               <q-btn
                 unelevated
-                color="primary"
                 outline
                 label="Register"
                 no-caps
-                :to="'/login'"
+                :to="{ name: 'register' }"
                 v-if="auth.token == null"
               />
               <q-btn
@@ -107,7 +110,7 @@
           />
           <q-btn
             unelevated
-            color="primary"
+            color="white"
             label="Dashboard"
             no-caps
             flat
@@ -161,7 +164,7 @@
       </q-scroll-area>
     </q-drawer>
 
-    <q-page-container class="!tw-pt-0">
+    <q-page-container :class="$route.path == '/' ? '!tw-pt-0' : ''">
       <router-view />
       <q-page-sticky position="bottom-right" :offset="[18, 18]">
         <q-btn
@@ -317,7 +320,7 @@ const menus = [
     description: '',
     child: [],
     is_header: true,
-    to: 'home',
+    to: '/',
   },
   {
     id: '2',
