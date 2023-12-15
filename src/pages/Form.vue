@@ -10,7 +10,7 @@ interface Payload {
   pic: string;
   name: string;
   position: string;
-  privilage: string;
+  privilege: string;
   phone_number: string;
   email: string;
   address: string;
@@ -25,7 +25,7 @@ const initialState = <Payload>{
   name: '',
   pic: '',
   position: '',
-  privilage: 'Company',
+  privilege: 'Company',
   phone_number: '',
   email: '',
   address: '',
@@ -39,9 +39,7 @@ const initialState = <Payload>{
 const payload = ref<Payload>({ ...initialState });
 
 const optcall = ['Whatsapp', 'Email', 'Telpon/SMS'];
-const opttruck = ['Pickup Box', 'Engkel Box', 'Pickup Bak'];
 const optintens = ['0-25', '26-50', '51-75', '76-100', '>100'];
-const optyesno = ['Yes', 'No'];
 const opttime = [
   'Kurang dari 1 Jam (Segera)',
   '1-4 Jam',
@@ -91,8 +89,6 @@ const submit = () => {
                   v-model="payload.pic"
                   filled
                   toplabel="Nama"
-                  mask="#"
-                  reverse-fill-mask
                   :rules="[required]"
                 />
                 <InputTextField
@@ -102,7 +98,7 @@ const submit = () => {
                   :rules="[required]"
                 />
                 <InputTextField
-                  v-model="payload.name"
+                  v-model="payload.position"
                   filled
                   toplabel="Jabatan"
                   :rules="[required]"
@@ -124,39 +120,41 @@ const submit = () => {
                   :rules="[required, email]"
                 />
                 <InputTextField
-                  v-model="payload.name"
+                  v-model="payload.address"
                   filled
                   toplabel="Alamat (KOTA)"
                   :rules="[required]"
                 />
 
-                <InputTextField
-                  v-model="payload.category"
+                <InputSelect
+                  v-model="payload.contact_via"
                   filled
                   toplabel="Kami Dapat menghubungi Melalui"
                   :options="optcall"
                 />
 
                 <InputSelect
-                  v-model="payload.category"
+                  v-model="payload.vehicle_type_id"
                   filled
                   toplabel="Jenis Kendaraan apa yang paling sering dibutuhkan?"
-                  :options="opttruck"
+                  api-url="/vehicle-types"
+                  opt-label="name"
+                  opt-value="id"
+                  emit-value
+                  map-options
                 />
                 <InputSelect
-                  v-model="payload.category"
+                  v-model="payload.deliveries_per_month"
                   filled
                   toplabel="Berapa banyak rata-rata pengiriman yang Anda lakukan per bulan?"
                   :options="optintens"
                 />
-                <InputSelect
-                  v-model="payload.category"
-                  filled
-                  toplabel="Apakah anda memiliki kebutuhan pengiriman setidaknya untuk 20 alamat perhari ?"
-                  :options="optyesno"
+                <q-checkbox
+                  v-model="payload.is_20_address_per_day"
+                  label="Apakah anda memiliki kebutuhan pengiriman setidaknya untuk 20 alamat perhari ?"
                 />
                 <InputSelect
-                  v-model="payload.category"
+                  v-model="payload.long_time"
                   filled
                   toplabel="Berapa lama waktu yang dibutuhkan dari melakukan pemesanan, hingga barang diambil?"
                   :options="opttime"
@@ -184,19 +182,17 @@ const submit = () => {
           <div class="tw-text-2xl tw-font-semibold">Terima Kasih!</div>
         </q-card-section>
         <q-card-section class="q-pt-none tw-text-justify">
-          Pengaduan Anda telah berhasil terkirim, mohon bersabar untuk menunggu
+          Permintaan Anda telah berhasil terkirim, mohon bersabar untuk menunggu
           pemberitahuan lebih lanjut dari pihak kami, atau Anda dapat secara
-          berkala memeriksa kotak masuk email Anda. Kami akan memberikan
-          informasi lebih lanjut segera setelah pengaduan Anda ditinjau. Terima
-          kasih atas kerjasama dan pengertiannya
+          berkala memeriksa kotak masuk email Anda.
         </q-card-section>
         <q-card-section>
           <q-btn
-            color="white"
+            color="primary"
             text-color="secondary"
             no-caps
             :to="{ name: 'home' }"
-            toplabel="Kembali"
+            label="Kembali"
           />
         </q-card-section>
       </q-card>

@@ -118,6 +118,9 @@ const params = ref({
   sort: '-created_at',
   filters: '["user.name", "Tere"]',
 });
+const usersUrl = '/users?filters=["partner_id","!=","0"]';
+const driverUrl = '/drivers?filters=["status.code","=","driver-ready"]';
+const vehicleUrl = '/vehicles?filters=["status.code","=","vehicle-ready"]';
 
 const data = ref({});
 const dialog_detail = ref<boolean>(false);
@@ -329,7 +332,7 @@ onMounted(() => {
           optLabel="name"
           optValue="id"
           toplabel="Nama Pelanggan"
-          :apiUrl="'/users'"
+          :apiUrl="usersUrl"
           searchKey="name"
           v-model="payload.user_id"
         />
@@ -346,7 +349,7 @@ onMounted(() => {
           optLabel="name"
           optValue="id"
           toplabel="Driver"
-          :apiUrl="'/drivers'"
+          :apiUrl="driverUrl"
           searchKey="name"
           v-model="payload.driver_id"
         />
@@ -357,7 +360,7 @@ onMounted(() => {
           optLabel="police_no"
           optValue="id"
           toplabel="Armada"
-          :apiUrl="'/vehicles'"
+          :apiUrl="vehicleUrl"
           searchKey="police_no"
           v-model="payload.vehicle_id"
         />

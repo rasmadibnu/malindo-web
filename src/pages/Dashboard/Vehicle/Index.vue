@@ -33,10 +33,10 @@ const columns: QTableColumn = [
   },
 
   {
-    name: 'type',
+    name: 'vehicle_type.name',
     align: 'left',
-    label: 'Type',
-    field: 'type',
+    label: 'Jenis Kendaraan',
+    field: (row) => row.vehicle_type.name,
     sortable: false,
   },
   {
@@ -253,8 +253,12 @@ onMounted(() => {
         <InputSelect
           :rules="[required]"
           toplabel="Type Kendaraan"
-          :options="['CDD', '6 Roda', '10 Roda', '12 Roda']"
-          v-model="payload.type"
+          api-url="/vehicle-types"
+          opt-label="name"
+          opt-value="id"
+          map-options
+          emit-value
+          v-model="payload.vehicle_type_id"
         />
         <InputSelect
           :rules="[required]"
