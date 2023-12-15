@@ -45,7 +45,7 @@ const login = () => {
 };
 </script>
 <template>
-  <q-img src="~assets/bg.svg" class="tw-h-screen">
+  <q-img src="~assets/bigbg4.svg" class="tw-h-screen">
     <div class="absolute-full text-subtitle2 flex-center">
       <div class="tw-flex tw-gap-4 tw-items-center">
         <q-btn

@@ -238,7 +238,7 @@
     <div>
       <q-parallax class="!tw-hidden md:!tw-block">
         <template v-slot:media>
-          <img src="~assets/bigbg.png" />
+          <img src="~assets/bigbg2.png"/>
         </template>
 
         <template v-slot:content="scope">

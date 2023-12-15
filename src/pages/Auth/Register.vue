@@ -51,35 +51,33 @@ const login = () => {
 };
 </script>
 <template>
-  <q-img src="~assets/bg.svg" class="tw-h-screen">
+  <q-img src="~assets/bigbg4.svg" class="tw-h-screen">
     <div class="absolute-full text-subtitle2 flex-center">
       <div class="tw-flex tw-items-center">
         <q-btn
           no-caps
-          dense
           unelevated
           :to="{ name: 'home' }"
-          rounded
-          color="primary"
-          padding="sm sm"
-          icon="arrow_back"
+          icon="chevron_left"
+          label="Home"
         />
 
-        <div class="text-bold">Home</div>
+        
       </div>
       <div
-        class="tw-flex tw-justify-between tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8"
+        class="tw-flex md:tw-justify-between tw-justify-center tw-items-center tw-h-full md:tw-flex-row tw-flex-col tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8"
       >
-        <div class="tw-text-4xl tw-py-10 tw-font-extrabold">
+        <div
+          class="tw-text-4xl tw-hidden md:tw-block tw-py-10 tw-font-extrabold"
+        >
           Welcome to <br />
-          MALINDO
+          MALINDO SARANA LOGISTIC
         </div>
         <div class="text-h6 text-secondary">
           <div
-            class="tw-flex-auto tw-flex tw-px-4 md:tw-px-0 tw-items-center tw-bg-white"
           >
             <q-card
-              class="md:tw-w-96 tw-w-full tw-p-5 tw-shadow-xl tw-my-auto text-bold tw-text-sm text-dark tw-rounded-xl"
+               class="md:tw-w-96 tw-w-full tw-p-5 tw-shadow-xl tw-my-auto text-bold tw-text-sm text-dark tw-rounded-xl"
             >
               <q-avatar
                 class="tw-absolute tw-right-0 tw-top-0"
@@ -88,14 +86,18 @@ const login = () => {
               >
                 <q-img src="~assets/head.png" />
               </q-avatar>
-              <q-card-section>
-                <p class="tw-font-bold tw-text-xl">Buat akun pribadi</p>
-                <p>Daftar dan menjadi bagian dari kami 🤝</p>
-              </q-card-section>
+              <q-card-section class="tw-text-sm">
+              <q-img src="~assets/malindo.png" style="width: 30%" />
+              <div class="tw-mt-4">
+                
+                <p>Daftar dan menjadi bagian dari kami </p>
+              </div>
+            </q-card-section>
+              
               <q-card-section>
                 <q-form
                   @submit.prevent="login"
-                  class="tw-gap-4 tw-grid tw-grid-cols-2"
+                  class="tw-gap-2 tw-grid tw-grid-cols-2"
                 >
                   <InputTextField
                     :autofocus="true"
@@ -153,34 +155,23 @@ const login = () => {
                     color="primary"
                     label="Daftar"
                   />
-                  <div class="tw-flex tw-col-span-2 tw-justify-between">
-                    <q-btn
-                      no-caps
-                      align="left"
-                      dense
-                      flat
-                      unelevated
-                      :to="{ name: 'home' }"
-                      icon="arrow_back"
-                      class="tw-w-full tw-shadow-none"
-                      color="primary"
-                      label="Kembali"
-                    />
-                    <q-btn
-                      no-caps
-                      align="right"
-                      dense
-                      flat
-                      unelevated
-                      class="tw-w-full tw-shadow-none"
-                      color="primary"
-                      :to="{ name: 'login' }"
-                      label="Sudah punya akun?"
-                    />
-                  </div>
+                  
                 </q-form>
               </q-card-section>
             </q-card>
+            <span class="text-white tw-text-sm"
+            >Sudah punya akun?
+            <q-btn
+              class="tw-font-semibold"
+              no-caps
+              align="left"
+              dense
+              :to="{ name: 'login' }"
+              flat
+              unelevated
+              label="Login Sekarang"
+            />
+          </span>
           </div>
         </div>
       </div>
