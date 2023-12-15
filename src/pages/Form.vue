@@ -1,40 +1,39 @@
 <script lang="ts" setup>
 import { ref } from 'vue';
 import { Notify } from 'quasar';
-// import Banner from 'src/components/banner/Banner.vue';
-// import { required, email } from 'src/utils/validators';
+import { required, email } from 'src/utils/validators';
 import InputTextField from 'components/form/InputTextField.vue';
 import InputSelect from 'components/form/InputSelect.vue';
 import { api } from 'src/boot/axios';
 
 interface Payload {
-  agreement_no: number | null;
+  pic: string;
   name: string;
-  is_upheld: boolean;
+  position: string;
+  privilage: string;
   phone_number: string;
   email: string;
-  reporter_name?: string;
-  category: string;
-  description: string;
-  ktp?: File | undefined;
-  ktp_receipent_attorney?: File | undefined;
-  letter_attorney?: File | undefined;
-  document?: File | undefined;
+  address: string;
+  contact_via: string;
+  vehicle_type_id: number | null;
+  deliveries_per_month: string;
+  is_20_address_per_day: boolean;
+  long_time: string;
 }
 
-const initialState = {
-  agreement_no: null,
+const initialState = <Payload>{
   name: '',
-  is_upheld: false,
+  pic: '',
+  position: '',
+  privilage: 'Company',
   phone_number: '',
   email: '',
-  reporter_name: '',
-  category: '',
-  description: '',
-  ktp: undefined,
-  document: undefined,
-  ktp_receipent_attorney: undefined,
-  letter_attorney: undefined,
+  address: '',
+  contact_via: '',
+  vehicle_type_id: null,
+  deliveries_per_month: '',
+  is_20_address_per_day: false,
+  long_time: '',
 };
 
 const payload = ref<Payload>({ ...initialState });
@@ -54,10 +53,10 @@ const is_success = ref<boolean>(false);
 
 const submit = () => {
   api
-    .post('/complaints', { ...payload.value })
+    .post('/partners', { ...payload.value })
     .then(() => {
       Notify.create({
-        message: 'Pengaduan berhasil disubmit',
+        message: 'Data berhasil disubmit',
         color: 'positive',
       });
 
@@ -89,7 +88,7 @@ const submit = () => {
             <q-form ref="myForm" @submit.prevent="submit">
               <div class="tw-grid md:tw-grid-cols-2 tw-gap-5">
                 <InputTextField
-                  v-model="payload.agreement_no"
+                  v-model="payload.pic"
                   filled
                   toplabel="Nama"
                   mask="#"
@@ -136,13 +135,6 @@ const submit = () => {
                   filled
                   toplabel="Kami Dapat menghubungi Melalui"
                   :options="optcall"
-                  :class="[payload.is_upheld && 'tw-col-span-2']"
-                />
-                <InputTextField
-                  filled
-                  v-model="payload.reporter_name"
-                  toplabel="Nama Pelapor"
-                  v-if="payload.is_upheld"
                 />
 
                 <InputSelect
@@ -150,74 +142,37 @@ const submit = () => {
                   filled
                   toplabel="Jenis Kendaraan apa yang paling sering dibutuhkan?"
                   :options="opttruck"
-                  :class="[payload.is_upheld && 'tw-col-span-2']"
                 />
                 <InputSelect
                   v-model="payload.category"
                   filled
                   toplabel="Berapa banyak rata-rata pengiriman yang Anda lakukan per bulan?"
                   :options="optintens"
-                  :class="[payload.is_upheld && 'tw-col-span-2']"
                 />
                 <InputSelect
                   v-model="payload.category"
                   filled
                   toplabel="Apakah anda memiliki kebutuhan pengiriman setidaknya untuk 20 alamat perhari ?"
                   :options="optyesno"
-                  :class="[payload.is_upheld && 'tw-col-span-2']"
                 />
                 <InputSelect
                   v-model="payload.category"
                   filled
                   toplabel="Berapa lama waktu yang dibutuhkan dari melakukan pemesanan, hingga barang diambil?"
                   :options="opttime"
-                  :class="[payload.is_upheld && 'tw-col-span-2']"
                 />
-
-                <q-file filled v-model="payload.ktp" label="KTP">
-                  <template v-slot:append>
-                    <q-icon name="attach_file" />
-                  </template>
-                </q-file>
-                <q-file
-                  filled
-                  v-model="payload.ktp_receipent_attorney"
-                  label="KTP Penerima Kuasa"
-                  v-if="payload.is_upheld"
-                >
-                  <template v-slot:append>
-                    <q-icon name="attach_file" />
-                  </template>
-                </q-file>
-
-                <q-file
-                  filled
-                  v-model="payload.letter_attorney"
-                  v-if="payload.is_upheld"
-                  label="Surat Kuasa"
-                >
-                  <template v-slot:append>
-                    <q-icon name="attach_file" />
-                  </template>
-                </q-file>
-                <q-file
-                  filled
-                  v-model="payload.document"
-                  label="Dokumen Lainnya (Jika Ada)"
-                >
-                  <template v-slot:append>
-                    <q-icon name="attach_file" />
-                  </template>
-                </q-file>
+                <div class="tw-flex tw-items-center">
+                  <div>
+                    <q-btn
+                      type="submit"
+                      label="Kirim Pesan"
+                      rounded
+                      color="primary"
+                      class="tw-mt-4"
+                    />
+                  </div>
+                </div>
               </div>
-
-              <q-btn
-                type="submit"
-                label="Kirim Pesan"
-                rounded
-                color="primary"
-                class="tw-mt-4"
-              />
             </q-form>
           </q-card-section>
         </q-card>
