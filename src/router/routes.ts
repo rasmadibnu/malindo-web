@@ -82,7 +82,7 @@ const routes: RouteRecordRaw[] = [
 
       {
         path: 'armada',
-        component: () => import('pages/Dashboard/Armada/Index.vue'),
+        component: () => import('pages/Dashboard/Vehicle/Index.vue'),
         name: 'armada-index',
       },
 
@@ -108,12 +108,12 @@ const routes: RouteRecordRaw[] = [
                 name: 'layanan-index',
               },
               {
-                path: 'jenis-layanan',
+                path: 'jenis-armada',
                 component: () =>
                   import(
-                    'pages/Dashboard/Managements/Settings/Jenis-Layanan/Index.vue'
+                    'pages/Dashboard/Managements/Settings/VehicleType/Index.vue'
                   ),
-                name: 'jenislayanan-index',
+                name: 'jenisarmada-index',
               },
               {
                 path: 'status',
