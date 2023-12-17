@@ -13,6 +13,7 @@ import { useAuthStore } from 'src/stores/auth';
 import { formatRupiah } from 'src/utils/format';
 const slide = ref(1);
 const right = ref([]);
+const isHovered = ref(false);
 const auth = useAuthStore();
 const columns: QTableColumn = [
   {
@@ -202,6 +203,13 @@ const findLogs = (id) => {
     .catch((err) => {
       console.log(err);
     });
+};
+
+const showText = () => {
+  isHovered.value = true;
+};
+const hideText = () => {
+  isHovered.value = false;
 };
 
 onMounted(() => {
@@ -423,12 +431,34 @@ onMounted(() => {
         />
 
         <div class="tw-grid tw-grid-cols-3">
-          <q-card v-ripple class="my-box cursor-pointer q-hoverable">
+          <q-card
+            v-ripple
+            class="my-box cursor-pointer q-hoverable"
+            @mouseover="showText"
+            @mouseleave="hideText"
+          >
             <span class="q-focus-helper"></span>
             <q-img src="~assets/Cddbox2.png">
               <div class="absolute-bottom tw-text-center">
-                <!-- <div class="text-h6">FUSO BOX</div> -->
-                <div class="text-subtitle2">
+                <div class="text-h6">FUSO BOX</div>
+                <div class="text-subtitle2" v-show="isHovered">
+                  Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 570cm x
+                  250cm x 250cm
+                </div>
+              </div>
+            </q-img>
+          </q-card>
+          <q-card
+            v-ripple
+            class="my-box cursor-pointer q-hoverable"
+            @mouseover="showText"
+            @mouseleave="hideText"
+          >
+            <span class="q-focus-helper"></span>
+            <q-img src="~assets/Cddbox2.png">
+              <div class="absolute-bottom tw-text-center">
+                <div class="text-h6">FUSO BOX</div>
+                <div class="text-subtitle2" v-show="isHovered">
                   Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 570cm x
                   250cm x 250cm
                 </div>

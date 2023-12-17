@@ -170,7 +170,7 @@
         <q-btn
           fab
           color="green-5"
-          href="https://wa.me/6285399900855"
+          href="https://wa.me/628170841985"
           target="_blank"
         >
           <q-avatar rounded size="md">
@@ -213,7 +213,7 @@
                     <q-item-section avatar>
                       <q-icon color="primary" name="smartphone" />
                     </q-item-section>
-                    <q-item-section>0853-9990-0855</q-item-section>
+                    <q-item-section>0817-0841-985</q-item-section>
                   </q-item>
                   <q-item>
                     <q-item-section avatar>

@@ -6,7 +6,7 @@
     >
       <div class="tw-flex tw-items-center tw-gap-1">
         <q-icon name="call" />
-        <div>0853-9990-0855</div>
+        <div>0817-0841-985</div>
       </div>
       <div class="tw-flex tw-items-center tw-gap-1">
         <q-icon name="mail" />
