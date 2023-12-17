@@ -5,12 +5,14 @@ import { QInputProps, QInputSlots } from 'quasar';
 interface Props extends QInputProps {
   toplabel?: string;
   parentClass?: string;
+  btnState?: boolean;
 }
 
 // type NoLabelProps = Omit<Props, 'label'>;
 
 const props = withDefaults(defineProps<Props>(), {
   outlined: true,
+  btnState: true,
 });
 
 const qDateProxy = ref(null);
@@ -31,7 +33,7 @@ defineSlots<QInputSlots>();
       <div class="tw-font-medium">{{ props.toplabel }}</div>
       <q-input class="tw-mt-2" v-bind="props" readonly dense>
         <template v-slot:append>
-          <q-icon name="event" class="cursor-pointer">
+          <q-icon name="event" v-if="btnState" class="cursor-pointer">
             <q-popup-proxy
               cover
               transition-show="scale"

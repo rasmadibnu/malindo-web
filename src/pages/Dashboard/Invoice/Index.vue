@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import BaseTable from 'components/ui/BaseTable.vue';
 import InputTextField from 'src/components/form/InputTextField.vue';
 import InputSelect from 'src/components/form/InputSelect.vue';
@@ -9,6 +9,10 @@ import { QTableColumn } from 'quasar';
 import { required } from 'src/utils/validators';
 import moment from 'moment';
 import { api } from 'src/boot/axios';
+import { useAuthStore } from 'src/stores/auth';
+import { formatRupiah } from 'src/utils/format';
+
+const auth = useAuthStore();
 
 const columns: QTableColumn = [
   {
@@ -56,7 +60,7 @@ onMounted(() => {
     colKey="id"
     colInfo="police_no"
     title="Invoice"
-    menuCode="vehicle"
+    menuCode="invoice"
     apiUrl="/invoices"
     @beforeSubmit="addExtendPayload"
     :params="params"
@@ -106,6 +110,18 @@ onMounted(() => {
           </q-card-section>
         </q-card>
       </div>
+    </template>
+    <template #addButton>
+      <Btn
+        v-if="auth.permission.includes('Create')"
+        icon="add"
+        label="Add"
+        @click="
+          () => {
+            form_dialog = true;
+          }
+        "
+      />
     </template>
     <template v-slot:[`body-cell-status.name`]="{ props }">
       <q-td :props="props">
@@ -195,155 +211,6 @@ onMounted(() => {
           <Btn label="Update" type="submit" :loading="loading" />
         </q-card-actions>
       </q-form>
-    </q-card>
-  </q-dialog>
-  <q-dialog
-    v-model="dialog_detail"
-    @hide="
-      () => {
-        data = {};
-        logs = [];
-      }
-    "
-  >
-    <q-card class="tw-p-6" style="width: 700px; max-width: 80vw">
-      <q-card-section>
-        <div class="text-center text-h6">Detail Data</div>
-      </q-card-section>
-      <q-card-section>
-        <q-tabs
-          v-model="tab"
-          dense
-          class="text-grey"
-          active-color="primary"
-          indicator-color="primary"
-          align="justify"
-          narrow-indicator
-        >
-          <q-tab name="data" label="Data" />
-          <q-tab name="history" label="History" />
-        </q-tabs>
-
-        <q-separator />
-
-        <q-tab-panels v-model="tab" animated>
-          <q-tab-panel
-            name="data"
-            class="tw-grid md:tw-grid-cols-2 md:tw-space-x-8 tw-space-x-4 tw-gap-4 md:tw-gap-0 q-px-none"
-          >
-            <div>
-              <q-list
-                dense
-                class="tw-grid tw-grid-cols-2 tw-gap-4 tw-items-start"
-              >
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold"
-                      >Tgl Input Data</q-item-label
-                    >
-                    <q-item-label caption>{{
-                      moment(data?.created_at).format('YYYY-MM-DD hh:mm:ss')
-                    }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold"
-                      >No Transaksi</q-item-label
-                    >
-                    <q-item-label caption>{{ data?.no }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold"
-                      >Jenis Layanan</q-item-label
-                    >
-                    <q-item-label caption>{{
-                      data?.service_type?.name
-                    }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold">Produk</q-item-label>
-                    <q-item-label caption>{{ data?.product }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold">Unit</q-item-label>
-                    <q-item-label caption>{{ data?.unit }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold">A/N BPKB</q-item-label>
-                    <q-item-label caption>{{ data?.bpkb_name }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold">No BPKB</q-item-label>
-                    <q-item-label caption>{{ data?.bpkb_no }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold">No Mesin</q-item-label>
-                    <q-item-label caption>{{ data?.machine_no }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold">No Rangka</q-item-label>
-                    <q-item-label caption>{{ data?.chassis_no }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item>
-                  <q-item-section>
-                    <q-item-label class="tw-font-bold">No Polisi</q-item-label>
-                    <q-item-label caption>{{
-                      data?.police_no_old
-                    }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </div>
-            <div>
-              <div class="tw-font-bold">Keterangan</div>
-              <div>{{ data?.description }}</div>
-            </div>
-          </q-tab-panel>
-
-          <q-tab-panel name="history">
-            <q-timeline color="secondary" layout="loose">
-              <q-timeline-entry
-                v-for="log in logs"
-                v-bind:key="log.id"
-                :color="log.status.color"
-              >
-                <template v-slot:subtitle>
-                  {{ moment(log.created_at).format('MM-DD-YYYY hh:mm:ss') }}
-                  <br />
-                  <span class="tw-capitalize">
-                    {{ log.created_by.name }}
-                  </span>
-                </template>
-                <template v-slot:title>
-                  <q-badge
-                    rounded
-                    :label="log.status.name"
-                    :color="log.status.color"
-                    :style="{ backgroundColor: log.status.color }"
-                  />
-                </template>
-                {{ log.note }}
-              </q-timeline-entry>
-            </q-timeline>
-          </q-tab-panel>
-        </q-tab-panels>
-      </q-card-section>
     </q-card>
   </q-dialog>
 </template>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { onMounted, ref, onBeforeMount } from 'vue';
-import { QTableColumn, Notify } from 'quasar';
+import { QTableColumn, Notify, QTableProps } from 'quasar';
 import Btn from 'components/ui/Button.vue';
 import { useRoute } from 'vue-router';
 import { AxiosError, AxiosResponse } from 'axios';
@@ -9,8 +9,8 @@ import { isEmptyArray, isEmpty } from 'src/utils/validators';
 import { useAuthStore } from 'src/stores/auth';
 
 const auth = useAuthStore();
-interface Props {
-  title: string;
+interface Props extends QTableProps {
+  title?: string;
   columns: QTableColumn[];
   apiUrl?: string;
   useIndex?: boolean;
@@ -44,6 +44,8 @@ if (props.useIndex) {
     },
     ...props.columns
   );
+} else {
+  cols.value = props.columns;
 }
 
 const total_pages = ref<number>(0);
@@ -287,6 +289,7 @@ onMounted(() => {
     <slot name="top"></slot>
   </div>
   <q-table
+    v-bind="props"
     ref="my_table"
     :columns="cols"
     :rows="rows"
@@ -335,8 +338,9 @@ onMounted(() => {
           </template>
         </q-input>
         <div>
+          <slot name="addButton" />
           <Btn
-            v-if="auth.permission.includes('Create')"
+            v-if="auth.permission.includes('Create') && !$slots.addButton"
             icon="add"
             label="Add"
             @click="
