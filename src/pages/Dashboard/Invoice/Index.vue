@@ -55,7 +55,7 @@ onMounted(() => {
     :columns="columns"
     colKey="id"
     colInfo="police_no"
-    title="Armada"
+    title="Invoice"
     menuCode="vehicle"
     apiUrl="/invoices"
     @beforeSubmit="addExtendPayload"
@@ -148,68 +148,11 @@ onMounted(() => {
     </template>
     <template #form="{ payload }">
       <div class="tw-grid md:tw-grid-cols-2 tw-gap-x-4 tw-space-y-1.5">
-        <InputTextField
-          :rules="[required]"
-          toplabel="Nomor Polisi"
-          v-model="payload.police_no"
-        />
-
-        <InputTextField
-          :rules="[required]"
-          v-model="payload.brand"
-          toplabel="Merek"
-        />
-        <InputSelect
-          :rules="[required]"
-          toplabel="Type Kendaraan"
-          api-url="/vehicle-types"
-          opt-label="name"
-          opt-value="id"
-          map-options
-          emit-value
-          v-model="payload.vehicle_type_id"
-        />
         <InputSelect
           :rules="[required]"
           toplabel="Daya Angkut"
           :options="['8', '15', '30', '45']"
           v-model="payload.carrying_capacity"
-        />
-        <InputTextField
-          :rules="[required]"
-          toplabel="A/N BPKB"
-          v-model="payload.bpkb_name"
-        />
-        <InputDate
-          :rules="[required]"
-          toplabel="Tanggal Pajak"
-          v-model="payload.tax_date"
-        />
-        <InputDate
-          :rules="[required]"
-          toplabel="Tanggal STNK"
-          v-model="payload.registration_date"
-        />
-        <InputTextField
-          :rules="[required]"
-          toplabel="Tahun Kendaraan"
-          mask="#"
-          reverse-fill-mask
-          maxlength="4"
-          v-model="payload.year"
-        />
-        <InputTextField
-          :rules="[required]"
-          toplabel="Odometer"
-          mask="#"
-          reverse-fill-mask
-          v-model="payload.odometer"
-        />
-        <InputSelect
-          :rules="[required]"
-          toplabel="Jenis Kepemilikan"
-          :options="['Milik Sendiri', 'Mitra', 'Titipan']"
-          v-model="payload.ownership_type"
         />
       </div>
     </template>

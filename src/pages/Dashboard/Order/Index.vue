@@ -11,7 +11,8 @@ import moment from 'moment';
 import { api } from 'src/boot/axios';
 import { useAuthStore } from 'src/stores/auth';
 import { formatRupiah } from 'src/utils/format';
-
+const slide = ref(1);
+const right = ref([]);
 const auth = useAuthStore();
 const columns: QTableColumn = [
   {
@@ -359,7 +360,7 @@ onMounted(() => {
       </q-td>
     </template> -->
     <template #form="{ payload }">
-      <div class="md:tw-grid md:tw-grid-cols-2 tw-gap-x-4 tw-gap-y-1.5">
+      <div class="tw-gap-x-4 tw-gap-y-1.5">
         <InputSelect
           :rules="[required]"
           map-options
@@ -371,13 +372,35 @@ onMounted(() => {
           searchKey="name"
           v-model="payload.user_id"
         />
-        <InputSelect
+        <q-timeline color="secondary">
+          <q-timeline-entry
+            ><InputTextField
+              :rules="[required]"
+              toplabel="Asal"
+              v-model="payload.from"
+            />
+          </q-timeline-entry>
+
+          <q-timeline-entry icon="location_on"
+            ><InputTextField
+              :rules="[required]"
+              toplabel="Tujuan"
+              v-model="payload.to"
+            />
+          </q-timeline-entry>
+        </q-timeline>
+        <!-- <InputTextField
           :rules="[required]"
-          toplabel="Skema Pembayaran"
-          :options="['Cash', 'Tempo']"
-          v-model="payload.payment_scheme"
+          toplabel="Asal"
+          v-model="payload.from"
         />
-        <InputSelect
+        <InputTextField
+          :rules="[required]"
+          toplabel="Tujuan"
+          v-model="payload.to"
+        /> -->
+
+        <!-- <InputSelect
           :rules="[required]"
           map-options
           emit-value
@@ -387,29 +410,94 @@ onMounted(() => {
           :apiUrl="driverUrl"
           searchKey="name"
           v-model="payload.driver_id"
-        />
+        /> -->
         <InputSelect
+          toplabel="Jenis Kendaraan"
           :rules="[required]"
+          api-url="/vehicle-types"
+          opt-label="name"
+          opt-value="id"
           map-options
           emit-value
-          optLabel="police_no"
-          optValue="id"
-          toplabel="Armada"
-          :apiUrl="vehicleUrl"
-          searchKey="police_no"
-          v-model="payload.vehicle_id"
+          v-model="payload.vehicle_type_id"
         />
 
-        <InputTextField
+        <div class="tw-grid tw-grid-cols-3">
+          <q-card v-ripple class="my-box cursor-pointer q-hoverable">
+            <span class="q-focus-helper"></span>
+            <q-img src="~assets/Cddbox2.png">
+              <div class="absolute-bottom tw-text-center">
+                <!-- <div class="text-h6">FUSO BOX</div> -->
+                <div class="text-subtitle2">
+                  Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 570cm x
+                  250cm x 250cm
+                </div>
+              </div>
+            </q-img>
+          </q-card>
+
+          <q-avatar square size="100px">
+            <q-img src="~assets/Cddbox1.png">
+              <div class="absolute-bottom tw-text-center">
+                <!-- <div class="text-h6">FUSO BOX</div> -->
+                <!-- <div class="text-subtitle2">
+                  Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 570cm x
+                  250cm x 250cm
+                </div> -->
+              </div>
+            </q-img>
+          </q-avatar>
+          <q-avatar square size="100px">
+            <q-img src="~assets/Fuso Box.png">
+              <div class="absolute-bottom tw-text-center">
+                <!-- <div class="text-h6">FUSO BOX</div> -->
+                <!-- <div class="text-subtitle2">
+                  Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 570cm x
+                  250cm x 250cm
+                </div> -->
+              </div>
+            </q-img>
+          </q-avatar>
+          <q-avatar square size="100px">
+            <q-img src="~assets/Tronton Box.png">
+              <div class="absolute-bottom tw-text-center">
+                <!-- <div class="text-h6">FUSO BOX</div> -->
+                <!-- <div class="text-subtitle2">
+                  Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 570cm x
+                  250cm x 250cm
+                </div> -->
+              </div>
+            </q-img>
+          </q-avatar>
+          <q-avatar square size="100px">
+            <q-img src="~assets/Truck Tronton.png">
+              <div class="absolute-bottom tw-text-center">
+                <!-- <div class="text-h6">FUSO BOX</div> -->
+                <!-- <div class="text-subtitle2">
+                  Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 570cm x
+                  250cm x 250cm
+                </div> -->
+              </div>
+            </q-img>
+          </q-avatar>
+        </div>
+        <q-item-label class="tw-font-bold">Layanan Tambahan</q-item-label>
+        <div class="tw-grid tw-grid-cols-1">
+          <q-checkbox v-model="right" val="tol" label="Tol" />
+          <q-checkbox v-model="right" val="helper" label="Helper" />
+          <q-checkbox v-model="right" val="lain" label="Lain-Lain" />
+        </div>
+        <q-item-label class="tw-font-bold">Pembayaran</q-item-label>
+        <div class="tw-grid tw-grid-cols-1">
+          <q-checkbox v-model="right" val="cash" label="Cash" />
+          <q-checkbox v-model="right" val="trf" label="Transfer" />
+        </div>
+        <!-- <InputSelect
           :rules="[required]"
-          toplabel="Asal"
-          v-model="payload.from"
-        />
-        <InputTextField
-          :rules="[required]"
-          toplabel="Tujuan"
-          v-model="payload.to"
-        />
+          toplabel="Pembayaran"
+          :options="['Cash', 'Transfer']"
+          v-model="payload.payment_scheme"
+        /> -->
         <InputSelect
           :rules="[required]"
           toplabel="Jenis Transaksi"
@@ -449,7 +537,6 @@ onMounted(() => {
 
         <InputTextField
           parentClass="tw-col-span-2"
-          type="textarea"
           toplabel="Keterangan"
           v-model="payload.description"
         />
