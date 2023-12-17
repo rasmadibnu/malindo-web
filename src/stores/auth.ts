@@ -74,27 +74,29 @@ export const useAuthStore = defineStore('auth', {
         this.permissions.push(...role.permissions);
       });
 
-      this.raw_menus = raw_menus;
+      this.raw_menus = raw_menus.sort((a, b) => a.ord - b.ord);
 
-      menus.forEach((item) => {
-        if (item.parent_id === 0) {
-          // If parent_id is 0, it is a top-level item
-          this.menus.push(item);
-        } else {
-          // Find the parent in the organized data
-          const parent = this.menus.find(
-            (parentItem) => parentItem.id === item.parent_id
-          );
+      menus
+        .sort((a, b) => a.ord - b.ord)
+        .forEach((item) => {
+          if (item.parent_id === 0) {
+            // If parent_id is 0, it is a top-level item
+            this.menus.push(item);
+          } else {
+            // Find the parent in the organized data
+            const parent = raw_menus.find(
+              (parentItem) => parentItem.id === item.parent_id
+            );
 
-          if (parent) {
-            // If the parent is found, append the item to its children
-            if (!parent.children) {
-              parent.children = [];
+            if (parent) {
+              // If the parent is found, append the item to its children
+              if (!parent.children) {
+                parent.children = [];
+              }
+              parent.children.push(item);
             }
-            parent.children.push(item);
           }
-        }
-      });
+        });
 
       this.menus = this.menus.sort((a, b) => a.ord - b.ord);
     },

@@ -87,6 +87,12 @@ const routes: RouteRecordRaw[] = [
       },
 
       {
+        path: 'invoice',
+        component: () => import('pages/Dashboard/Invoice/Index.vue'),
+        name: 'invoice-index',
+      },
+
+      {
         path: 'inbox',
         component: () => import('pages/Dashboard/Inbox/Index.vue'),
         name: 'inbox-index',
@@ -106,6 +112,14 @@ const routes: RouteRecordRaw[] = [
                     'pages/Dashboard/Managements/Settings/Layanan/Index.vue'
                   ),
                 name: 'layanan-index',
+              },
+              {
+                path: 'layanan-tambahan',
+                component: () =>
+                  import(
+                    'pages/Dashboard/Managements/Settings/AdditionalService/Index.vue'
+                  ),
+                name: 'additional-index',
               },
               {
                 path: 'jenis-armada',
