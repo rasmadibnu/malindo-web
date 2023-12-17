@@ -73,7 +73,7 @@ const submit = () => {
     </div>
     <p>
       Nikmati layanan pengiriman instan ataupun terjadwal untuk kebutuhan bisnis
-      Anda bersama Lalamove
+      Anda bersama Malindo Sarana
     </p>
   </div>
   <div
