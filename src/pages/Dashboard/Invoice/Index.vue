@@ -1,9 +1,8 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import BaseTable from 'components/ui/BaseTable.vue';
 import InputTextField from 'src/components/form/InputTextField.vue';
 import InputSelect from 'src/components/form/InputSelect.vue';
-import InputDate from 'src/components/form/InputDate.vue';
 import Btn from 'src/components/ui/Button.vue';
 import { QTableColumn } from 'quasar';
 import { required } from 'src/utils/validators';
@@ -16,11 +15,23 @@ const auth = useAuthStore();
 
 const columns: QTableColumn = [
   {
+    name: 'status.name',
+    align: 'center',
+    label: 'Status',
+    slot: true,
+  },
+  {
     name: 'created_at',
     label: 'Created At',
     align: 'left',
     field: (row) => moment(row.created_at).format('DD-MM-YYYY HH:mm:ss'),
     sortable: false,
+  },
+  {
+    name: 'total',
+    align: 'left',
+    label: 'Total',
+    field: (row) => formatRupiah(row.total),
   },
 ];
 
@@ -116,17 +127,13 @@ onMounted(() => {
         v-if="auth.permission.includes('Create')"
         icon="add"
         label="Add"
-        @click="
-          () => {
-            form_dialog = true;
-          }
-        "
+        :to="{ name: 'invoice-add' }"
       />
     </template>
     <template v-slot:[`body-cell-status.name`]="{ props }">
       <q-td :props="props">
         <q-btn
-          size="sm"
+          size="xs"
           unelevated
           :label="props.row.status.name"
           no-caps
@@ -160,6 +167,15 @@ onMounted(() => {
             </q-list>
           </q-menu>
         </q-btn>
+        <br />
+        <q-btn
+          size="sm"
+          flat
+          dense
+          :label="props.row.no"
+          no-caps
+          @click="() => {}"
+        />
       </q-td>
     </template>
     <template #form="{ payload }">

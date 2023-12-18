@@ -96,10 +96,10 @@ const routes: RouteRecordRaw[] = [
             name: 'invoice-index',
           },
           {
-            path: 'create',
+            path: 'add',
             beforeEnter: requireAuth,
             component: () => import('pages/Dashboard/Invoice/Create.vue'),
-            name: 'invoice-create',
+            name: 'invoice-add',
           },
         ],
       },

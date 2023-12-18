@@ -3,20 +3,49 @@ import moment from 'moment';
 import { api } from 'src/boot/axios';
 import { formatRupiah } from 'src/utils/format';
 import { ref, computed } from 'vue';
-import { useRoute } from 'vue-router';
+import InputDate from 'src/components/form/InputDate.vue';
+import InputSelect from 'src/components/form/InputSelect.vue';
+import InputTextField from 'src/components/form/InputTextField.vue';
+import BaseTable from 'src/components/ui/BaseTable.vue';
+import Btn from 'src/components/ui/Button.vue';
+import Breadcrumb from 'src/components/ui/Breadcrumb.vue';
+import { Notify } from 'quasar';
+import { useRouter } from 'vue-router';
+import { required } from 'src/utils/validators';
 
-const route = useRoute();
-const is_paylater = ref<boolean>(false);
-const due_date = ref<string>('');
-const termin = ref<string>('');
-const total = computed<number>(() => {
-  return formatRupiah(
-    selected.value.reduce((a, b) => {
-      return a + parseInt(b.price);
-    }, 0)
-  );
+interface Payload {
+  payment_method: string;
+  is_paylater: boolean;
+  due_date: string;
+  termin_id: number | null;
+  note: string;
+  total: number;
+  status_id: number;
+  order_ids: number[];
+}
+
+const payload = ref<Payload>({
+  payment_method: '',
+  is_paylater: false,
+  due_date: '',
+  termin_id: null,
+  note: '',
+  total: 0,
+  status_id: 15,
+  order_ids: [],
 });
 
+payload.value.total = computed<number>(() => {
+  return selected.value.reduce((a, b) => {
+    return a + parseInt(b.price);
+  }, 0);
+});
+
+payload.value.order_ids = computed<number[]>(() => {
+  return selected.value.map((e) => e.id);
+});
+
+const router = useRouter();
 const selected = ref([]);
 const order_dialog = ref<boolean>(false);
 
@@ -152,119 +181,117 @@ const onTerminChange = (value) => {
   loading_termin.value = true;
   api.get('/termins/' + value).then((res) => {
     if (res.data.data.days == 0) {
-      due_date.value = moment().format('YYYY/MM/DD');
+      payload.value.due_date = moment().format('YYYY/MM/DD');
     } else {
-      due_date.value = moment()
+      payload.value.due_date = moment()
         .add(res.data.data.days, 'days')
         .format('YYYY/MM/DD');
     }
     loading_termin.value = false;
   });
 };
+
+const loading = ref<boolean>(false);
+const onSubmit = () => {
+  loading.value = true;
+
+  api.post('/invoices', payload.value).then((res) => {
+    Notify.create({
+      message: 'Invoice successfully created',
+      color: 'positive',
+    });
+
+    router.push({ name: 'invoice-index' });
+  });
+};
 </script>
 <template>
-  <q-breadcrumbs class="tw-mb-4">
-    <template
-      v-for="(pathd, index) in route.fullPath.split('/').filter((e) => {
-        return e != '';
-      })"
-      v-bind:key="pathd"
-    >
-      <q-breadcrumbs-el
-        v-if="
-          route.matched.some(({ path }) => {
-            if (index == 0) {
-              return true;
-            } else {
-              return path == `/dashboard/${pathd}`;
-            }
-          })
-        "
-        class="tw-capitalize tw-text-lg tw-font-semibold"
-        :label="pathd.replace('-', ' ')"
-        :to="pathd == 'dashboard' ? '/dashboard' : `/dashboard/${pathd}`"
-      />
-
-      <q-breadcrumbs-el
-        v-else
-        class="tw-capitalize tw-text-lg tw-text-[#4B465C] tw-font-semibold"
-        :label="pathd.replace('-', ' ')"
-      />
-    </template>
-  </q-breadcrumbs>
-  <q-card class="tw-p-6">
-    <q-card-section>
-      <div class="text-center text-h6">Add Invoice</div>
-    </q-card-section>
-    <q-card-section>
-      <div class="tw-flex tw-justify-end">
-        <q-toggle v-model="is_paylater" label="Bayar Nanti" />
-      </div>
-
-      <div class="tw-grid md:tw-grid-cols-2 tw-gap-4">
-        <InputSelect
-          v-if="is_paylater"
-          v-model="termin"
-          toplabel="Termin"
-          api-url="/termins"
-          opt-label="name"
-          opt-value="id"
-          search-key="name"
-          map-options
-          emit-value
-          @update:model-value="onTerminChange"
-        />
-        <InputDate
-          v-if="is_paylater"
-          v-model="due_date"
-          toplabel="Jatuh Tempo"
-          :btn-state="termin == 1"
-        />
-        <InputSelect
-          toplabel="Metode Pembayran"
-          :options="['Cash', 'Transfer']"
-        />
-        <InputTextField toplabel="Note" />
-        <q-table
-          title="Orders"
-          bordered
-          flat
-          class="tw-col-span-2"
-          :rows="selected"
-          :columns="columns_order_selected"
-          :pagination="{
-            rowsPerPage: 0,
-          }"
-          hide-bottom
-        >
-          <template #top-right>
-            <q-btn
-              flat
-              label="Add Order"
-              no-caps
-              dense
-              color="primary"
-              @click="
-                () => {
-                  order_dialog = true;
-                }
-              "
-            />
-          </template>
-        </q-table>
-        <div></div>
-        <div>
-          <q-list>
-            <q-item>
-              <q-item-section> Total </q-item-section>
-              <q-item-section class="text-primary" side>
-                {{ total }}
-              </q-item-section>
-            </q-item>
-          </q-list>
+  <Breadcrumb />
+  <q-card class="tw-shadow-md">
+    <q-form @submit.prevent="onSubmit()">
+      <q-card-section>
+        <div class="tw-flex tw-justify-between tw-mb-4">
+          <div class="text-h6">Add Invoice</div>
+          <q-toggle v-model="payload.is_paylater" label="Bayar Nanti" />
         </div>
-      </div>
-    </q-card-section>
+
+        <div class="tw-grid md:tw-grid-cols-2 tw-gap-4">
+          <InputSelect
+            v-if="payload.is_paylater"
+            v-model="payload.termin_id"
+            toplabel="Termin"
+            api-url="/termins"
+            opt-label="name"
+            opt-value="id"
+            search-key="name"
+            map-options
+            emit-value
+            @update:model-value="onTerminChange"
+          />
+          <InputDate
+            v-if="payload.is_paylater"
+            v-model="payload.due_date"
+            toplabel="Jatuh Tempo"
+            :btn-state="payload.termin_id == 1"
+            :rules="[required]"
+          />
+          <InputSelect
+            v-model="payload.payment_method"
+            toplabel="Metode Pembayran"
+            :options="['Cash', 'Transfer']"
+            :rules="[required]"
+          />
+          <InputTextField toplabel="Note" v-model="payload.note" />
+          <q-table
+            title="Orders"
+            bordered
+            flat
+            class="tw-col-span-2"
+            :rows="selected"
+            :columns="columns_order_selected"
+            :pagination="{
+              rowsPerPage: 0,
+            }"
+            hide-bottom
+          >
+            <template #top-right>
+              <q-btn
+                flat
+                label="Add Order"
+                no-caps
+                dense
+                color="primary"
+                @click="
+                  () => {
+                    order_dialog = true;
+                  }
+                "
+              />
+            </template>
+          </q-table>
+          <div></div>
+          <div>
+            <q-list>
+              <q-item>
+                <q-item-section> Total </q-item-section>
+                <q-item-section class="text-primary" side>
+                  {{ formatRupiah(payload.total) }}
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </div>
+        </div>
+      </q-card-section>
+      <q-card-section align="right" class="tw-space-x-2">
+        <Btn
+          label="Cancel"
+          color="grey-3"
+          text-color="grey"
+          :to="{ name: 'invoice-index' }"
+        />
+        <Btn type="submit" :loading="loading" label="Submit" />
+      </q-card-section>
+    </q-form>
   </q-card>
   <q-dialog v-model="order_dialog" full-width>
     <q-card class="tw-p-6">
