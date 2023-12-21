@@ -79,6 +79,13 @@ const columns_order: QTableColumn = [
     sortable: false,
   },
   {
+    name: 'user.partner.name',
+    label: 'Partner',
+    align: 'left',
+    field: (row) => row.user.partner.name,
+    sortable: false,
+  },
+  {
     name: 'from',
     label: 'Rute',
     align: 'left',
