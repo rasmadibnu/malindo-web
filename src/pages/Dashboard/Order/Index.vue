@@ -212,7 +212,17 @@ const hideText = () => {
   isHovered.value = false;
 };
 
+const list_service = ref([]);
+const selected_service = ref([]);
+const getAdditionalService = () => {
+  list_service.value = [];
+  api.get('/additional-services?size=-1').then((res) => {
+    list_service.value = res.data.data.items;
+  });
+};
+
 onMounted(() => {
+  getAdditionalService();
   getStatus();
 });
 </script>
@@ -513,9 +523,15 @@ onMounted(() => {
         </div>
         <q-item-label class="tw-font-bold">Layanan Tambahan</q-item-label>
         <div class="tw-grid tw-grid-cols-1">
-          <q-checkbox v-model="right" val="tol" label="Tol" />
-          <q-checkbox v-model="right" val="helper" label="Helper" />
-          <q-checkbox v-model="right" val="lain" label="Lain-Lain" />
+          <q-checkbox
+            v-for="service in list_service"
+            v-bind:key="service.id"
+            v-model="selected_service"
+            :val="service.id"
+            :label="service.name"
+          />
+          <!-- <q-checkbox v-model="right" val="helper" label="Helper" />
+          <q-checkbox v-model="right" val="lain" label="Lain-Lain" /> -->
         </div>
         <q-item-label class="tw-font-bold">Pembayaran</q-item-label>
         <div class="tw-grid tw-grid-cols-1">

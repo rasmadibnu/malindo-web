@@ -2,7 +2,7 @@
   <div
     class="tw-grid md:tw-grid-cols-2 tw-py-10 md:tw-py-0 tw-my-5 md:tw-my-8 tw-items-center tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8"
   >
-    <div class="tw-space-y-4">
+    <div class="tw-space-y-4" data-aos="fade-right" data-aos-duration="1000">
       <div>
         <img src="~assets/malindo.png" style="width: auto; height: 80px" />
       </div>
@@ -12,7 +12,7 @@
         </div>
       </div>
     </div>
-    <div>
+    <div data-aos="fade-left" data-aos-duration="1000">
       <q-card class="tw-bg-secondary/90">
         <q-card-section>
           <div

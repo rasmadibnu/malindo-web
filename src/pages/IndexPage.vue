@@ -1,6 +1,20 @@
+<script lang="ts" setup>
+import ParallaxContent from 'src/components/ParallaxContent.vue';
+import ParallaxContent1 from 'src/components/ParallaxContent1.vue';
+import ParallaxContent2 from 'src/components/ParallaxContent2.vue';
+import 'aos/dist/aos.css';
+import AOS from 'aos';
+import { onMounted, ref } from 'vue';
+
+const text = ref('');
+
+onMounted(() => {
+  AOS.init();
+});
+</script>
 <template>
   <q-page class="tw-overflow-hidden">
-    <q-parallax class="!tw-hidden -tw-top-10 md:!tw-block">
+    <q-parallax class="!tw-hidden md:!tw-block">
       <template v-slot:media>
         <img src="~assets/bigbg.png" />
       </template>
@@ -11,6 +25,7 @@
             top: scope.percentScrolled * 60 + '%',
             left: 0,
             right: 0,
+            width: '100%',
           }"
         >
           <ParallaxContent />
@@ -32,36 +47,321 @@
     >
       <ParallaxContent />
     </div>
+    <div
+      style="
+        background: rgb(247, 147, 30);
+        background: linear-gradient(
+          94deg,
+          rgba(247, 147, 30, 1) 0%,
+          rgba(247, 148, 33, 1) 50%,
+          rgba(247, 149, 34, 1) 66%,
+          rgba(249, 170, 78, 1) 79%,
+          rgba(255, 255, 255, 0.5384278711484594) 100%,
+          rgba(255, 255, 255, 0) 100%
+        );
+      "
+    >
+      <div
+        class="tw-grid tw-items-center tw-py-4 tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8 md:tw-grid-cols-8"
+        data-aos="fade-right"
+        data-aos-duration="1000"
+        data-aos-offset="-200"
+      >
+        <div class="tw-col-span-5 tw-items-center">
+          <div class="text-white tw-hidden tw-text-xs md:tw-flex tw-gap-4">
+            <div class="tw-flex tw-items-center tw-gap-1">
+              <q-icon name="call" />
+              <div>0817-0841-985</div>
+            </div>
+            <div class="tw-flex tw-items-center tw-gap-1">
+              <q-icon name="mail" />
+              <div>malindosaranalogistic@gmail.com</div>
+            </div>
+            <div class="tw-flex tw-items-center tw-gap-1">
+              <q-icon name="public" />
+              <div>malindosarana.com</div>
+            </div>
+          </div>
+          <!-- <div class="tw-items-end">
+            <q-avatar> <q-img src="~assets/track.png" /> </q-avatar>
+          </div> -->
+        </div>
+
+        <div class="tw-col-span-3 tw-bg-white">
+          <q-input
+            filled
+            class="text-white"
+            v-model="text"
+            label="Lacak Pengiriman"
+            dense
+          >
+            <template v-slot:append>
+              <q-icon
+                v-if="text !== ''"
+                name="close"
+                @click="text = ''"
+                class="cursor-pointer"
+              />
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </div>
+      </div>
+    </div>
+    <div class="tw-grid md:tw-grid-cols-2">
+      <div class="tw-px-10 tw-py-10">
+        <div
+          data-aos="fade-right"
+          data-aos-duration="1000"
+          data-aos-once="true"
+          class="tw-text-2xl tw-pt-5 tw-px-20 tw-font-extrabold"
+        >
+          MSL<br />
+          <div class="text-primary tw-font-normal tw-text-sm text-secondary">
+            Malindo Sarana logistic menyediakan solusi layanan transportasi dan
+            logistik terpadu yang disesuaikan dengan kebutuhan khusus
+            pelanggan.<br />
+            <br />
+          </div>
+          <div>
+            <p class="tw-text-xl tw-text-left tw-font-bold text-primary">
+              Corporate
+            </p>
+            <p class="tw-text-xs tw-text-left">
+              Daftar untuk fitur bisnis eksekutif atau kirimkan pertanyaan anda
+              dan mari kita bicara!
+            </p>
+            <q-btn
+              flat
+              class="tw-text-xs"
+              color="primary"
+              label="Cari Tahu"
+              icon-right="arrow_forward"
+              no-caps
+              dense
+              :to="{ name: 'form' }"
+            />
+          </div>
+          <div>
+            <p class="tw-text-xl tw-text-left tw-font-bold text-primary">
+              Retail
+            </p>
+            <p class="tw-text-xs tw-text-left">
+              Pengiriman barang cepat mudah untuk usaha pribadi dan usaha kecil
+            </p>
+            <q-btn
+              flat
+              class="tw-text-xs"
+              color="primary"
+              label="Daftar Sekarang"
+              icon-right="arrow_forward"
+              no-caps
+              dense
+              :to="{ name: 'register' }"
+            />
+          </div>
+        </div>
+        <!-- <div
+          class="tw-py-8 tw-my-5 md:tw-my-8"
+          data-aos="fade-right"
+          data-aos-duration="1000"
+          data-aos-once="true"
+        >
+          <div class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8">
+            <div class="tw-grid md:tw-grid-cols-2 tw-gap-4 tw-mb-6">
+              <div>
+                <q-card class="tw-shadow-md">
+                  <q-card-section horizontal>
+                    <q-card-section class="tw-space-y-2">
+                      <p
+                        class="tw-text-xl tw-text-left tw-font-bold text-primary"
+                      >
+                        CORPORATE
+                      </p>
+                      <p class="tw-text-xs tw-text-left">
+                        Daftar untuk fitur bisnis eksekutif atau kirimkan
+                        pertanyaan anda dan mari kita bicara!
+                      </p>
+                      <q-btn
+                        flat
+                        class="tw-text-xs"
+                        color="primary"
+                        label="Cari Tahu"
+                        icon-right="arrow_forward"
+                        no-caps
+                        dense
+                        :to="{ name: 'form' }"
+                      />
+                    </q-card-section>
+                  </q-card-section>
+                </q-card>
+              </div>
+              <q-card class="tw-shadow-md">
+                <q-card-section horizontal>
+                  <q-card-section class="tw-space-y-2">
+                   
+                  </q-card-section>
+                  <q-img class="col-5" src="~assets/pindah.svg" />
+                </q-card-section>
+              </q-card>
+            </div>
+          </div>
+        </div> -->
+      </div>
+      <div data-aos="fade-left" data-aos-duration="1000" data-aos-once="true">
+        <q-img src="~assets/people1.svg" />
+      </div>
+    </div>
+    <div class="tw-bg-secondary tw-pb-20">
+      <div
+        class="text-white tw-py-10 tw-px-64 tw-font-normal tw-text-center"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+        data-aos-once="true"
+      >
+        <div class="tw-text-2xl tw-pt-5 tw-font-extrabold">
+          WILAYAH LAYANAN KAMI TERSEBAR DI SELURUH INDONESIA
+        </div>
+        <br />
+        Manfaatkan keahlian terpercaya kami dan pilih dari berbagai layanan kami
+        untuk mengembangkan, menerapkan, dan mengelola solusi logistik yang
+        menyederhanakan operasional bisnis Anda.
+      </div>
+      <div
+        class="tw-grid md:tw-grid-cols-4 tw-font-semibold tw-py-4 tw-px-20"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+        data-aos-once="true"
+      >
+        <q-card square class="tw-overflow-hidden">
+          <q-img
+            src="~assets/news1.png"
+            class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
+          >
+            <div class="absolute-full tw-text-xl flex flex-center">
+              Werehouse Management
+            </div>
+          </q-img>
+        </q-card>
+        <q-card square class="tw-overflow-hidden">
+          <q-img
+            src="~assets/news2.png"
+            class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
+          >
+            <div class="absolute-full tw-text-xl flex flex-center">
+              Werehouse Management
+            </div>
+          </q-img>
+        </q-card>
+        <q-card square class="tw-overflow-hidden">
+          <q-img
+            src="~assets/news3.png"
+            class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
+          >
+            <div class="absolute-full tw-text-xl flex flex-center">
+              Werehouse Management
+            </div>
+          </q-img>
+        </q-card>
+        <q-card square class="tw-overflow-hidden">
+          <q-img
+            src="~assets/news5.png"
+            class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
+          >
+            <div class="absolute-full tw-text-xl flex flex-center">
+              Werehouse Management
+            </div>
+          </q-img>
+        </q-card>
+        <q-card square class="tw-overflow-hidden">
+          <q-img
+            src="~assets/news6.png"
+            class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
+          >
+            <div class="absolute-full tw-text-xl flex flex-center">
+              Werehouse Management
+            </div>
+          </q-img>
+        </q-card>
+        <q-card square class="tw-overflow-hidden">
+          <q-img
+            src="~assets/news7.png"
+            class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
+          >
+            <div class="absolute-full tw-text-xl flex flex-center">
+              Werehouse Management
+            </div>
+          </q-img>
+        </q-card>
+        <q-card square class="tw-overflow-hidden">
+          <q-img
+            src="~assets/news8.png"
+            class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
+          >
+            <div class="absolute-full tw-text-xl flex flex-center">
+              Werehouse Management
+            </div>
+          </q-img>
+        </q-card>
+        <q-card square class="tw-overflow-hidden">
+          <q-img
+            src="~assets/news9.png"
+            class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
+          >
+            <div class="absolute-full tw-text-xl flex flex-center">
+              Werehouse Management
+            </div>
+          </q-img>
+        </q-card>
+      </div>
+    </div>
+    <!-- <div class="tw-relative tw-h-full tw-w-full">
+      <div class="bg-secondary tw-w-full tw-h-10 tw-absolute tw-top-0"></div>
+      <div
+        class="!tw-z-50 tw-grid md:tw-grid-cols-6 tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-10"
+      >
+        <q-card square class="tw-bg-gray-300 tw-col-span-4">
+          <div class="tw-px-10 tw-py-4 tw-pb-20">
+            <div class="tw-text-2xl tw-pt-5 tw-font-extrabold">COMPLIANCE</div>
+            <br />
+            kami meyakini bahwa reputasi adalah kunci untuk membangun nilai
+            perusahaan, dan reputasi hanya dapat dipertahankan melalui
+            seperangkat nilai yang kuat yang terus diperkuat.
+          </div>
+        </q-card>
+        <div class="tw-bg-white tw-col-span-2">
+          
+        </div>
+      </div>
+    </div> -->
+
     <div class="tw-max-w-6xl tw-mx-auto tw-mt-8 xl:tw-px-0 tw-px-8 tw-mb-24">
-      <h1 class="text-primary tw-mb-4 tw-text-3xl tw-font-bold">
-        Berbagai Macam Armada
-      </h1>
-      <div class="tw-grid md:tw-grid-cols-3 tw-gap-4">
+      <div
+        class="text-primary tw-py-10 tw-px-64 tw-font-normal tw-text-center"
+        data-aos="fade-right"
+        data-aos-duration="1000"
+        data-aos-once="true"
+      >
+        <div class="tw-text-2xl tw-pt-5 tw-font-extrabold">
+          BERBAGAI MACAM ARMADA
+        </div>
+      </div>
+      <div
+        class="tw-grid md:tw-grid-cols-3 tw-gap-4"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+        data-aos-once="true"
+      >
         <q-card>
-          <q-carousel class="tw-h-fit" arrows animated v-model="slide">
-            <q-carousel-slide name="first" class="q-pa-none">
-              <q-img src="~assets/cdd1.png">
-                <div class="absolute-bottom tw-text-center">
-                  <div class="text-h6">CDD BOX</div>
-                  <div class="text-subtitle2">
-                    Berat Maksimal 5000 kg
-                    <br />Batas Ukuran (PxLxT): 450cm x 200cm x 200cm
-                  </div>
-                </div>
-              </q-img>
-            </q-carousel-slide>
-            <q-carousel-slide name="second" class="q-pa-none">
-              <q-img src="~assets/cdd2.svg">
-                <div class="absolute-bottom tw-text-center">
-                  <div class="text-h6">CDD BOX</div>
-                  <div class="text-subtitle2">
-                    Berat Maksimal 5000 kg <br />Batas Ukuran (PxLxT): 450cm x
-                    200cm x 200cm
-                  </div>
-                </div>
-              </q-img>
-            </q-carousel-slide>
-          </q-carousel>
+          <q-img src="~assets/cdd1.png">
+            <div class="absolute-bottom tw-text-center">
+              <div class="text-h6">CDD BOX</div>
+              <div class="text-subtitle2">
+                Berat Maksimal 5000 kg
+                <br />Batas Ukuran (PxLxT): 450cm x 200cm x 200cm
+              </div>
+            </div>
+          </q-img>
         </q-card>
         <q-card>
           <q-img src="~assets/fuso1.svg">
@@ -121,67 +421,6 @@
       </div>
     </div>
 
-    <div class="tw-py-8 tw-my-5 md:tw-my-8">
-      <div class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8">
-        <div class="tw-mb-4 tw-text-3xl tw-font-bold tw-text-primary">
-          Pilih sesuai kebutuhan anda!
-        </div>
-        <div class="tw-grid md:tw-grid-cols-2 tw-gap-4 tw-mb-6">
-          <div>
-            <q-card class="tw-shadow-md">
-              <q-card-section horizontal>
-                <q-card-section class="tw-space-y-2">
-                  <p class="tw-text-xl tw-text-left tw-font-bold text-primary">
-                    CORPORATE
-                  </p>
-                  <p class="tw-text-xs tw-text-left">
-                    Daftar untuk fitur bisnis eksekutif atau kirimkan pertanyaan
-                    anda dan mari kita bicara!
-                  </p>
-                  <q-btn
-                    flat
-                    class="tw-text-xs"
-                    color="primary"
-                    label="Cari Tahu"
-                    icon-right="arrow_forward"
-                    no-caps
-                    dense
-                    :to="{ name: 'form' }"
-                  />
-                </q-card-section>
-
-                <q-img class="col-5" src="~assets/heavy.svg" />
-              </q-card-section>
-            </q-card>
-          </div>
-          <q-card class="tw-shadow-md">
-            <q-card-section horizontal>
-              <q-card-section class="tw-space-y-2">
-                <p class="tw-text-xl tw-text-left tw-font-bold text-primary">
-                  RETAIL
-                </p>
-                <p class="tw-text-xs tw-text-left">
-                  Pengiriman barang cepat mudah untuk usaha pribadi dan usaha
-                  kecil
-                </p>
-                <q-btn
-                  flat
-                  class="tw-text-xs"
-                  color="primary"
-                  label="Daftar Sekarang"
-                  icon-right="arrow_forward"
-                  no-caps
-                  dense
-                  :to="{ name: 'register' }"
-                />
-              </q-card-section>
-              <q-img class="col-5" src="~assets/pindah.svg" />
-            </q-card-section>
-          </q-card>
-        </div>
-      </div>
-    </div>
-
     <div>
       <q-parallax class="!tw-hidden md:!tw-block">
         <template v-slot:media>
@@ -217,11 +456,19 @@
       </div>
     </div>
 
-    <div class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8">
+    <div
+      class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8"
+      style="background-image: url('/background/indo.svg')"
+    >
       <div
         class="tw-grid md:tw-grid-cols-2 tw-py-10 md:tw-gap-20 tw-gap-10 tw-items-center"
       >
-        <div class="tw-grid md:tw-grid-cols-2 tw-gap-8 tw-items-center">
+        <div
+          class="tw-grid md:tw-grid-cols-2 tw-gap-8 tw-items-center"
+          data-aos="fade-right"
+          data-aos-duration="1000"
+          data-aos-once="true"
+        >
           <div class="tw-space-y-8">
             <q-card
               class="tw-items-center tw-py-4 tw-text-left tw-rounded-3xl tw-shadow-lg"
@@ -345,7 +592,7 @@
             </q-card>
           </div>
         </div>
-        <div>
+        <div data-aos="fade-left" data-aos-duration="1000" data-aos-once="true">
           <div class="tw-space-y-4">
             <p class="tw-text-3xl tw-text-primary tw-font-bold">
               Cepat Mudah Terjangkau
@@ -429,94 +676,270 @@
         <ParallaxContent1 />
       </div>
     </div>
-    <div class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8">
+    <div class="tw-max-w-6xl tw-mx-auto xl:tw-px-0 tw-px-8 tw-bg-[#f9f9f9]">
       <div class="tw-space-y-4">
         <div
-          class="tw-grid md:tw-grid-cols-2 tw-mb-10 md:tw-mb-20 text-secondary tw-gap-20"
+          class="text-primary tw-py-10 tw-px-64 tw-font-normal tw-text-center"
         >
-          <div>
+          <div
+            class="tw-text-3xl tw-pt-5 tw-font-extrabold"
+            data-aos="fade-up"
+            data-aos-duration="1000"
+            data-aos-once="true"
+          >
+            Vision, Mission, Values
+          </div>
+        </div>
+        <div
+          class="tw-grid md:tw-grid-cols-2"
+          data-aos="fade-right"
+          data-aos-duration="1000"
+          data-aos-once="true"
+        >
+          <div class="tw-mb-10 md:tw-mb-20 text-secondary tw-gap-20">
             <div class="tw-space-y-4 tw-mt-10">
               <div class="tw-text-3xl tw-font-bold text-secondary">
-                VISI <br />
+                Visi <br />
               </div>
               <div>
-                <ul
-                  style="
-                    padding-left: 15px;
-                    list-style: disc;
-                    list-style-position: outside;
-                  "
-                >
-                  <li>
-                    Menjadi perusahaan transportasi yang kompetitif dan
-                    transparan
-                  </li>
-                  <li>
-                    dengan memprioritaskan kepuasan dan kenyamanan pelanggan
-                  </li>
-                </ul>
+                Menjadi perusahaan transportasi yang kompetitif dan transparan
+                dengan memprioritaskan kepuasan dan kenyamanan pelanggan
               </div>
               <div class="tw-text-3xl tw-font-bold tw-text-primary">
-                MISI <br />
+                Misi <br />
               </div>
-              <div class="tw-text-justify">
-                <ul
-                  style="
-                    padding-left: 15px;
-                    list-style: disc;
-                    list-style-position: outside;
-                  "
-                >
-                  <li>
-                    memastikan Pengembangan dan implementasi strategi dan
-                    program yang akan memastikan
-                  </li>
-                  <li>Professional dalam operasi</li>
-                  <li>Pemanfaatan keunggulan</li>
-                  <li>kompetitif secara maksimal</li>
-                  <li>Kesejahteraan kepada karyawan</li>
-                </ul>
+              <div>
+                <li>
+                  Memastikan Pengembangan dan implementasi strategi dan program
+                  yang akan memastikan
+                </li>
+                <li>Professional dalam operasi</li>
+                <li>Pemanfaatan keunggulan</li>
+                <li>kompetitif secara maksimal</li>
+                <li>Kesejahteraan kepada karyawan</li>
               </div>
             </div>
+
+            <!-- <q-img src="~assets/orange.jpg" /> -->
           </div>
-
-          <q-img src="~assets/orange.jpg" />
-        </div>
-        <div class="tw-mb-10 md:tw-mb-20 tw-mt-2 tw-gap-8">
           <div>
-            <p class="tw-text-3xl tw-font-bold text-secondary">Our Values</p>
-            <div class="text-secondary tw-mt-4 tw-space-y-2 tw-text-justify">
-              <div class="tw-font-bold text-secondary">
-                Keamanan dan prioritas<br />
-              </div>
+            <q-img src="~assets/banner.svg" />
+          </div>
+        </div>
+        <div
+          class="tw-mb-10 md:tw-mb-20 tw-mt-2 tw-gap-8"
+          data-aos="fade-right"
+          data-aos-duration="1000"
+          data-aos-once="true"
+        >
+          <div class="tw-text-3xl tw-font-bold tw-text-center text-secondary">
+            Our Values <br />
+          </div>
+          <div class="tw-grid md:tw-grid-cols-3 tw-py-6 tw-gap-4">
+            <q-card class="bg-white tw-text-black tw-shadow-lg">
+              <q-card-section horizontal>
+                <q-card-section>
+                  <q-avatar>
+                    <q-img src="~assets/cost.png" />
+                  </q-avatar>
+                </q-card-section>
+                <q-card-section class="q-pl-none">
+                  <div
+                    class="tw-text-xl tw-text-secondary tw-transition tw-duration-500 hover:tw-text-primary tw-font-bold"
+                  >
+                    Cost Efektif
+                  </div>
+                  <div class="q-pt-md">
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                  </div>
+                </q-card-section>
+              </q-card-section>
+            </q-card>
+            <q-card class="bg-white tw-text-black tw-shadow-lg">
+              <q-card-section horizontal>
+                <q-card-section>
+                  <q-avatar>
+                    <q-img src="~assets/accuracy.png" />
+                  </q-avatar>
+                </q-card-section>
+                <q-card-section class="q-pl-none">
+                  <div
+                    class="tw-text-xl tw-text-secondary tw-transition tw-duration-500 hover:tw-text-primary tw-font-bold"
+                  >
+                    Cost Efektif
+                  </div>
+                  <div class="q-pt-md">
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                  </div>
+                </q-card-section>
+              </q-card-section>
+            </q-card>
+            <q-card class="bg-white tw-text-black tw-shadow-lg">
+              <q-card-section horizontal>
+                <q-card-section>
+                  <q-avatar>
+                    <q-img src="~assets/increase.png" />
+                  </q-avatar>
+                </q-card-section>
+                <q-card-section class="q-pl-none">
+                  <div
+                    class="tw-text-xl tw-text-secondary tw-transition tw-duration-500 hover:tw-text-primary tw-font-bold"
+                  >
+                    Cost Efektif
+                  </div>
+                  <div class="q-pt-md">
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                  </div>
+                </q-card-section>
+              </q-card-section>
+            </q-card>
+            <q-card class="bg-white tw-text-black tw-shadow-lg">
+              <q-card-section horizontal>
+                <q-card-section>
+                  <q-avatar>
+                    <q-img src="~assets/visibility.png" />
+                  </q-avatar>
+                </q-card-section>
+                <q-card-section class="q-pl-none">
+                  <div
+                    class="tw-text-xl tw-text-secondary tw-transition tw-duration-500 hover:tw-text-primary tw-font-bold"
+                  >
+                    Cost Efektif
+                  </div>
+                  <div class="q-pt-md">
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                  </div>
+                </q-card-section>
+              </q-card-section>
+            </q-card>
+            <q-card class="bg-white tw-text-black tw-shadow-lg">
+              <q-card-section horizontal>
+                <q-card-section>
+                  <q-avatar>
+                    <q-img src="~assets/reliable.png" />
+                  </q-avatar>
+                </q-card-section>
+                <q-card-section class="q-pl-none">
+                  <div
+                    class="tw-text-xl tw-text-secondary tw-transition tw-duration-500 hover:tw-text-primary tw-font-bold"
+                  >
+                    Cost Efektif
+                  </div>
+                  <div class="q-pt-md">
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknown
+                  </div>
+                </q-card-section>
+              </q-card-section>
+            </q-card>
+            <q-card class="bg-white tw-text-black tw-shadow-lg">
+              <q-card-section horizontal>
+                <q-card-section>
+                  <q-avatar>
+                    <q-img src="~assets/easy.png" />
+                  </q-avatar>
+                </q-card-section>
+                <q-card-section class="q-pl-none">
+                  <div
+                    class="tw-text-xl tw-text-secondary tw-transition tw-duration-500 hover:tw-text-primary tw-font-bold"
+                  >
+                    Cost Efektif
+                  </div>
+                  <div class="q-pt-md">
+                    Lorem Ipsum is simply dummy text of the printing and
+                    typesetting industry. Lorem Ipsum has been the industry's
+                    standard dummy text ever since the 1500s, when an unknow
+                  </div>
+                </q-card-section>
+              </q-card-section>
+            </q-card>
+          </div>
+        </div>
 
-              <div>
-                Keselamatan karyawan dan klien kami adalah prioritas nomor satu
-                kami sebagai perusahaan yang bertanggung jawab dan akuntabel.
-              </div>
-              <div class="tw-font-bold text-secondary">Intergritas</div>
-              <div>
-                Kepercayaan adalah dasar kami membangun reputasi. Dengan terus
-                mengedepankan kejujuran, integritas, dan keandalan, kita
-                mematuhi standar moral dan etika tertinggi.
-              </div>
-              <div class="tw-font-bold text-secondary">Inovasi</div>
-              <div>
-                Perusahaan kami menantang cara - cara standar dalam melakukan
-                sesuatu di industri logistik dan mengembangkan cara - cara baru
-                dan inovatif untuk memenuhi kebutuhan klien kami.
-              </div>
+        <div
+          class="text-secondary tw-py-10 tw-px-64 tw-font-normal tw-text-center"
+          data-aos="fade-right"
+          data-aos-duration="1000"
+          data-aos-once="true"
+        >
+          <div
+            class="tw-text-2xl tw-pt-5 text-secondary tw-font-extrabold"
+            data-aos="fade-right"
+            data-aos-duration="1000"
+            data-aos-once="true"
+          >
+            News Update
+          </div>
+        </div>
+        <div
+          class="tw-grid md:tw-grid-cols-4 tw-text-left tw-gap-3"
+          data-aos="fade-right"
+          data-aos-duration="1000"
+          data-aos-once="true"
+          data-aos-delay="200"
+        >
+          <div class="tw-px-4 tw-text-md">
+            <div class="tw-text-xs">20 Oktober 2023</div>
+            <div class="tw-font-bold tw-text-lg">
+              Manfaat Logistik Warehouse untuk Bisnis
             </div>
+            <br />
+            Ada beberapa alasan yang membuat Anda harus memilih logistic
+            warehouse sebagai penyimpanan barang dalam bisnis Anda.<br /><br />
+            <div class="tw-font-bold text-primary">READ MORE</div>
+          </div>
+          <div class="tw-px-4 tw-text-md">
+            <div class="tw-text-xs">20 Oktober 2023</div>
+            <div class="tw-font-bold tw-text-lg">
+              Manfaat Logistik Warehouse untuk Bisnis
+            </div>
+            <br />
+            Ada beberapa alasan yang membuat Anda harus memilih logistic
+            warehouse sebagai penyimpanan barang dalam bisnis Anda.<br /><br />
+            <div class="tw-font-bold text-primary">READ MORE</div>
+          </div>
+          <div class="tw-px-4 tw-text-md">
+            <div class="tw-text-xs">20 Oktober 2023</div>
+            <div class="tw-font-bold tw-text-lg">
+              Manfaat Logistik Warehouse untuk Bisnis
+            </div>
+            <br />
+            Ada beberapa alasan yang membuat Anda harus memilih logistic
+            warehouse sebagai penyimpanan barang dalam bisnis Anda.<br /><br />
+            <div class="tw-font-bold text-primary">READ MORE</div>
+          </div>
+          <div class="tw-px-4 tw-text-md">
+            <div class="tw-text-xs">20 Oktober 2023</div>
+            <div class="tw-font-bold tw-text-lg">
+              Manfaat Logistik Warehouse untuk Bisnis
+            </div>
+            <br />
+            Ada beberapa alasan yang membuat Anda harus memilih logistic
+            warehouse sebagai penyimpanan barang dalam bisnis Anda.<br /><br />
+            <div class="tw-font-bold text-primary">READ MORE</div>
           </div>
         </div>
         <q-separator />
         <div
-          class="tw-max-w-6xl tw-mx-auto tw-my-5 md:tw-my-10 xl:tw-px-0 tw-space-y-4"
+          class="tw-mx-auto tw-my-5 md:tw-my-10 xl:tw-px-0 tw-space-y-4"
+          data-aos="fade-right"
+          data-aos-duration="1000"
+          data-aos-once="true"
         >
-          <p class="tw-text-3xl tw-font-bold tw-text-center text-secondary">
-            Our Galery <br />
-            <br />
-          </p>
+          <div
+            class="text-secondary tw-py-10 tw-px-64 tw-font-normal tw-text-center"
+          >
+            <div class="tw-text-2xl tw-pt-5 tw-font-extrabold">Our Galery</div>
+          </div>
           <div
             class="tw-columns-1 tw-gap-4 sm:tw-columns-2 sm:tw-gap-4 md:tw-columns-3 lg:tw-columns-4"
           >
@@ -581,31 +1004,7 @@
         </div>
       </div>
     </div>
-    <div
-      id="client"
-      class="tw-max-w-6xl tw-my-10 tw-space-y-6 tw-mx-auto xl:tw-px-0 tw-px-8"
-    >
-      <div class="tw-text-center tw-text-3xl tw-font-bold">
-        Dipercaya oleh Berbagai Perusahaan Skala Nasional
-      </div>
-      <div class="tw-grid md:tw-grid-cols-3 tw-items-center">
-        <div class="tw-flex tw-justify-center">
-          <q-avatar square size="200px">
-            <q-img src="~assets/artaboga.svg" />
-          </q-avatar>
-        </div>
-        <div class="tw-flex tw-justify-center">
-          <q-avatar square size="200px">
-            <q-img src="~assets/mayora.svg" />
-          </q-avatar>
-        </div>
-        <div class="tw-flex tw-justify-center">
-          <q-avatar square size="200px">
-            <q-img src="~assets/fajar.png" />
-          </q-avatar>
-        </div>
-      </div>
-    </div>
+
     <ContactUs />
   </q-page>
 </template>
@@ -616,47 +1015,3 @@
   color: white
   background-color: rgba(0, 0, 0, .3)
 </style>
-<script>
-import { defineComponent, ref } from 'vue';
-// import BeritaInfo from 'src/components/BeritaInfo.vue';
-// import CoverageComp from '../components/CoverageComp.vue';
-// import Slider from 'src/components/Slider.vue';
-import ContactUs from 'src/components/ContactUs.vue';
-import ParallaxContent from 'src/components/ParallaxContent.vue';
-import ParallaxContent1 from 'src/components/ParallaxContent1.vue';
-import ParallaxContent2 from 'src/components/ParallaxContent2.vue';
-
-export default defineComponent({
-  components: {
-    ParallaxContent,
-    ParallaxContent1,
-    ParallaxContent2,
-    ContactUs,
-  },
-  name: 'IndexPage',
-  setup() {
-    return {
-      articles: ref([]),
-      expanded_darat: ref(false),
-      expanded_udara: ref(false),
-      expanded_laut: ref(false),
-      slide: ref('first'),
-    };
-  },
-  mounted() {
-    //this.getArticle();
-  },
-  methods: {
-    getArticle() {
-      this.$api
-        .get('/articles?size=-1&filters=["category_id", "3"]')
-        .then((ress) => {
-          let data = ress.data.data.items;
-          this.articles = data;
-          console.log(data);
-        })
-        .catch((err) => console.log(err.response));
-    },
-  },
-});
-</script>

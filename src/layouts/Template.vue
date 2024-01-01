@@ -256,31 +256,43 @@
               </div>
             </div>
           </div>
-          <hr
-            class="tw-my-6 tw-border-gray-200 sm:tw-mx-auto dark:tw-border-gray-700 tw-lg:my-8"
-          />
-          <div class="sm:tw-flex sm:tw-items-center sm:tw-justify-between">
-            <span class="tw-text-sm sm:tw-text-center dark:tw-text-gray-400"
-              >© 2023
-              <a href="https://flowbite.com/" class="tw-hover:underline"
-                >Malindo Sarana Logistics</a
-              >. All Rights Reserved.
-            </span>
-            <div class="tw-flex tw-mt-4 sm:tw-justify-center sm:tw-mt-0">
-              <a
-                href="#"
-                class="tw-hover:text-gray-900 dark:tw-hover:text-white"
-              >
-                <span>Privacy Policy</span>
-              </a>
-              <a
-                href="#"
-                class="tw-hover:text-gray-900 dark:tw-hover:text-white tw-ms-5"
-              >
-                <span>Terms & Condition</span>
-              </a>
-            </div>
-          </div>
+        </div>
+      </div>
+
+      <div
+        class="tw-bg-white tw-grid tw-items-center md:tw-grid-cols-3 tw-text-secondary"
+      >
+        <div class="tw-justify">
+          <span class="tw-text-xs sm:tw-text-center dark:tw-text-gray-400"
+            >© 2023
+            <a href="https://flowbite.com/" class="tw-hover:underline"
+              >Malindo Sarana Logistics</a
+            >. All Rights Reserved.
+          </span>
+        </div>
+        <div class="tw-text-xs tw-flex tw-mt-4 sm:tw-justify-center sm:tw-mt-0">
+          <a href="#" class="tw-hover:text-gray-900 dark:tw-hover:text-white">
+            <span>Privacy Policy</span>
+          </a>
+          <a
+            href="#"
+            class="tw-hover:text-gray-900 dark:tw-hover:text-white tw-ms-5"
+          >
+            <span>Terms & Condition</span>
+          </a>
+        </div>
+        <div
+          class="text-secondary tw-font-normal tw-text-center tw-flex tw-gap-4 tw-items-center tw-place-items-center"
+        >
+          <q-avatar square>
+            <q-img src="~assets/artaboga.svg" />
+          </q-avatar>
+          <q-avatar square size="30px">
+            <q-img src="~assets/mayora.svg" />
+          </q-avatar>
+          <q-avatar square>
+            <q-img src="~assets/fajar.png" />
+          </q-avatar>
         </div>
       </div>
     </q-footer>
