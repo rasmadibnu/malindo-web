@@ -105,6 +105,12 @@ const routes: RouteRecordRaw[] = [
       },
 
       {
+        path: 'rute',
+        component: () => import('pages/Dashboard/PriceList/Index.vue'),
+        name: 'price-index',
+      },
+
+      {
         path: 'inbox',
         component: () => import('pages/Dashboard/Inbox/Index.vue'),
         name: 'inbox-index',
