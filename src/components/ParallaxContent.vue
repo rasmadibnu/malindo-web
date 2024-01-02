@@ -24,13 +24,13 @@
           outline
           label="Kirim Sekarang"
           data-aos="fade-right"
-          data-aos-delay="500"
+          data-aos-delay="1000"
           data-aos-duration="1000"
         />
         <div
           class="tw-grid md:tw-grid-cols-3 tw-gap-4 text-secondary tw-z-50 tw-py-4"
           data-aos="fade-up"
-          data-aos-duration="1000"
+          data-aos-duration="1500"
           data-aos-delay="500"
         >
           <q-card class="tw-shadow-md">
@@ -57,7 +57,11 @@
         </div>
       </div>
       <div>
-        <q-img src="~assets/box (2).png" />
+        <q-img
+          src="~assets/box (2).png"
+          data-aos="fade-left"
+          data-aos-duration="1000"
+        />
       </div>
     </div>
   </div>

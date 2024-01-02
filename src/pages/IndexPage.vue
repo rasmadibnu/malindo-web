@@ -114,51 +114,58 @@ onMounted(() => {
           data-aos="fade-right"
           data-aos-duration="1000"
           data-aos-once="true"
-          class="tw-text-2xl tw-pt-5 tw-px-20 tw-font-extrabold"
+          class="tw-text-5xl tw-pt-5 tw-px-20 tw-font-extrabold"
         >
-          MSL<br />
+          MSL
+          <q-avatar square><q-img src="/icons/favicon-96x96.png" /> </q-avatar
+          ><br />
+          <q-separator class="tw-w-6/12 tw-my-2" size="10px" />
           <div class="text-primary tw-font-normal tw-text-sm text-secondary">
             Malindo Sarana logistic menyediakan solusi layanan transportasi dan
             logistik terpadu yang disesuaikan dengan kebutuhan khusus
             pelanggan.<br />
             <br />
           </div>
-          <div>
-            <p class="tw-text-xl tw-text-left tw-font-bold text-primary">
-              Corporate
-            </p>
-            <p class="tw-text-xs tw-text-left">
-              Daftar untuk fitur bisnis eksekutif atau kirimkan pertanyaan anda
-              dan mari kita bicara!
-            </p>
-            <q-btn
-              flat
-              class="tw-text-xs"
-              color="primary"
-              label="Cari Tahu"
-              icon-right="arrow_forward"
-              no-caps
-              dense
-              :to="{ name: 'form' }"
-            />
-          </div>
-          <div>
-            <p class="tw-text-xl tw-text-left tw-font-bold text-primary">
-              Retail
-            </p>
-            <p class="tw-text-xs tw-text-left">
-              Pengiriman barang cepat mudah untuk usaha pribadi dan usaha kecil
-            </p>
-            <q-btn
-              flat
-              class="tw-text-xs"
-              color="primary"
-              label="Daftar Sekarang"
-              icon-right="arrow_forward"
-              no-caps
-              dense
-              :to="{ name: 'register' }"
-            />
+          <div class="tw-grid md:tw-grid-cols-11 tw-gap-4">
+            <div class="tw-col-span-5">
+              <p class="tw-text-xl tw-text-left tw-font-bold text-primary">
+                Corporate
+              </p>
+              <p class="tw-text-xs tw-text-left tw-font-normal">
+                Daftar untuk fitur bisnis eksekutif atau kirimkan pertanyaan
+                anda
+              </p>
+              <q-btn
+                flat
+                class="tw-text-xs"
+                color="primary"
+                label="Cari Tahu"
+                icon-right="arrow_forward"
+                no-caps
+                dense
+                :to="{ name: 'form' }"
+              />
+            </div>
+            <q-separator vertical inset class="tw-col-span-1" />
+            <div class="tw-col-span-5">
+              <p class="tw-text-xl tw-text-left tw-font-bold text-primary">
+                Retail
+              </p>
+              <p class="tw-text-xs tw-text-left tw-font-normal">
+                Pengiriman barang cepat mudah untuk usaha pribadi dan usaha
+                kecil<br />
+              </p>
+              <q-btn
+                flat
+                class="tw-text-xs"
+                color="primary"
+                label="Daftar Sekarang"
+                icon-right="arrow_forward"
+                no-caps
+                dense
+                :to="{ name: 'register' }"
+              />
+            </div>
           </div>
         </div>
         <!-- <div
@@ -216,7 +223,8 @@ onMounted(() => {
       <div
         class="text-white tw-py-10 tw-px-64 tw-font-normal tw-text-center"
         data-aos="fade-up"
-        data-aos-duration="1000"
+        data-aos-duration="1500"
+        data-aos-delay="1000"
         data-aos-once="true"
       >
         <div class="tw-text-2xl tw-pt-5 tw-font-extrabold">
@@ -230,7 +238,8 @@ onMounted(() => {
       <div
         class="tw-grid md:tw-grid-cols-4 tw-font-semibold tw-py-4 tw-px-20"
         data-aos="fade-up"
-        data-aos-duration="1000"
+        data-aos-duration="1500"
+        data-aos-delay="500"
         data-aos-once="true"
       >
         <q-card square class="tw-overflow-hidden">
@@ -249,7 +258,7 @@ onMounted(() => {
             class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
           >
             <div class="absolute-full tw-text-xl flex flex-center">
-              Werehouse Management
+              Bonded Warehouse
             </div>
           </q-img>
         </q-card>
@@ -259,13 +268,43 @@ onMounted(() => {
             class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
           >
             <div class="absolute-full tw-text-xl flex flex-center">
-              Werehouse Management
+              Shipping
             </div>
           </q-img>
         </q-card>
         <q-card square class="tw-overflow-hidden">
           <q-img
             src="~assets/news5.png"
+            class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
+          >
+            <div class="absolute-full tw-text-xl flex flex-center">
+              Maritime Shipping
+            </div>
+          </q-img>
+        </q-card>
+        <q-card square class="tw-overflow-hidden">
+          <q-img
+            src="~assets/news7.png"
+            class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
+          >
+            <div class="absolute-full tw-text-xl flex flex-center">
+              Professional Services
+            </div>
+          </q-img>
+        </q-card>
+        <q-card square class="tw-overflow-hidden">
+          <q-img
+            src="~assets/news8.png"
+            class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
+          >
+            <div class="absolute-full tw-text-xl flex flex-center">
+              Sky Shipments
+            </div>
+          </q-img>
+        </q-card>
+        <q-card square class="tw-overflow-hidden">
+          <q-img
+            src="~assets/news9.png"
             class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
           >
             <div class="absolute-full tw-text-xl flex flex-center">
@@ -279,37 +318,7 @@ onMounted(() => {
             class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
           >
             <div class="absolute-full tw-text-xl flex flex-center">
-              Werehouse Management
-            </div>
-          </q-img>
-        </q-card>
-        <q-card square class="tw-overflow-hidden">
-          <q-img
-            src="~assets/news7.png"
-            class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
-          >
-            <div class="absolute-full tw-text-xl flex flex-center">
-              Werehouse Management
-            </div>
-          </q-img>
-        </q-card>
-        <q-card square class="tw-overflow-hidden">
-          <q-img
-            src="~assets/news8.png"
-            class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
-          >
-            <div class="absolute-full tw-text-xl flex flex-center">
-              Werehouse Management
-            </div>
-          </q-img>
-        </q-card>
-        <q-card square class="tw-overflow-hidden">
-          <q-img
-            src="~assets/news9.png"
-            class="tw-transition tw-duration-500 tw-transform hover:tw-scale-125"
-          >
-            <div class="absolute-full tw-text-xl flex flex-center">
-              Werehouse Management
+              Freight Management
             </div>
           </q-img>
         </q-card>
@@ -340,6 +349,7 @@ onMounted(() => {
         class="text-primary tw-py-10 tw-px-64 tw-font-normal tw-text-center"
         data-aos="fade-right"
         data-aos-duration="1000"
+        data-aos-delay="1000"
         data-aos-once="true"
       >
         <div class="tw-text-2xl tw-pt-5 tw-font-extrabold">
@@ -472,6 +482,9 @@ onMounted(() => {
           <div class="tw-space-y-8">
             <q-card
               class="tw-items-center tw-py-4 tw-text-left tw-rounded-3xl tw-shadow-lg"
+              data-aos-duration="1000"
+              data-aos-once="true"
+              data-aos-delay="100"
             >
               <q-card-section class="q-pb-none">
                 <div class="tw-flex tw-justify-center">
@@ -514,6 +527,9 @@ onMounted(() => {
             </q-card>
             <q-card
               class="tw-items-center tw-py-4 tw-text-left tw-rounded-3xl tw-shadow-lg"
+              data-aos-duration="1000"
+              data-aos-once="true"
+              data-aos-delay="500"
             >
               <q-card-section class="q-pb-none">
                 <div class="tw-flex tw-justify-center">
@@ -552,6 +568,9 @@ onMounted(() => {
           <div>
             <q-card
               class="tw-items-center tw-py-4 tw-text-left tw-rounded-3xl tw-shadow-lg"
+              data-aos-duration="1000"
+              data-aos-once="true"
+              data-aos-delay="800"
             >
               <q-card-section class="q-pb-none">
                 <div class="tw-flex tw-justify-center">
@@ -594,7 +613,13 @@ onMounted(() => {
         </div>
         <div data-aos="fade-left" data-aos-duration="1000" data-aos-once="true">
           <div class="tw-space-y-4">
-            <p class="tw-text-3xl tw-text-primary tw-font-bold">
+            <p
+              class="tw-text-3xl tw-text-primary tw-font-bold"
+              data-aos="fade-right"
+              data-aos-duration="1000"
+              data-aos-once="true"
+              data-aos-delay="500"
+            >
               Cepat Mudah Terjangkau
             </p>
 

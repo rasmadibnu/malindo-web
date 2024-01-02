@@ -239,8 +239,8 @@
                     color="primary"
                     size="md"
                   /><br />
-                  PERUMAHAN BUKIT KATULISTIWA BLOK K NO 37 KEL. BERUA, KEC
-                  BIRINGKANAYA, MAKASSAR.
+                  Jl Ruko Bulu Bulu Business Center, Jl. Metro Bulu Bulu no 16,
+                  Marumpa, Kec. Marusu, Kabupaten Maros, Sulawesi Selatan 90551
                   <q-input
                     dense
                     bg-color="white"
