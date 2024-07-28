@@ -30,7 +30,7 @@ const tab = ref('ongoing');
               </q-item-section>
             </q-item>
           </q-card>
-          <div
+          <!-- <div
             class="tw-grid tw-grid-cols-4 tw-gap-4 text-primary tw-py-10 tw-px-3"
           >
             <q-btn>
@@ -53,7 +53,7 @@ const tab = ref('ongoing');
                 <img src="~assets/10.png" />
               </q-avatar>
             </q-btn>
-          </div>
+          </div> -->
         </div>
         <q-card class="tw-rounded-t-3xl tw-h-full" flat>
           <q-tabs
