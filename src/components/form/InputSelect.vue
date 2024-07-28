@@ -11,9 +11,12 @@ interface Props extends QSelectProps {
   optLabel?: string;
   optValue?: string;
   searchKey?: string;
+  params?: object;
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  params: undefined,
+});
 
 const loading = ref<boolean>(false);
 const page = ref<number>(0);
@@ -32,7 +35,7 @@ const fetchData = () => {
     return;
   }
 
-  const params = new URLSearchParams();
+  const params = new URLSearchParams(props.params);
   const data = {
     params: params,
   };
@@ -41,7 +44,20 @@ const fetchData = () => {
   params.append('size', 50);
 
   if (search.value) {
-    params.append('filters', `["${props.searchKey}","like","${search.value}"]`);
+    params.delete('filters');
+    const dataForSearchs = [];
+    if (props.params?.filters) {
+      dataForSearchs.push(props.params['filters']);
+      dataForSearchs.push('["AND"]');
+    }
+
+    dataForSearchs.push(`["${props.searchKey}","like","${search.value}"]`);
+    params.append(
+      'filters',
+      dataForSearchs.includes('["OR"]') || dataForSearchs.includes('["AND"]')
+        ? `[${dataForSearchs}]`
+        : dataForSearchs
+    );
     options.value = [];
   }
 
@@ -50,6 +66,7 @@ const fetchData = () => {
       options.value.push({
         label: item[props.optLabel],
         value: item[props.optValue],
+        ...item,
       });
     });
 
@@ -129,6 +146,9 @@ onMounted(() => {
         "
         @virtual-scroll="onScroll"
       >
+        <template #option="scope" v-if="$slots.option">
+          <slot name="option" :scope="scope" />
+        </template>
         <slot></slot>
       </q-select>
     </div>

@@ -4,6 +4,7 @@ import { required } from 'src/utils/validators.ts';
 import BaseTable from 'components/ui/BaseTable.vue';
 import InputTextField from 'src/components/form/InputTextField.vue';
 import InputSelect from 'src/components/form/InputSelect.vue';
+import InputNumberField from 'src/components/form/InputNumberField.vue';
 
 const columns = ref([
   {
@@ -65,15 +66,17 @@ const columns = ref([
             { label: 'Ton', value: 'Ton' },
           ]"
           toplabel="Satuan"
+          map-options
+          emit-value
           v-model="payload.unit"
         />
-        <InputTextField
+        <InputNumberField
           toplabel="Berat Minimal"
           v-model="payload.from_weight"
           mask="#"
           reverse-fill-mask
         />
-        <InputTextField
+        <InputNumberField
           toplabel="Berat Maksimaal"
           v-model="payload.to_weight"
           mask="#"

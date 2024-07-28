@@ -21,6 +21,7 @@ interface Props extends QTableProps {
   extPayload?: unknown;
   params?: object;
   menuCode?: string;
+  addBtn?: boolean;
 }
 
 const route = useRoute();
@@ -32,6 +33,7 @@ const props = withDefaults(defineProps<Props>(), {
   useAction: true,
   search_column: [],
   params: undefined,
+  addBtn: true,
 });
 
 const cols = ref([]);
@@ -127,8 +129,6 @@ function fetchData(requestProps: {
         }
       });
     }
-
-    console.log(dataForSearchs);
 
     params.append(
       'filters',
@@ -340,7 +340,11 @@ onMounted(() => {
         <div>
           <slot name="addButton" />
           <Btn
-            v-if="auth.permission.includes('Create') && !$slots.addButton"
+            v-if="
+              auth.permission.includes('Create') &&
+              !$slots.addButton &&
+              props.addBtn
+            "
             icon="add"
             label="Add"
             @click="
@@ -370,8 +374,11 @@ onMounted(() => {
         <div class="tw-space-x-2">
           <slot name="prepend-action" :row="props.row"> </slot>
           <template v-if="!$slots.action">
+            <slot name="actionEdit" :row="props.row"> </slot>
+
             <q-btn
               dense
+              v-if="!$slots.actionEdit"
               unelevated
               size="sm"
               flat

@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { Notify, QUploaderProps } from 'quasar';
+import { useAuthStore } from 'src/stores/auth';
 
+const auth = useAuthStore();
 interface Props extends QUploaderProps {
   path: string;
 }
@@ -32,6 +34,12 @@ const onFileUploaded = (info) => {
     v-bind="props"
     dense
     flat
+    :headers="[
+      {
+        name: 'Authorization',
+        value: `Bearer ${auth.token}`,
+      },
+    ]"
     bordered
   />
 </template>

@@ -8,6 +8,7 @@ import Btn from 'src/components/ui/Button.vue';
 import { api } from 'src/boot/axios';
 import { Notify } from 'quasar';
 import moment from 'moment';
+import { formatRupiah } from 'src/utils/format';
 
 const columns = ref([
   {
@@ -111,6 +112,85 @@ const addExtendPayload = (is_edit: boolean) => {
     extended_payload.value = {
       status_id: 12,
     };
+  }
+};
+
+const route_dialog = ref<boolean>(false);
+const route_columns = ref([
+  {
+    name: 'from',
+    label: 'Asal',
+    align: 'left',
+    field: 'from',
+  },
+  {
+    name: 'to',
+    label: 'Tujuan',
+    align: 'left',
+    field: 'to',
+  },
+]);
+const route = ref({});
+
+const price_dialog = ref<boolean>(false);
+const price_column = ref([
+  {
+    name: 'vehicle_type.name',
+    label: 'Jenis Kendaraan',
+    align: 'left',
+    field: (row) => row.vehicle_type.name,
+  },
+  {
+    name: 'price',
+    label: 'Harga',
+    align: 'left',
+    field: (row) => formatRupiah(row.price),
+  },
+  {
+    name: 'special_price',
+    label: 'Harga Khusus',
+    align: 'left',
+    slot: true,
+    // field: (row) => formatRupiah(row.price),
+  },
+]);
+const price = ref({});
+const price_partner = ref([]);
+const price_edit = ref<number>(0);
+const setSepecialPrice = (val: any, initialVal: any) => {
+  api
+    .post('/partner-prices', {
+      partner_id: data.value?.id,
+      route_id: route.value?.id,
+      price_list_id: price.value?.id,
+      value: parseInt(val),
+    })
+    .then((res) => {
+      price_edit.value = 0;
+      getPricePartner(data.value?.id);
+      Notify.create({
+        message: 'Harga khusus berhasil disimpan',
+        color: 'positive',
+      });
+    });
+};
+
+const getPricePartner = (partner_id: any) => {
+  api
+    .get(`/partner-prices?size=-1&filters=["partner_id","${partner_id}"]`)
+    .then((res) => {
+      price_partner.value = res.data.data.items;
+    });
+};
+
+const checkPricePartner = (price_list_id: any, price: any) => {
+  const findIndex = price_partner.value.findIndex(
+    (e) => e.price_list_id == price_list_id
+  );
+  if (findIndex != -1) {
+    return price_partner.value[findIndex].value;
+  } else {
+    return price;
   }
 };
 
@@ -310,6 +390,25 @@ onMounted(() => {
         />
       </div>
     </template>
+    <template #prepend-action="{ row }">
+      <q-btn
+        dense
+        unelevated
+        size="sm"
+        flat
+        icon="o_payments"
+        @click="
+          () => {
+            route_dialog = true;
+            data = row;
+          }
+        "
+      >
+        <q-tooltip anchor="bottom middle" self="top middle">
+          Price List
+        </q-tooltip>
+      </q-btn>
+    </template>
   </BaseTable>
   <q-dialog
     v-model="dialog_status"
@@ -499,6 +598,105 @@ onMounted(() => {
           </div>
         </div>
       </q-card-section>
+    </q-card>
+  </q-dialog>
+  <q-dialog v-model="route_dialog">
+    <q-card class="tw-p-6" style="width: 700px; max-width: 80vw">
+      <q-card-section class="tw-text-center">
+        <div class="text-h6">Rute</div>
+      </q-card-section>
+      <BaseTable
+        flat
+        title="Route"
+        api-url="/routes"
+        menuCode="partner"
+        :columns="route_columns"
+        :add-btn="false"
+      >
+        <template #breadcrumbs></template>
+        <template #action="{ row }">
+          <q-btn
+            dense
+            unelevated
+            size="sm"
+            flat
+            icon="o_payments"
+            @click="
+              () => {
+                price_dialog = true;
+                route = row;
+                getPricePartner(data?.id);
+              }
+            "
+          >
+            <q-tooltip anchor="bottom middle" self="top middle">
+              Price List
+            </q-tooltip>
+          </q-btn>
+        </template>
+      </BaseTable>
+    </q-card>
+  </q-dialog>
+  <q-dialog v-model="price_dialog">
+    <q-card class="tw-p-6" style="width: 700px; max-width: 80vw">
+      <q-card-section class="tw-flex tw-justify-between tw-text-lg">
+        <div>Price List</div>
+        <div>{{ data?.name }}</div>
+      </q-card-section>
+      <BaseTable
+        flat
+        title="Price List"
+        api-url="/price-lists"
+        :params="{
+          partner_id: data?.id,
+        }"
+        menuCode="partner"
+        :columns="price_column"
+        :use-action="false"
+        :add-btn="false"
+      >
+        <template #breadcrumbs></template>
+        <template #body-cell-special_price="{ props }">
+          <q-td :props="props" class="tw-underline">
+            {{ formatRupiah(checkPricePartner(props.row.id, props.row.price)) }}
+            <q-popup-edit
+              v-model="price_edit"
+              title="Edit Harga"
+              auto-save
+              v-slot="scope"
+              @show="
+                () => {
+                  price = props.row;
+                }
+              "
+              @save="setSepecialPrice"
+            >
+              <q-input
+                v-model="scope.value"
+                dense
+                mask="#"
+                reverse-fill-mask
+                autofocus
+                @keyup.enter="scope.set"
+              />
+            </q-popup-edit>
+          </q-td>
+        </template>
+        <template #action>
+          <q-btn
+            dense
+            unelevated
+            size="sm"
+            flat
+            icon="o_payments"
+            @click="() => {}"
+          >
+            <q-tooltip anchor="bottom middle" self="top middle">
+              Price List
+            </q-tooltip>
+          </q-btn>
+        </template>
+      </BaseTable>
     </q-card>
   </q-dialog>
 </template>

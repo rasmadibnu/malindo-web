@@ -6,6 +6,7 @@ interface Props extends QInputProps {
   toplabel?: string;
   parentClass?: string;
   btnState?: boolean;
+  mask?: string;
 }
 
 // type NoLabelProps = Omit<Props, 'label'>;
@@ -31,7 +32,7 @@ defineSlots<QInputSlots>();
   <template v-if="props.toplabel">
     <div :class="props.parentClass">
       <div class="tw-font-medium">{{ props.toplabel }}</div>
-      <q-input class="tw-mt-2" v-bind="props" readonly dense>
+      <q-input class="tw-mt-2" v-bind="props" :mask="undefined" readonly dense>
         <template v-slot:append>
           <q-icon name="event" v-if="btnState" class="cursor-pointer">
             <q-popup-proxy
@@ -40,7 +41,7 @@ defineSlots<QInputSlots>();
               transition-hide="scale"
               ref="qDateProxy"
             >
-              <q-date v-model="date">
+              <q-date v-model="date" :mask="props.mask">
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="Close" color="primary" flat />
                 </div>

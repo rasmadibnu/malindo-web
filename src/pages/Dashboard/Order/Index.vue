@@ -1,19 +1,17 @@
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import BaseTable from 'components/ui/BaseTable.vue';
 import InputTextField from 'src/components/form/InputTextField.vue';
-import InputNumberField from 'src/components/form/InputNumberField.vue';
+import InputDate from 'src/components/form/InputDate.vue';
 import InputSelect from 'src/components/form/InputSelect.vue';
 import Btn from 'src/components/ui/Button.vue';
 import { Notify, QTableColumn } from 'quasar';
-import { required } from 'src/utils/validators';
+import { required, isEmpty } from 'src/utils/validators';
 import moment from 'moment';
 import { api } from 'src/boot/axios';
 import { useAuthStore } from 'src/stores/auth';
 import { formatRupiah } from 'src/utils/format';
-const slide = ref(1);
-const right = ref([]);
-const isHovered = ref(false);
+
 const auth = useAuthStore();
 const columns: QTableColumn = [
   {
@@ -36,6 +34,12 @@ const columns: QTableColumn = [
     align: 'left',
     slot: true,
     sortable: false,
+  },
+  {
+    name: 'delivery_date',
+    label: 'Tanggal Pengiriman',
+    align: 'left',
+    field: (row) => moment(row.delivery_date).format('YYYY-MM-DD'),
   },
   {
     name: 'user.name',
@@ -122,7 +126,6 @@ const my_table = ref(null);
 const params = ref({
   sort: '-created_at',
 });
-const usersUrl = '/users?filters=["partner_id","!=","0"]';
 const driverUrl = '/drivers?filters=["status.code","=","driver-ready"]';
 const vehicleUrl = '/vehicles?filters=["status.code","=","vehicle-ready"]';
 
@@ -132,8 +135,6 @@ const dialog_detail = ref<boolean>(false);
 const dialog_status = ref(false);
 const note = ref('');
 const status_change = ref({});
-
-const extended_payload = ref();
 
 const logs = ref([]);
 const loading = ref<boolean>(false);
@@ -147,20 +148,68 @@ const getStatus = () => {
   });
 };
 
-const addExtendPayload = (is_edit: boolean) => {
-  extended_payload.value = [];
-  if (!is_edit) {
-    extended_payload.value = {
-      status_id: 1,
-      logs: [
-        {
-          status_id: 1,
-          note: '',
-          create_user_id: auth?.user?.id,
-        },
-      ],
-    };
+const form_dialog = ref<boolean>(false);
+const is_edit = ref<boolean>(false);
+
+const user_id = ref<number | null>(null);
+const delivery_date = ref<string | null>('');
+const vehicle_type = ref(null);
+const payment_method = ref(null);
+const from = ref<string | null>(null);
+const to = ref(null);
+const extended_payload = ref();
+const storeData = () => {
+  loading.value = true;
+  if (!is_edit.value) {
+    api
+      .post('/orders', {
+        user_id: user_id.value,
+        delivery_date: delivery_date.value,
+        price: parseInt(vehicle_type.value?.price),
+        total: total.value,
+        to: to.value?.label,
+        route_id: vehicle_type.value?.route_id,
+        payment_method: payment_method.value,
+        price_list_id: vehicle_type.value?.id,
+        vehicle_type_id: vehicle_type.value?.vehicle_type.id,
+        status_id: 1,
+        order_additional_services: additional_service_selected.value.map(
+          (e) => {
+            return {
+              additional_service_id: e.id,
+              value: parseInt(e.estimation_charge),
+            };
+          }
+        ),
+        logs: [
+          {
+            status_id: 1,
+            note: '',
+            create_user_id: auth?.user?.id,
+          },
+        ],
+      })
+      .then((res) => {
+        Notify.create({
+          message: 'Order berhasil ditambahkan',
+          color: 'positive',
+        });
+        form_dialog.value = false;
+        loading.value = false;
+        my_table.value.refresh();
+        reset();
+      });
   }
+};
+
+const reset = () => {
+  vehicle_type.value = null;
+  from.value = null;
+  to.value = null;
+  user_id.value = null;
+  payment_method.value = null;
+  delivery_date.value = null;
+  additional_service_selected.value = [];
 };
 
 const updateStatus = () => {
@@ -205,25 +254,69 @@ const findLogs = (id) => {
     });
 };
 
-const showText = () => {
-  isHovered.value = true;
-};
-const hideText = () => {
-  isHovered.value = false;
-};
-
-const list_service = ref([]);
-const selected_service = ref([]);
-const getAdditionalService = () => {
-  list_service.value = [];
-  api.get('/additional-services?size=-1').then((res) => {
-    list_service.value = res.data.data.items;
+const user = ref({});
+const loading_user = ref<boolean>(false);
+const partner = ref({});
+const getUser = (user_id: any) => {
+  loading_user.value = true;
+  return api.get('/users/' + user_id).then((res) => {
+    user.value = res.data.data;
+    partner.value = res.data.data.partner;
+    loading_user.value = false;
   });
 };
 
+const vehicle_types = ref([]);
+const expanded = ref([]);
+const getPriceList = (val: any) => {
+  api
+    .get(`/price-lists?size=-1&fitlers=["route_id", "${val.value}"]`)
+    .then((res) => {
+      vehicle_types.value = res.data.data.items;
+    });
+};
+
+const setVehicle = (val: any) => {
+  if (!isEmpty(user.value.id)) {
+    vehicle_type.value = val;
+  } else {
+    Notify.create({
+      message: 'Pilih pelanggan terlebih dahulu!',
+      color: 'negative',
+    });
+  }
+};
+
+const additional_service = ref([]);
+const additional_service_selected = ref([]);
+const getAdditionalService = () => {
+  api.get('/additional-services?size=-1').then((res) => {
+    additional_service.value = res.data.data.items;
+  });
+};
+
+const checkPrice = (vehicle_type_id: any) => {
+  const findIndex = partner.value.partner_prices.findIndex(
+    (e) => e.price_list_id == vehicle_type_id
+  );
+  if (findIndex != -1) {
+    return partner.value.partner_prices[findIndex].value;
+  } else {
+    return vehicle_type.value?.price;
+  }
+};
+
+const total = computed<number>(() => {
+  return (
+    additional_service_selected.value.reduce((a, b) => {
+      return a + parseInt(b.estimation_charge);
+    }, 0) + parseInt(checkPrice(vehicle_type.value?.id))
+  );
+});
+
 onMounted(() => {
-  getAdditionalService();
   getStatus();
+  getAdditionalService();
 });
 </script>
 <template>
@@ -236,8 +329,6 @@ onMounted(() => {
     apiUrl="/orders"
     menuCode="order"
     :params="params"
-    :search="search"
-    @beforeSubmit="addExtendPayload"
     @afterSubmit="getStatus"
     :extPayload="extended_payload"
   >
@@ -297,11 +388,11 @@ onMounted(() => {
     </template>
     <template #body-cell-from="{ props }">
       <q-td :props="props">
-        {{ props.row.from }}
+        {{ props.row?.route?.from }}
 
         <q-icon name="arrow_right_alt" />
 
-        {{ props.row.to }}
+        {{ props.row?.route?.to }}
       </q-td>
     </template>
     <template v-slot:[`body-cell-status.name`]="{ props }">
@@ -359,6 +450,45 @@ onMounted(() => {
         />
       </q-td>
     </template>
+    <template #addButton>
+      <Btn
+        v-if="auth.permission.includes('Create')"
+        icon="add"
+        label="Add"
+        @click="
+          () => {
+            is_edit = false;
+            form_dialog = true;
+          }
+        "
+      />
+    </template>
+    <template #actionEdit="{ row }">
+      <q-btn
+        dense
+        unelevated
+        size="sm"
+        flat
+        icon="eva-edit-2-outline"
+        @click="
+          () => {
+            is_edit = true;
+            form_dialog = true;
+            user_id = row.user_id;
+            delivery_date = row.delivery_date;
+            from = row.route.from;
+            to = row.route_id;
+            getPriceList(row.route_id);
+            getUser(row.user_id).then((res) => {
+              setVehicle(row.price_list);
+            });
+            additional_service_selected = row.order_additional_services;
+          }
+        "
+      >
+        <q-tooltip anchor="bottom middle" self="top middle"> Edit </q-tooltip>
+      </q-btn>
+    </template>
     <!-- <template #body-cell-no="{ props }">
       <q-td :props="props">
         <q-btn
@@ -377,218 +507,186 @@ onMounted(() => {
         />
       </q-td>
     </template> -->
-    <template #form="{ payload }">
-      <div class="tw-gap-x-4 tw-gap-y-1.5">
-        <InputSelect
-          :rules="[required]"
-          map-options
-          emit-value
-          optLabel="name"
-          optValue="id"
-          toplabel="Nama Pelanggan"
-          :apiUrl="usersUrl"
-          searchKey="name"
-          v-model="payload.user_id"
-        />
-        <q-timeline color="secondary">
-          <q-timeline-entry
-            ><InputTextField
-              :rules="[required]"
-              toplabel="Asal"
-              v-model="payload.from"
-            />
-          </q-timeline-entry>
-
-          <q-timeline-entry icon="location_on"
-            ><InputTextField
-              :rules="[required]"
-              toplabel="Tujuan"
-              v-model="payload.to"
-            />
-          </q-timeline-entry>
-        </q-timeline>
-        <!-- <InputTextField
-          :rules="[required]"
-          toplabel="Asal"
-          v-model="payload.from"
-        />
-        <InputTextField
-          :rules="[required]"
-          toplabel="Tujuan"
-          v-model="payload.to"
-        /> -->
-
-        <!-- <InputSelect
-          :rules="[required]"
-          map-options
-          emit-value
-          optLabel="name"
-          optValue="id"
-          toplabel="Driver"
-          :apiUrl="driverUrl"
-          searchKey="name"
-          v-model="payload.driver_id"
-        /> -->
-        <InputSelect
-          toplabel="Jenis Kendaraan"
-          :rules="[required]"
-          api-url="/vehicle-types"
-          opt-label="name"
-          opt-value="id"
-          map-options
-          emit-value
-          v-model="payload.vehicle_type_id"
-        />
-
-        <div class="tw-grid tw-grid-cols-3">
-          <q-card
-            v-ripple
-            class="my-box cursor-pointer q-hoverable"
-            @mouseover="showText"
-            @mouseleave="hideText"
-          >
-            <span class="q-focus-helper"></span>
-            <q-img src="~assets/Cddbox2.png">
-              <div class="absolute-bottom tw-text-center">
-                <div class="text-h6">FUSO BOX</div>
-                <div class="text-subtitle2" v-show="isHovered">
-                  Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 570cm x
-                  250cm x 250cm
-                </div>
-              </div>
-            </q-img>
-          </q-card>
-          <q-card
-            v-ripple
-            class="my-box cursor-pointer q-hoverable"
-            @mouseover="showText"
-            @mouseleave="hideText"
-          >
-            <span class="q-focus-helper"></span>
-            <q-img src="~assets/Cddbox2.png">
-              <div class="absolute-bottom tw-text-center">
-                <div class="text-h6">FUSO BOX</div>
-                <div class="text-subtitle2" v-show="isHovered">
-                  Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 570cm x
-                  250cm x 250cm
-                </div>
-              </div>
-            </q-img>
-          </q-card>
-
-          <q-avatar square size="100px">
-            <q-img src="~assets/Cddbox1.png">
-              <div class="absolute-bottom tw-text-center">
-                <!-- <div class="text-h6">FUSO BOX</div> -->
-                <!-- <div class="text-subtitle2">
-                  Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 570cm x
-                  250cm x 250cm
-                </div> -->
-              </div>
-            </q-img>
-          </q-avatar>
-          <q-avatar square size="100px">
-            <q-img src="~assets/Fuso Box.png">
-              <div class="absolute-bottom tw-text-center">
-                <!-- <div class="text-h6">FUSO BOX</div> -->
-                <!-- <div class="text-subtitle2">
-                  Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 570cm x
-                  250cm x 250cm
-                </div> -->
-              </div>
-            </q-img>
-          </q-avatar>
-          <q-avatar square size="100px">
-            <q-img src="~assets/Tronton Box.png">
-              <div class="absolute-bottom tw-text-center">
-                <!-- <div class="text-h6">FUSO BOX</div> -->
-                <!-- <div class="text-subtitle2">
-                  Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 570cm x
-                  250cm x 250cm
-                </div> -->
-              </div>
-            </q-img>
-          </q-avatar>
-          <q-avatar square size="100px">
-            <q-img src="~assets/Truck Tronton.png">
-              <div class="absolute-bottom tw-text-center">
-                <!-- <div class="text-h6">FUSO BOX</div> -->
-                <!-- <div class="text-subtitle2">
-                  Berat Maksimal 8000 kg <br />Batas Ukuran (PxLxT): 570cm x
-                  250cm x 250cm
-                </div> -->
-              </div>
-            </q-img>
-          </q-avatar>
-        </div>
-        <q-item-label class="tw-font-bold">Layanan Tambahan</q-item-label>
-        <div class="tw-grid tw-grid-cols-1">
-          <q-checkbox
-            v-for="service in list_service"
-            v-bind:key="service.id"
-            v-model="selected_service"
-            :val="service.id"
-            :label="service.name"
-          />
-          <!-- <q-checkbox v-model="right" val="helper" label="Helper" />
-          <q-checkbox v-model="right" val="lain" label="Lain-Lain" /> -->
-        </div>
-        <q-item-label class="tw-font-bold">Pembayaran</q-item-label>
-        <div class="tw-grid tw-grid-cols-1">
-          <q-checkbox v-model="right" val="cash" label="Cash" />
-          <q-checkbox v-model="right" val="trf" label="Transfer" />
-        </div>
-        <!-- <InputSelect
-          :rules="[required]"
-          toplabel="Pembayaran"
-          :options="['Cash', 'Transfer']"
-          v-model="payload.payment_scheme"
-        /> -->
-        <InputSelect
-          :rules="[required]"
-          toplabel="Jenis Transaksi"
-          parentClass="tw-col-span-2"
-          :options="['Volume', 'Carter']"
-          v-model="payload.type_transaction"
-        />
-        <InputNumberField
-          :rules="[required]"
-          toplabel="Berat"
-          suffix="kg"
-          mask="#"
-          reverse-fill-mask
-          unmasked-value
-          v-if="payload.type_transaction == 'Volume'"
-          v-model="payload.weight"
-        />
-        <InputNumberField
-          :rules="[required]"
-          toplabel="Harga / Volume"
-          prefix="Rp."
-          mask="#"
-          reverse-fill-mask
-          v-if="payload.type_transaction == 'Volume'"
-          v-model="payload.price_per_volume"
-        />
-        <InputNumberField
-          :rules="[required]"
-          v-if="payload.type_transaction == 'Carter'"
-          toplabel="Harga Carter"
-          prefix="Rp."
-          mask="#"
-          reverse-fill-mask
-          parentClass="tw-col-span-2"
-          v-model="payload.price_carter"
-        />
-
-        <InputTextField
-          parentClass="tw-col-span-2"
-          toplabel="Keterangan"
-          v-model="payload.description"
-        />
-      </div>
-    </template>
   </BaseTable>
+  <q-dialog v-model="form_dialog">
+    <q-card style="width: 600px" class="tw-p-6">
+      <q-card-section>
+        <div class="text-h6 text-center">
+          {{ is_edit ? 'Edit' : 'Add' }} Order
+        </div>
+      </q-card-section>
+      <q-form @submit.prevent="storeData">
+        <q-card-section>
+          <div class="tw-gap-x-4 tw-gap-y-1.5">
+            <InputSelect
+              :rules="[required]"
+              map-options
+              emit-value
+              optLabel="name"
+              :loading="loading_user"
+              optValue="id"
+              toplabel="Nama Pelanggan"
+              :apiUrl="'/users'"
+              :params="{
+                filters:
+                  '[&quot;partner_id&quot;,&quot;!=&quot;,&quot;0&quot;]',
+              }"
+              searchKey="name"
+              @update:model-value="getUser"
+              v-model="user_id"
+            >
+              <template #option="{ scope }">
+                <q-item v-bind="scope.itemProps">
+                  <q-item-section>
+                    <q-item-label>{{ scope.opt.label }}</q-item-label>
+                    <q-item-label caption>{{
+                      scope.opt.partner?.name
+                    }}</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </template>
+            </InputSelect>
+            <InputDate
+              :rules="[required]"
+              toplabel="Tanggal Pengiriman"
+              mask="YYYY-MM-DD"
+              v-model="delivery_date"
+            />
+            <q-timeline color="primary">
+              <q-timeline-entry
+                ><InputSelect
+                  :rules="[required]"
+                  api-url="/routes"
+                  opt-label="from"
+                  opt-value="from"
+                  map-options
+                  emit-value
+                  toplabel="Asal"
+                  v-model="from"
+                />
+              </q-timeline-entry>
+
+              <q-timeline-entry icon="location_on"
+                ><InputSelect
+                  :rules="[required]"
+                  :api-url="`/routes?filters=[&quot;from&quot;,&quot;${from}&quot;]`"
+                  opt-label="to"
+                  opt-value="id"
+                  toplabel="Tujuan"
+                  map-options
+                  emit-value
+                  @update:model-value="getPriceList"
+                  v-model="to"
+                />
+              </q-timeline-entry>
+            </q-timeline>
+
+            <template v-if="!isEmpty(to)">
+              <div class="tw-font-medium tw-mb-2">Jenis Kendaraan</div>
+              <div class="tw-grid tw-mb-4 tw-grid-cols-3 tw-gap-4">
+                <template
+                  v-for="vehicle in vehicle_types"
+                  v-bind:key="vehicle.id"
+                >
+                  <div>
+                    <q-card
+                      bordered
+                      flat
+                      v-ripple
+                      class="my-box cursor-pointer q-hoverable"
+                      :class="
+                        vehicle_type?.id == vehicle.id
+                          ? 'tw-border-2  tw-border-primary'
+                          : ''
+                      "
+                      @click="setVehicle(vehicle)"
+                    >
+                      <q-img src="~assets/Cddbox2.png" />
+                      <q-card-section
+                        class="tw-flex tw-items-center tw-justify-between q-pr-xs q-pb-none"
+                      >
+                        <div class="tw-font-bold">
+                          {{ vehicle.vehicle_type?.name }}
+                        </div>
+                        <q-btn
+                          color="grey"
+                          round
+                          flat
+                          dense
+                          :icon="
+                            expanded[vehicle.id]
+                              ? 'keyboard_arrow_up'
+                              : 'keyboard_arrow_down'
+                          "
+                          @click="expanded[vehicle.id] = !expanded[vehicle.id]"
+                        />
+                      </q-card-section>
+                      <q-slide-transition>
+                        <div v-show="expanded[vehicle.id]">
+                          <q-separator />
+                          <q-card-section class="text-subtitle2">
+                            Berat:
+                            {{ vehicle.vehicle_type?.from_weight }} -
+                            {{ vehicle.vehicle_type?.to_weight }} ({{
+                              vehicle.vehicle_type?.unit
+                            }}) <br />
+                            Ukuran: {{ vehicle.vehicle_type?.size }} <br />
+                          </q-card-section>
+                        </div>
+                      </q-slide-transition>
+                    </q-card>
+                  </div>
+                </template>
+              </div>
+            </template>
+            <template v-if="vehicle_type">
+              <div v-if="partner?.privilege == 'Retail'">
+                <div class="tw-font-meidum">Metode Pembayaran</div>
+                <div class="tw-flex tw-gap-4">
+                  <q-radio v-model="payment_method" val="Cash" label="Cash" />
+                  <q-radio
+                    v-model="payment_method"
+                    val="Transfer"
+                    label="Transfer"
+                  />
+                </div>
+              </div>
+              <div class="tw-my-4">
+                <q-item-label class="tw-font-meidum"
+                  >Layanan Tambahan</q-item-label
+                >
+                <div class="tw-grid tw-grid-cols-1 tw-mt-2">
+                  <tempalte
+                    v-for="additional in additional_service"
+                    v-bind:key="additional.id"
+                  >
+                    <div class="tw-flex tw-items-center tw-justify-between">
+                      <q-checkbox
+                        v-model="additional_service_selected"
+                        :val="additional"
+                        :label="additional.name"
+                      />
+                      <div class="tw-text-primary">
+                        +{{ formatRupiah(additional?.estimation_charge) }}
+                      </div>
+                    </div>
+                  </tempalte>
+                </div>
+              </div>
+              <div class="tw-my-4 tw-flex tw-justify-between">
+                <q-item-label class="tw-font-meidum">Total</q-item-label>
+                <div class="tw-text-primary">{{ formatRupiah(total) }}</div>
+              </div>
+            </template>
+          </div>
+        </q-card-section>
+        <q-card-section align="center" class="tw-space-x-2">
+          <Btn label="Cancel" color="grey-3" text-color="grey" v-close-popup />
+          <Btn type="submit" :loading="loading" label="Submit" />
+        </q-card-section>
+      </q-form>
+    </q-card>
+  </q-dialog>
   <q-dialog
     v-model="dialog_status"
     @hide="
@@ -606,6 +704,9 @@ onMounted(() => {
 
       <q-form @submit.prevent="updateStatus">
         <q-card-section class="q-pb-none">
+          <template v-if="status_change?.code == 'process'">
+            <InputTextField autofocus toplabel="Note" v-model="note" />
+          </template>
           <InputTextField autofocus toplabel="Note" v-model="note" />
         </q-card-section>
         <q-card-actions align="between" class="tw-gap-4">

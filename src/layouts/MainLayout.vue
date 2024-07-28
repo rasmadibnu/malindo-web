@@ -65,8 +65,8 @@ onBeforeMount(() => {
             @click="router.push({ name: 'home' })"
             class="tw-cursor-pointer tw-pl-3"
           >
-            <q-avatar :size="isPinned ? '30px' : '30px'">
-              <q-img src="~assets/malindo.png" />
+            <q-avatar :size="isPinned ? '30px' : '30px'" square>
+              <q-img src="/favicon.ico" />
             </q-avatar>
           </q-item-section>
 

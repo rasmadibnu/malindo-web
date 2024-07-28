@@ -170,12 +170,12 @@ onMounted(() => {
         />
 
         <InputSelect
-          :rules="[required]"
           optLabel="name"
           optValue="id"
           parentClass="tw-col-span-2"
           map-options
           emit-value
+          clearable
           apiUrl="/partners"
           toplabel="Partner"
           v-model="payload.partner_id"
